@@ -22,48 +22,49 @@ class AppRouter extends Equatable {
 }
 
 GoRouter router([String? initialLocation]) => GoRouter(
-      debugLogDiagnostics: kDebugMode || kProfileMode,
-      initialLocation: initialLocation ?? '/',
-      routes: [
-        GoRoute(
-          path: AppRouter.databaseViwer,
-          builder: (context, state) => DriftDbViewer(Database()),
-        ),
-        GoRoute(
-          path: AppRouter.home,
-          builder: (context, state) => const HomePage(),
-        ),
-        GoRoute(
-          path: AppRouter.login,
-          builder: (context, state) => const LoginPage(),
-        ),
-        GoRoute(
-          path: AppRouter.register,
-          builder: (context, state) => const RegisterPage(),
-        ),
-      ],
-      redirect: (BuildContext context, GoRouterState state) async {
-        // Define a list of whitelisted paths
-        final whitelistPaths = [
-          '',
-        ];
+  debugLogDiagnostics: kDebugMode || kProfileMode,
+  initialLocation: initialLocation ?? '/',
+  routes: [
+    GoRoute(
+      path: AppRouter.databaseViwer,
+      builder: (context, state) => DriftDbViewer(Database()),
+    ),
+    GoRoute(
+      path: AppRouter.home,
+      builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: AppRouter.login,
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: AppRouter.register,
+      builder: (context, state) => const RegisterPage(),
+    ),
+  ],
+  redirect: (BuildContext context, GoRouterState state) async {
+    // Define a list of whitelisted paths
+    final whitelistPaths = [AppRouter.login, AppRouter.register];
 
-        // Check if the current path is in the whitelist
-        final isPathWhitelisted = whitelistPaths.any((whitelistedPath) =>
-            state.fullPath?.startsWith(whitelistedPath) ?? false);
-
-        // If the path is not in the whitelist, check if the user is logged in
-        if (isPathWhitelisted) {
-          final isLoggedIn = await getIt<UserSession>().isLoggedIn();
-          talker.debug('go router: redirect to ${state.fullPath}');
-
-          // If not logged in and the path requires authentication, redirect to login
-          if (!isLoggedIn) {
-            return AppRouter.login;
-          }
-        }
-
-        // If the user is logged in or the path is whitelisted, no redirect occurs
-        return null;
-      },
+    // Check if the current path is in the whitelist
+    final isPathWhitelisted = whitelistPaths.any(
+      (whitelistedPath) => state.fullPath?.startsWith(whitelistedPath) ?? false,
     );
+
+    // If the path is not in the whitelist, check if the user is logged in
+    if (!isPathWhitelisted) {
+      final isLoggedIn = await getIt<UserSession>().isLoggedIn();
+      talker.debug('go router: redirect to ${state.fullPath}');
+
+      // If not logged in and the path requires authentication, redirect to login
+      if (!isLoggedIn) {
+        return AppRouter.login;
+      } else {
+        return AppRouter.home;
+      }
+    }
+
+    // If the user is logged in or the path is whitelisted, no redirect occurs
+    return null;
+  },
+);

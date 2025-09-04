@@ -21,7 +21,7 @@ class UserLocalStoreImp extends UserLocalStore {
       ..where((t) => t.id.equals(userId));
     return query.go();
   }
-
+  
   @override
   Future<int> saveOrUpdateUser(model.User user) {
     final query = database.into(database.users);

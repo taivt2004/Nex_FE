@@ -15,7 +15,7 @@ abstract class AppConfigLocalStore {
 @Injectable(as: AppConfigLocalStore)
 class AppConfigLocalStoreImp extends AppConfigLocalStore {
   AppConfigLocalStoreImp({required this.db});
-
+  
   final Database db;
 
   @override
