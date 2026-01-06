@@ -79,7 +79,7 @@ android {
             dimension "default"
             applicationIdSuffix ""
             manifestPlaceholders = [appName: "NexPay"]
-        }
+        } 
         staging {
             dimension "default"
             applicationIdSuffix ".stg"

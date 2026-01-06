@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 
 /// Gradient settings enum, this can be used to change the direction of the button
 /// color gradients.
-enum GradientOrientation {
-  Vertical,
-  Horizontal,
-}
+enum GradientOrientation { Vertical, Horizontal }
 
 class NiceButtons extends StatefulWidget {
   NiceButtons({
@@ -25,8 +22,8 @@ class NiceButtons extends StatefulWidget {
     this.stretch = true,
     this.progress = false,
     this.disabled = false,
-  })  : br = BorderRadius.all(Radius.circular(borderRadius)),
-        calculatedWidth = stretch ? double.infinity : width;
+  }) : br = BorderRadius.all(Radius.circular(borderRadius)),
+       calculatedWidth = stretch ? double.infinity : width;
 
   /// The color of the 3D border of the button.
   final Color borderColor;
@@ -107,7 +104,9 @@ class _NiceButtonsState extends State<NiceButtons>
         ),
         child: ConstrainedBox(
           constraints: const BoxConstraints.expand(
-              width: double.infinity, height: double.infinity),
+            width: double.infinity,
+            height: double.infinity,
+          ),
         ),
       ),
     );
@@ -149,7 +148,9 @@ class _NiceButtonsState extends State<NiceButtons>
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints.expand(
-            width: double.infinity, height: widget.height - _borderThickness),
+          width: double.infinity,
+          height: widget.height - _borderThickness,
+        ),
         child: ClipRRect(
           borderRadius: widget.br,
           child: Stack(
@@ -157,6 +158,17 @@ class _NiceButtonsState extends State<NiceButtons>
               _buildProgressBar(),
               if (_showProgress) _buildProgressCircle(),
               if (!_showProgress) _buildUserChild(),
+              Positioned.fill(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: widget.disabled || _processing ? null : _onTap,
+                    borderRadius: widget.br,
+                    splashColor: Colors.white.withOpacity(0.18),
+                    highlightColor: Colors.white.withOpacity(0.08),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -186,7 +198,8 @@ class _NiceButtonsState extends State<NiceButtons>
           width: widget.progressSize,
           height: widget.progressSize,
           child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(widget.progressColor)),
+            valueColor: AlwaysStoppedAnimation<Color>(widget.progressColor),
+          ),
         ),
       ),
     );
@@ -227,15 +240,14 @@ class _NiceButtonsState extends State<NiceButtons>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.disabled || _processing ? null : _onTap,
+      onTap: null,
       child: ConstrainedBox(
         constraints: BoxConstraints.expand(
-            width: widget.calculatedWidth, height: widget.height),
+          width: widget.calculatedWidth,
+          height: widget.height,
+        ),
         child: Stack(
-          children: <Widget>[
-            _buildBackLayout(),
-            _buildFrontLayout(),
-          ],
+          children: <Widget>[_buildBackLayout(), _buildFrontLayout()],
         ),
       ),
     );

@@ -18,6 +18,16 @@ class AppColor {
   static const orangeDark = Color(0xFFDD893C);
   static const orangeDarkest = Color(0xFFC1502C);
 
+  // Onboarding Colors
+  static const onboardingGradientStart = Color(0xFF430B5D);
+  static const onboardingGradientEnd = Color(0xFF030518);
+  static const onboardingPrimaryButtonStart = Color(0xFF9D50FF);
+  static const onboardingPrimaryButtonEnd = Color(0xFF6B24D9);
+  static const onboardingSecondaryButtonBg = Color(0xFF1E1E2C);
+  static const onboardingIndicatorActive = Color(0xFF8A2BE2);
+  static const onboardingIndicatorInactive = Color(0xFF3E3E3E);
+  static const onboardingTermsText = Color(0xFFB1B1B1);
+
   static const blueBackgroundGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,

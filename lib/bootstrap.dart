@@ -34,9 +34,9 @@ Future<void> bootstrap(
       kReleaseMode ? CacheManagerLogLevel.none : CacheManagerLogLevel.debug;
 
   Bloc.observer = OlaBlocObserver();
-
+  
   await SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.manual,
+    SystemUiMode.manual,  
     overlays: [
       SystemUiOverlay.top,
       SystemUiOverlay.bottom,

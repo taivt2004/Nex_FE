@@ -24,7 +24,7 @@ class UserRepositoryImp implements UserRepository {
     required this.appConfigLocalStore,
     required this.apiService,
   });
-
+  
   final AppConfigLocalStore appConfigLocalStore;
   final ApiService apiService;
   final UserLocalStore userLocalStore;

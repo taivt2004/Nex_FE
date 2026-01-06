@@ -13,11 +13,11 @@ import 'package:nexpaylab/share/theme/theme.mode.dart';
 abstract class AppModule {
   @singleton
   Database get database => Database();
-
+  
   @lazySingleton
   @preResolve
   Future<SharedPreferences> get sharedPreference async =>
-      SharedPreferences.getInstance();
+      SharedPreferences.getInstance(); 
 
   @lazySingleton
   ThemeModel get appTheme => ThemeModel();
@@ -27,6 +27,6 @@ abstract class AppModule {
         DioClient.build(
           [getIt<AuthInterceptor>(), getIt<RequestInterceptor>()],
         ),
-        baseUrl: baseUrlApi,
+        baseUrl: baseUrlApiLocal,
       );
 }

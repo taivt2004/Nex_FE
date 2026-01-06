@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:nexpaylab/app/core/data/model/app.config.dart';
 import 'package:nexpaylab/app/core/data/model/user.dart';
+import 'package:nexpaylab/app/core/data/service/model/coin.res.dart';
 import 'package:nexpaylab/app/core/data/service/model/common.res.dart';
 import 'package:nexpaylab/app/core/data/service/model/user.res.dart';
 import 'package:nexpaylab/app/core/data/service/param/login.param.dart';
@@ -18,7 +19,12 @@ abstract class ApiService {
 
   @GET('v1/configs/list?keys={keys}')
   Future<List<ConfigItem>> getAppConfigs(@Path('keys') String keys);
-
+  @GET('coins')
+  Future<CoinResponse> getCoins(
+      @Query('page') int page,
+      @Query('limit') int limit,
+      );
+    
   @POST('v1/users/login')
   Future<UserResponse> login(@Body() LoginParam param);
   @POST('v1/users/register')

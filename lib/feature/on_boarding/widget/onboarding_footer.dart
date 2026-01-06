@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
+import 'package:nexpaylab/share/utils/colors.dart';
+
+class OnboardingFooter extends StatelessWidget {
+  const OnboardingFooter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Text.rich(
+        TextSpan(
+          text: 'By tapping above button, you agree and consent to our ',
+          style: PoppinsTextStyles.primary14Regular.copyWith(
+            color: Colors.white.withOpacity(0.3),
+          ),
+          children: [
+            TextSpan(
+              text: 'Terms of Service',
+              style: PoppinsTextStyles.primary12Regular.copyWith(
+                color: AppColor.onboardingTermsText,
+              ),
+            ),
+            const TextSpan(text: ' and '),
+            TextSpan(
+              text: 'Privacy Policy',
+              style: PoppinsTextStyles.primary12Regular.copyWith(
+                color: AppColor.onboardingTermsText,
+              ),
+            ),
+          ],
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}

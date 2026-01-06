@@ -20,13 +20,20 @@ import 'package:nexpaylab/share/ui/widget/navigation/models/bottom_bar_item_mode
 import 'package:nexpaylab/share/ui/widget/navigation/notch_bottom_bar.dart';
 import 'package:nexpaylab/share/ui/widget/navigation/notch_bottom_bar_controller.dart';
 
+import 'package:nexpaylab/feature/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<HomeBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<HomeBloc>()),
+        BlocProvider(
+          create: (_) => getIt<MarketplaceBloc>()..add(MarketplaceFetched()),
+        ),
+      ],
       child: const HomeForm(),
     );
   }

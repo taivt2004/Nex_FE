@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OlaColors {
   OlaColors._();
@@ -89,254 +90,389 @@ class OlaTextStyles {
   OlaTextStyles._();
 
   static TextStyle get displaymd36Regular => const TextStyle(
-        fontSize: 36,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w400,
-        height: 44 / 36,
-        letterSpacing: -2,
-      );
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
 
   static TextStyle get displaymd36Medium => const TextStyle(
-        fontSize: 36,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w500,
-        height: 44 / 36,
-        letterSpacing: -2,
-      );
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
 
   static TextStyle get displaymd36Semibold => const TextStyle(
-        fontSize: 36,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 44 / 36,
-        letterSpacing: -2,
-      );
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
 
   static TextStyle get displaymd36Bold => const TextStyle(
-        fontSize: 36,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 44 / 36,
-        letterSpacing: -2,
-      );
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
 
   static TextStyle get displaysm30Regular => const TextStyle(
-        fontSize: 30,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w400,
-        height: 38 / 30,
-        letterSpacing: 0,
-      );
+    fontSize: 30,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 38 / 30,
+    letterSpacing: 0,
+  );
 
   static TextStyle get displaysm30Medium => const TextStyle(
-        fontSize: 30,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w500,
-        height: 38 / 30,
-        letterSpacing: 0,
-      );
+    fontSize: 30,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 38 / 30,
+    letterSpacing: 0,
+  );
 
   static TextStyle get displaysm30Semibold => const TextStyle(
-        fontSize: 30,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w600,
-        height: 38 / 30,
-        letterSpacing: 0,
-      );
+    fontSize: 30,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w600,
+    height: 38 / 30,
+    letterSpacing: 0,
+  );
 
   static TextStyle get displaysm30bold => const TextStyle(
-        fontSize: 30,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 38 / 30,
-        letterSpacing: 0,
-      );
+    fontSize: 30,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 38 / 30,
+    letterSpacing: 0,
+  );
 
   static TextStyle get displayxs24regular => const TextStyle(
-        fontSize: 24,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w400,
-        height: 32 / 24,
-        letterSpacing: 0,
-      );
+    fontSize: 24,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 32 / 24,
+    letterSpacing: 0,
+  );
 
   static TextStyle get displayxs24medium => const TextStyle(
-        fontSize: 24,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w500,
-        height: 32 / 24,
-        letterSpacing: 0,
-      );
+    fontSize: 24,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 32 / 24,
+    letterSpacing: 0,
+  );
 
   static TextStyle get displayxs24semibold => const TextStyle(
-        fontSize: 24,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 32 / 24,
-        letterSpacing: 0,
-      );
+    fontSize: 24,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 32 / 24,
+    letterSpacing: 0,
+  );
 
   static TextStyle get displayxs24bold => const TextStyle(
-        fontSize: 24,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 32 / 24,
-        letterSpacing: 0,
-      );
+    fontSize: 24,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 32 / 24,
+    letterSpacing: 0,
+  );
 
   static TextStyle get textlg18regular => const TextStyle(
-        fontSize: 18,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w400,
-        height: 28 / 18,
-        letterSpacing: 0,
-      );
+    fontSize: 18,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 28 / 18,
+    letterSpacing: 0,
+  );
 
   static TextStyle get textlg18medium => const TextStyle(
-        fontSize: 18,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w500,
-        height: 28 / 18,
-        letterSpacing: 0,
-      );
+    fontSize: 18,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 28 / 18,
+    letterSpacing: 0,
+  );
 
   static TextStyle get textlg18semibold => const TextStyle(
-        fontSize: 18,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w600,
-        height: 28 / 18,
-        letterSpacing: 0,
-      );
+    fontSize: 18,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w600,
+    height: 28 / 18,
+    letterSpacing: 0,
+  );
 
   static TextStyle get textlg18bold => const TextStyle(
-        fontSize: 18,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 18 / 18,
-        letterSpacing: 0,
-      );
+    fontSize: 18,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 18 / 18,
+    letterSpacing: 0,
+  );
 
   static TextStyle get primarytext14regular => const TextStyle(
-        fontSize: 14,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w400,
-        height: 14 / 14,
-        letterSpacing: 0,
-      );
+    fontSize: 14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 14 / 14,
+    letterSpacing: 0,
+  );
 
   static TextStyle get primarytext14medium => const TextStyle(
-        fontSize: 14,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w500,
-        height: 14 / 14,
-        letterSpacing: 0,
-      );
+    fontSize: 14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 14 / 14,
+    letterSpacing: 0,
+  );
 
   static TextStyle get primarytext14semibold => const TextStyle(
-        fontSize: 14,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 20 / 14,
-        letterSpacing: 0,
-      );
+    fontSize: 14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 20 / 14,
+    letterSpacing: 0,
+  );
 
   static TextStyle get primarytext14bold => const TextStyle(
-        fontSize: 14,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 20 / 14,
-        letterSpacing: 0,
-      );
+    fontSize: 14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 20 / 14,
+    letterSpacing: 0,
+  );
 
   static TextStyle get subtext12regular => const TextStyle(
-        fontSize: 12,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w400,
-        height: 12 / 12,
-        letterSpacing: 0,
-      );
+    fontSize: 12,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 12 / 12,
+    letterSpacing: 0,
+  );
 
   static TextStyle get subtext12medium => const TextStyle(
-        fontSize: 12,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w500,
-        height: 18 / 12,
-        letterSpacing: 0,
-      );
+    fontSize: 12,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 18 / 12,
+    letterSpacing: 0,
+  );
 
   static TextStyle get subtext12semibold => const TextStyle(
-        fontSize: 12,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 18 / 12,
-        letterSpacing: 0,
-      );
+    fontSize: 12,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 18 / 12,
+    letterSpacing: 0,
+  );
 
   static TextStyle get subtext12bold => const TextStyle(
-        fontSize: 12,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 18 / 12,
-        letterSpacing: 0,
-      );
+    fontSize: 12,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 18 / 12,
+    letterSpacing: 0,
+  );
 
   static TextStyle get title20regular => const TextStyle(
-        fontSize: 20,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w400,
-        height: 30 / 20,
-        letterSpacing: 0,
-      );
+    fontSize: 20,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 30 / 20,
+    letterSpacing: 0,
+  );
 
   static TextStyle get title20medium => const TextStyle(
-        fontSize: 20,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w500,
-        height: 30 / 20,
-        letterSpacing: 0,
-      );
+    fontSize: 20,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 30 / 20,
+    letterSpacing: 0,
+  );
 
   static TextStyle get title20semibold => const TextStyle(
-        fontSize: 20,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 30 / 20,
-        letterSpacing: 0,
-      );
+    fontSize: 20,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 30 / 20,
+    letterSpacing: 0,
+  );
 
   static TextStyle get title20bold => const TextStyle(
-        fontSize: 20,
-        decoration: TextDecoration.none,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
-        height: 30 / 20,
-        letterSpacing: 0,
-      );
+    fontSize: 20,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 30 / 20,
+    letterSpacing: 0,
+  );
+}
+
+// KoHo Text Styles
+class KoHoTextStyles {
+  KoHoTextStyles._();
+
+  static TextStyle get display36Regular => GoogleFonts.koHo(
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
+
+  static TextStyle get display36Medium => GoogleFonts.koHo(
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
+
+  static TextStyle get display36Bold => GoogleFonts.koHo(
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
+
+  static TextStyle get primary14Regular => GoogleFonts.koHo(
+    fontSize: 14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 14 / 14,
+    letterSpacing: 0,
+  );
+
+  static TextStyle get primary14Semibold => GoogleFonts.koHo(
+    fontSize: 14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 20 / 14,
+    letterSpacing: 0,
+  );
+}
+
+class PoppinsTextStyles {
+  PoppinsTextStyles._();
+
+  static TextStyle get display36Regular => GoogleFonts.poppins(
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
+
+  static TextStyle get display36Medium => GoogleFonts.poppins(
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
+
+  static TextStyle get display36Bold => GoogleFonts.poppins(
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
+
+  static TextStyle get primary14Regular => GoogleFonts.poppins(
+    fontSize: 14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 14 / 14,
+    letterSpacing: 0,
+  );
+
+  static TextStyle get primary18Semibold => GoogleFonts.poppins(
+    fontSize: 18,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 20 / 14,
+    letterSpacing: 0,
+  );
+
+  static TextStyle get primary18Regular => GoogleFonts.poppins(
+    fontSize: 18,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 14 / 14,
+    letterSpacing: 0,
+  );
+
+  static TextStyle get primary14Semibold => GoogleFonts.poppins(
+    fontSize: 14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 20 / 14,
+    letterSpacing: 0,
+  );
+
+  static TextStyle get primary12Regular => GoogleFonts.poppins(
+    fontSize: 12,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w200,
+    height: 16 / 14,
+    letterSpacing: 0,
+  );
+
+  static TextStyle get primary12Semibold => GoogleFonts.poppins(
+    fontSize: 12,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 20 / 14,
+    letterSpacing: 0,
+  );
 }

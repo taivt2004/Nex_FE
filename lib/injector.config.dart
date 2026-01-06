@@ -17,6 +17,7 @@ import 'package:nexpaylab/app/core/data/localstore/app.config.local.dart'
 import 'package:nexpaylab/app/core/data/localstore/user.local.dart' as _i107;
 import 'package:nexpaylab/app/core/data/repository/app.config.repos.dart'
     as _i563;
+import 'package:nexpaylab/app/core/data/repository/coin.repos.dart' as _i614;
 import 'package:nexpaylab/app/core/data/repository/user.repos.dart' as _i496;
 import 'package:nexpaylab/app/core/data/service/api.dart' as _i289;
 import 'package:nexpaylab/app/core/network.checker.dart' as _i715;
@@ -27,6 +28,8 @@ import 'package:nexpaylab/app/database/database.dart' as _i867;
 import 'package:nexpaylab/app/di/app_module.dart' as _i566;
 import 'package:nexpaylab/feature/home/presentation/bloc/home_bloc.dart'
     as _i554;
+import 'package:nexpaylab/feature/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart'
+    as _i158;
 import 'package:nexpaylab/feature/login.register/bloc/login_bloc.dart' as _i894;
 import 'package:nexpaylab/feature/login.register/bloc/register_bloc.dart'
     as _i444;
@@ -50,16 +53,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i844.DeviceInfoCollector>(() => _i844.DeviceInfoCollector());
     gh.singleton<_i867.Database>(() => appModule.database);
     gh.singleton<_i1031.AppLifecycle>(() => _i1031.AppLifecycle());
+    gh.lazySingleton<_i715.NetworkStateStream>(
+      () => _i715.NetworkStateStream(),
+    );
+    gh.lazySingleton<_i505.UserSessionStream>(() => _i505.UserSessionStream());
     await gh.lazySingletonAsync<_i460.SharedPreferences>(
       () => appModule.sharedPreference,
       preResolve: true,
     );
     gh.lazySingleton<_i466.ThemeModel>(() => appModule.appTheme);
     gh.lazySingleton<_i289.ApiService>(() => appModule.apiService);
-    gh.lazySingleton<_i505.UserSessionStream>(() => _i505.UserSessionStream());
-    gh.lazySingleton<_i715.NetworkStateStream>(
-      () => _i715.NetworkStateStream(),
-    );
     gh.factory<_i774.AppConfigLocalStore>(
       () => _i774.AppConfigLocalStoreImp(db: gh<_i867.Database>()),
     );
@@ -67,11 +70,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i794.RegisterPage>(
       () => _i794.RegisterPage(key: gh<_i409.Key>()),
     );
+    gh.factory<_i614.CoinRepository>(
+      () => _i614.CoinRepositoryImp(apiService: gh<_i289.ApiService>()),
+    );
     gh.factory<_i107.UserLocalStore>(
       () => _i107.UserLocalStoreImp(database: gh<_i867.Database>()),
     );
     gh.singleton<_i715.NetworkChecker>(
       () => _i715.NetworkChecker(gh<_i715.NetworkStateStream>()),
+    );
+    gh.factory<_i158.MarketplaceBloc>(
+      () => _i158.MarketplaceBloc(gh<_i614.CoinRepository>()),
     );
     gh.factory<_i563.AppConfigRepository>(
       () => _i563.AppConfigRepositoryImp(
