@@ -6,6 +6,8 @@ import 'package:nexpaylab/share/ui/widget/navigation/constants/constants.dart';
 class BottomBarPainter extends CustomPainter {
   BottomBarPainter({
     required this.position,
+    required this.showNotch,
+    required this.showBorder,
     required this.color,
     required this.showShadow,
     required this.notchColor,
@@ -14,32 +16,34 @@ class BottomBarPainter extends CustomPainter {
     this.shadowElevation,
     this.shader,
     this.gradient,
-  })  : _paint = Paint()
-          ..color = color
-          ..style = PaintingStyle.fill
-          ..strokeWidth = 2
-          ..isAntiAlias = true,
-        _shadowColor = Colors.grey.shade600,
-        _notchPaint = Paint()
-          ..color = notchColor
-          ..isAntiAlias = true
-          ..shader = gradient?.createShader(
-            Rect.fromCircle(
-              center: Offset(
-                position + kCircleMargin + kCircleRadius,
-                kMargin + kCircleMargin,
-              ),
-              radius: kCircleRadius,
-            ),
-          ),
-        _shadowPaint = Paint()
-          ..color = OlaColors.gray200
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1
-          ..isAntiAlias = true;
+  }) : _paint = Paint()
+         ..color = color
+         ..style = PaintingStyle.fill
+         ..strokeWidth = 2
+         ..isAntiAlias = true,
+       _shadowColor = Colors.grey.shade600,
+       _notchPaint = Paint()
+         ..color = notchColor
+         ..isAntiAlias = true
+         ..shader = gradient?.createShader(
+           Rect.fromCircle(
+             center: Offset(
+               position + kCircleMargin + kCircleRadius,
+               kMargin + kCircleMargin,
+             ),
+             radius: kCircleRadius,
+           ),
+         ),
+       _shadowPaint = Paint()
+         ..color = OlaColors.gray200
+         ..style = PaintingStyle.stroke
+         ..strokeWidth = 1
+         ..isAntiAlias = true;
 
   /// position
   final double position;
+  final bool showNotch;
+  final bool showBorder;
 
   /// Color for the bottom bar
   final Color color;
@@ -80,7 +84,9 @@ class BottomBarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     _drawBar(canvas, size);
-    _drawFloatingCircle(canvas, shader);
+    if (showNotch) {
+      _drawFloatingCircle(canvas, shader);
+    }
   }
 
   @override
@@ -97,23 +103,24 @@ class BottomBarPainter extends CustomPainter {
 
     final path = Path()
       ..moveTo(left + kTopRadius, top)
-      ..lineTo(position - kTopRadius, top)
-      ..relativeArcToPoint(
-        Offset(kTopRadius, kTopRadius),
-        radius: Radius.circular(kTopRadius),
-      )
-      ..relativeArcToPoint(
-        const Offset(
-          (kCircleRadius + kCircleMargin) * 2,
-          0,
-        ),
-        radius: const Radius.circular(kCircleRadius + kCircleMargin),
-        clockwise: false,
-      )
-      ..relativeArcToPoint(
-        Offset(kTopRadius, -kTopRadius),
-        radius: Radius.circular(kTopRadius),
-      )
+      ..lineTo(showNotch ? (position - kTopRadius) : (right - kTopRadius), top);
+    if (showNotch) {
+      path
+        ..relativeArcToPoint(
+          Offset(kTopRadius, kTopRadius),
+          radius: Radius.circular(kTopRadius),
+        )
+        ..relativeArcToPoint(
+          const Offset((kCircleRadius + kCircleMargin) * 2, 0),
+          radius: const Radius.circular(kCircleRadius + kCircleMargin),
+          clockwise: false,
+        )
+        ..relativeArcToPoint(
+          Offset(kTopRadius, -kTopRadius),
+          radius: Radius.circular(kTopRadius),
+        );
+    }
+    path
       ..lineTo(right - kTopRadius, top)
       ..relativeArcToPoint(
         Offset(kTopRadius, kTopRadius),
@@ -138,7 +145,9 @@ class BottomBarPainter extends CustomPainter {
       canvas.drawShadow(path, _shadowColor, shadowElevation ?? 5, true);
     }
     canvas.drawPath(path, _paint);
-    canvas.drawPath(path, _shadowPaint);
+    if (showBorder) {
+      canvas.drawPath(path, _shadowPaint);
+    }
   }
 
   /// Function used to draw the circular indicator

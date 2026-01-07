@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
 
 class OnboardingContent extends StatelessWidget {
@@ -9,7 +10,7 @@ class OnboardingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: 32.w),
       child: Column(
         children: [
           Text(
@@ -20,7 +21,7 @@ class OnboardingContent extends StatelessWidget {
               height: 1.2,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             desc,
             textAlign: TextAlign.center,

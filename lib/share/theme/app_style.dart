@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OlaColors {
@@ -89,8 +90,8 @@ class OlaColors {
 class OlaTextStyles {
   OlaTextStyles._();
 
-  static TextStyle get displaymd36Regular => const TextStyle(
-    fontSize: 36,
+  static TextStyle get displaymd36Regular => TextStyle(
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -98,8 +99,8 @@ class OlaTextStyles {
     letterSpacing: -2,
   );
 
-  static TextStyle get displaymd36Medium => const TextStyle(
-    fontSize: 36,
+  static TextStyle get displaymd36Medium => TextStyle(
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -107,8 +108,8 @@ class OlaTextStyles {
     letterSpacing: -2,
   );
 
-  static TextStyle get displaymd36Semibold => const TextStyle(
-    fontSize: 36,
+  static TextStyle get displaymd36Semibold => TextStyle(
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -116,8 +117,8 @@ class OlaTextStyles {
     letterSpacing: -2,
   );
 
-  static TextStyle get displaymd36Bold => const TextStyle(
-    fontSize: 36,
+  static TextStyle get displaymd36Bold => TextStyle(
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -125,8 +126,8 @@ class OlaTextStyles {
     letterSpacing: -2,
   );
 
-  static TextStyle get displaysm30Regular => const TextStyle(
-    fontSize: 30,
+  static TextStyle get displaysm30Regular => TextStyle(
+    fontSize: 30.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -134,8 +135,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get displaysm30Medium => const TextStyle(
-    fontSize: 30,
+  static TextStyle get displaysm30Medium => TextStyle(
+    fontSize: 30.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -143,8 +144,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get displaysm30Semibold => const TextStyle(
-    fontSize: 30,
+  static TextStyle get displaysm30Semibold => TextStyle(
+    fontSize: 30.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w600,
@@ -152,8 +153,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get displaysm30bold => const TextStyle(
-    fontSize: 30,
+  static TextStyle get displaysm30bold => TextStyle(
+    fontSize: 30.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -161,8 +162,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get displayxs24regular => const TextStyle(
-    fontSize: 24,
+  static TextStyle get displayxs24regular => TextStyle(
+    fontSize: 24.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -170,8 +171,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get displayxs24medium => const TextStyle(
-    fontSize: 24,
+  static TextStyle get displayxs24medium => TextStyle(
+    fontSize: 24.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -179,8 +180,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get displayxs24semibold => const TextStyle(
-    fontSize: 24,
+  static TextStyle get displayxs24semibold => TextStyle(
+    fontSize: 24.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -188,8 +189,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get displayxs24bold => const TextStyle(
-    fontSize: 24,
+  static TextStyle get displayxs24bold => TextStyle(
+    fontSize: 24.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -197,8 +198,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get textlg18regular => const TextStyle(
-    fontSize: 18,
+  static TextStyle get textlg18regular => TextStyle(
+    fontSize: 18.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -206,8 +207,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get textlg18medium => const TextStyle(
-    fontSize: 18,
+  static TextStyle get textlg18medium => TextStyle(
+    fontSize: 18.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -215,8 +216,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get textlg18semibold => const TextStyle(
-    fontSize: 18,
+  static TextStyle get textlg18semibold => TextStyle(
+    fontSize: 18.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w600,
@@ -224,8 +225,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get textlg18bold => const TextStyle(
-    fontSize: 18,
+  static TextStyle get textlg18bold => TextStyle(
+    fontSize: 18.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -233,8 +234,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get primarytext14regular => const TextStyle(
-    fontSize: 14,
+  static TextStyle get primarytext14regular => TextStyle(
+    fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -242,8 +243,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get primarytext14medium => const TextStyle(
-    fontSize: 14,
+  static TextStyle get primarytext14medium => TextStyle(
+    fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -251,8 +252,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get primarytext14semibold => const TextStyle(
-    fontSize: 14,
+  static TextStyle get primarytext14semibold => TextStyle(
+    fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -260,8 +261,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get primarytext14bold => const TextStyle(
-    fontSize: 14,
+  static TextStyle get primarytext14bold => TextStyle(
+    fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -269,8 +270,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get subtext12regular => const TextStyle(
-    fontSize: 12,
+  static TextStyle get subtext12regular => TextStyle(
+    fontSize: 12.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -278,8 +279,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get subtext12medium => const TextStyle(
-    fontSize: 12,
+  static TextStyle get subtext12medium => TextStyle(
+    fontSize: 12.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -287,8 +288,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get subtext12semibold => const TextStyle(
-    fontSize: 12,
+  static TextStyle get subtext12semibold => TextStyle(
+    fontSize: 12.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -296,8 +297,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get subtext12bold => const TextStyle(
-    fontSize: 12,
+  static TextStyle get subtext12bold => TextStyle(
+    fontSize: 12.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -305,8 +306,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get title20regular => const TextStyle(
-    fontSize: 20,
+  static TextStyle get title20regular => TextStyle(
+    fontSize: 20.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -314,8 +315,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get title20medium => const TextStyle(
-    fontSize: 20,
+  static TextStyle get title20medium => TextStyle(
+    fontSize: 20.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -323,8 +324,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get title20semibold => const TextStyle(
-    fontSize: 20,
+  static TextStyle get title20semibold => TextStyle(
+    fontSize: 20.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -332,8 +333,8 @@ class OlaTextStyles {
     letterSpacing: 0,
   );
 
-  static TextStyle get title20bold => const TextStyle(
-    fontSize: 20,
+  static TextStyle get title20bold => TextStyle(
+    fontSize: 20.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -347,7 +348,7 @@ class KoHoTextStyles {
   KoHoTextStyles._();
 
   static TextStyle get display36Regular => GoogleFonts.koHo(
-    fontSize: 36,
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -356,7 +357,7 @@ class KoHoTextStyles {
   );
 
   static TextStyle get display36Medium => GoogleFonts.koHo(
-    fontSize: 36,
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -365,7 +366,7 @@ class KoHoTextStyles {
   );
 
   static TextStyle get display36Bold => GoogleFonts.koHo(
-    fontSize: 36,
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -374,7 +375,7 @@ class KoHoTextStyles {
   );
 
   static TextStyle get primary14Regular => GoogleFonts.koHo(
-    fontSize: 14,
+    fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -383,7 +384,7 @@ class KoHoTextStyles {
   );
 
   static TextStyle get primary14Semibold => GoogleFonts.koHo(
-    fontSize: 14,
+    fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -396,7 +397,7 @@ class PoppinsTextStyles {
   PoppinsTextStyles._();
 
   static TextStyle get display36Regular => GoogleFonts.poppins(
-    fontSize: 36,
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -405,7 +406,7 @@ class PoppinsTextStyles {
   );
 
   static TextStyle get display36Medium => GoogleFonts.poppins(
-    fontSize: 36,
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -414,7 +415,7 @@ class PoppinsTextStyles {
   );
 
   static TextStyle get display36Bold => GoogleFonts.poppins(
-    fontSize: 36,
+    fontSize: 36.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -423,7 +424,7 @@ class PoppinsTextStyles {
   );
 
   static TextStyle get primary14Regular => GoogleFonts.poppins(
-    fontSize: 14,
+    fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -432,7 +433,7 @@ class PoppinsTextStyles {
   );
 
   static TextStyle get primary18Semibold => GoogleFonts.poppins(
-    fontSize: 18,
+    fontSize: 18.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -441,7 +442,7 @@ class PoppinsTextStyles {
   );
 
   static TextStyle get primary18Regular => GoogleFonts.poppins(
-    fontSize: 18,
+    fontSize: 18.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
@@ -450,7 +451,7 @@ class PoppinsTextStyles {
   );
 
   static TextStyle get primary14Semibold => GoogleFonts.poppins(
-    fontSize: 14,
+    fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
@@ -459,16 +460,16 @@ class PoppinsTextStyles {
   );
 
   static TextStyle get primary12Regular => GoogleFonts.poppins(
-    fontSize: 12,
+    fontSize: 12.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w200,
+    fontWeight: FontWeight.w300,
     height: 16 / 14,
     letterSpacing: 0,
   );
 
   static TextStyle get primary12Semibold => GoogleFonts.poppins(
-    fontSize: 12,
+    fontSize: 12.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,

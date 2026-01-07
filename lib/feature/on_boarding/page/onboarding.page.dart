@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/feature/on_boarding/cubit/onboarding_cubit.dart';
@@ -10,6 +11,8 @@ import 'package:nexpaylab/feature/on_boarding/widget/onboarding_content.dart';
 import 'package:nexpaylab/feature/on_boarding/widget/onboarding_footer.dart';
 import 'package:nexpaylab/feature/on_boarding/widget/onboarding_illustration.dart';
 import 'package:nexpaylab/feature/on_boarding/widget/onboarding_indicator.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
+import 'package:nexpaylab/feature/on_boarding/widget/already_have_wallet_sheet.dart';
 import 'package:nexpaylab/share/utils/colors.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -65,6 +68,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
     _startAutoSlide();
   }
 
+  void _showAlreadyHaveWalletSheet() {
+    showAlreadyHaveWalletSheet(
+      context,
+      onContinue: () => context.push(AppRouter.alreadyHaveWallet01),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -84,14 +94,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
           child: SafeArea(
             child: Column(
               children: [
-                const SizedBox(height: 20), // Spacing trên
+                SizedBox(height: 20.h), // Spacing trên
                 // --- Phần Ảnh (3D Coin) - TO HƠN ---
                 const Expanded(
                   flex: 6, // Tăng từ 5 lên 6 để ảnh có nhiều không gian hơn
                   child: OnboardingIllustration(),
                 ),
 
-                const SizedBox(height: 20), // Khoảng cách giữa ảnh và text
+                SizedBox(height: 20.h), // Khoảng cách giữa ảnh và text
                 // --- Phần Slide Text - KÉO XUỐNG ---
                 Expanded(
                   flex: 3, // Giảm từ 4 xuống 3
@@ -127,11 +137,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   },
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
 
                 // --- Các nút bấm ---
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Column(
                     children: [
                       OnboardingPrimaryButton(
@@ -141,23 +151,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           context.push(AppRouter.createNewWallet01);
                         },
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       OnboardingSecondaryButton(
                         text: 'I already have a wallet',
-                        onTap: () {
-                          // Todo: Navigate to Import Wallet
-                          // context.push(AppRouter.importWallet01);
-                        },
+                        onTap: _showAlreadyHaveWalletSheet,
                       ),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
 
                 // --- Footer Text ---
                 const OnboardingFooter(),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
               ],
             ),
           ),

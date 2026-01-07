@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 
@@ -44,13 +45,13 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           // Indicator ở chính giữa màn hình
-          const Center(
+          Center(
             child: SizedBox(
-              width: 24,
-              height: 24,
+              width: 24.w,
+              height: 24.h,
               child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Color(0xFF9D50FF),
+                strokeWidth: 2.w,
+                color: const Color(0xFF9D50FF),
               ),
             ),
           ),
@@ -61,8 +62,8 @@ class _SplashScreenState extends State<SplashScreen> {
               decoration: const BoxDecoration(shape: BoxShape.circle),
               child: Image.asset(
                 'assets/images/NEXPAY.png',
-                width: 200,
-                height: 200,
+                width: 200.w,
+                height: 200.h,
               ),
             ),
           ),

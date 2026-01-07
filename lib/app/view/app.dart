@@ -31,7 +31,7 @@ class App extends StatelessWidget {
                 GlobalMaterialLocalizations.delegate,
               ],
               supportedLocales: AppLocalizations.supportedLocales,
-              routerConfig: router(AppRouter.splash),
+              routerConfig: router(AppRouter.home),
               builder: (context, widget) {
                 return MediaQuery(
                   data: MediaQuery.of(

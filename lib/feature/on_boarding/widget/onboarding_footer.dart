@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
 import 'package:nexpaylab/share/utils/colors.dart';
 
@@ -8,7 +9,7 @@ class OnboardingFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: 32.w),
       child: Text.rich(
         TextSpan(
           text: 'By tapping above button, you agree and consent to our ',

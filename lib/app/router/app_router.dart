@@ -11,6 +11,7 @@ import 'package:nexpaylab/feature/login.register/page/login.page.dart';
 import 'package:nexpaylab/feature/login.register/page/register.page.dart';
 import 'package:nexpaylab/feature/on_boarding/page/onboarding.page.dart';
 import 'package:nexpaylab/feature/on_boarding/page/splash.page.dart';
+import 'package:nexpaylab/feature/already_have_wallet/page/already_have_wallet_01.dart';
 import 'package:nexpaylab/injector.dart';
 import 'package:nexpaylab/share/logger.dart';
 
@@ -22,7 +23,7 @@ class AppRouter extends Equatable {
   static const splash = '/splash';
   static const databaseViwer = '/db_viewer';
   static const createNewWallet01 = '/create_new_wallet_01';
-  
+  static const alreadyHaveWallet01 = '/already_have_wallet_01';
 
   @override
   List<Object?> get props => [home];
@@ -59,6 +60,10 @@ GoRouter router([String? initialLocation]) => GoRouter(
     GoRoute(
       path: AppRouter.createNewWallet01,
       builder: (context, state) => const CreateNewWallet01Page(),
+    ),
+    GoRoute(
+      path: AppRouter.alreadyHaveWallet01,
+      builder: (context, state) => const AlreadyHaveWallet01Page(),
     ),
   ],
   redirect: (BuildContext context, GoRouterState state) async {

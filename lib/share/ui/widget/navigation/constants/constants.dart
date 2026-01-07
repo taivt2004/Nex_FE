@@ -2,10 +2,10 @@
 double kMargin = 14;
 
 /// bottom bar height
-double kHeight = 62;
+double kHeight = 56;
 
 /// notch circle circle radius
-const double kCircleRadius = 30;
+const double kCircleRadius = 22;
 
 /// margin between notch and circle
 const double kCircleMargin = 8;

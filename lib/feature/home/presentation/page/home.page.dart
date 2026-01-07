@@ -56,31 +56,25 @@ class _HomeFormState extends State<HomeForm> {
   late List<Widget> bottomBarPages;
 
   final bottomBarItems = [
-    BottomBarItem(
-      inActiveItem: Assets.icons.home.icMenuLive.load(color: OlaColors.gray400),
-      activeItem: Assets.icons.home.icMenuLive.load(color: Colors.white),
-      itemLabel: 'Live',
+    const BottomBarItem(
+      inActiveItem: Icon(Icons.home_rounded, color: OlaColors.gray400),
+      activeItem: Icon(Icons.home_rounded, color: Color(0xFF8B5CF6)),
+      itemLabel: 'Home',
     ),
-    BottomBarItem(
-      inActiveItem: Assets.icons.home.icMenuMessage.load(
-        color: OlaColors.gray400,
-      ),
-      activeItem: Assets.icons.home.icMenuMessage.load(color: Colors.white),
-      itemLabel: 'Tin nhắn',
+    const BottomBarItem(
+      inActiveItem: Icon(Icons.swap_horiz_rounded, color: OlaColors.gray400),
+      activeItem: Icon(Icons.swap_horiz_rounded, color: Color(0xFF8B5CF6)),
+      itemLabel: 'Swap',
     ),
-    BottomBarItem(
-      inActiveItem: Assets.icons.home.icMenuCommunity.load(
-        color: OlaColors.gray400,
-      ),
-      activeItem: Assets.icons.home.icMenuCommunity.load(color: Colors.white),
-      itemLabel: 'Cộng đồng',
+    const BottomBarItem(
+      inActiveItem: Icon(Icons.show_chart_rounded, color: OlaColors.gray400),
+      activeItem: Icon(Icons.show_chart_rounded, color: Color(0xFF8B5CF6)),
+      itemLabel: 'Trending',
     ),
-    BottomBarItem(
-      inActiveItem: Assets.icons.home.icMenuAccount.load(
-        color: OlaColors.gray400,
-      ),
-      activeItem: Assets.icons.home.icMenuAccount.load(color: Colors.white),
-      itemLabel: 'Cá nhân',
+    const BottomBarItem(
+      inActiveItem: Icon(Icons.explore_rounded, color: OlaColors.gray400),
+      activeItem: Icon(Icons.explore_rounded, color: Color(0xFF8B5CF6)),
+      itemLabel: 'Discover',
     ),
   ];
 
@@ -171,6 +165,9 @@ class _HomeFormState extends State<HomeForm> {
             bottomNavigationBar: AnimatedNotchBottomBar(
               bottomBarWidth: constraints.maxWidth,
               notchBottomBarController: _controller,
+              showNotch: false,
+              showBorder: false,
+              bottomBarHeight: 52,
               showLabel: true,
               showBlurBottomBar: true,
               blurOpacity: 0.1,
@@ -180,7 +177,8 @@ class _HomeFormState extends State<HomeForm> {
               shadowElevation: 30,
               elevation: 30,
               kBottomRadius: 0,
-              color: Theme.of(context).scaffoldBackgroundColor,
+              showTopRadius: false,
+              color: const Color(0XFF111213),
               // notchColor: OlaColors.gray700,
               notchGradient: const LinearGradient(
                 begin: Alignment.topCenter,
@@ -194,7 +192,7 @@ class _HomeFormState extends State<HomeForm> {
               ).textTheme.labelSmall?.copyWith(fontSize: 10),
               bottomBarItems: bottomBarItems,
               onTap: _pageController.jumpToPage,
-              kIconSize: 24,
+              kIconSize: 22,
             ),
           );
         },
