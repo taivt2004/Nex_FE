@@ -152,7 +152,7 @@ class _DummyPage01State extends State<DummyPage01>
                                   height: 22.h,
                                   color: OlaColors.actionBtnColor,
                                 ),
-                                label: 'hi'.tr(),
+                                label: 'Send',
                               ),
                               HomeQuickActionItemData(
                                 icon: Assets.icons.home.icActionReceive.load(
