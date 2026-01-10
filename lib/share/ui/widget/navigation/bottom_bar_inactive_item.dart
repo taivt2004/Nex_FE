@@ -62,8 +62,9 @@ class BottomBarInActiveItem extends StatelessWidget {
       onTap: () => onTap(index),
       child: ColoredBox(
         color: Colors.transparent,
-        child: SizedBox.fromSize(
-          size: const Size(kCircleRadius * 2, kCircleRadius * 2),
+        child: SizedBox(
+          width: 80,
+          height: kCircleRadius * 2,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

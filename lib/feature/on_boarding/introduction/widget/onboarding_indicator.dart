@@ -17,12 +17,12 @@ class OnboardingIndicator extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       margin: EdgeInsets.only(right: 8.w),
       height: 3.h,
-      width: currentPage == index ? 28.w : 22.w, // Dài ra khi active
+      width: currentPage == index ? 28.w : 22.w, 
       decoration: BoxDecoration(
         color: currentPage == index
             ? AppColor
-                  .onboardingIndicatorActive // Màu tím active
-            : AppColor.onboardingIndicatorInactive, // Màu xám inactive
+                  .onboardingIndicatorActive 
+            : AppColor.onboardingIndicatorInactive, 
         borderRadius: BorderRadius.circular(2.r),
       ),
     );

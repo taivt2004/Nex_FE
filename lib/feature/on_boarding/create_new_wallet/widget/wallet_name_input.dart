@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
 
 class WalletNameInput extends StatelessWidget {
   const WalletNameInput({
@@ -45,7 +46,7 @@ class WalletNameInput extends StatelessWidget {
               borderSide: BorderSide(
                 color: hasError
                     ? const Color(0xFFFF3B30)
-                    : const Color(0xFF7E11D8),
+                    : OlaColors.primarycolor,
                 width: 1.5,
               ),
               borderRadius: BorderRadius.circular(16.r),

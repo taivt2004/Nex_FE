@@ -18,7 +18,7 @@ class OnboardingPrimaryButton extends StatelessWidget {
       width: double.infinity,
       height: 56.h,
       decoration: BoxDecoration(
-        color: const Color(0xFF7E11D8),
+        color: OlaColors.primarycolor,
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Material(

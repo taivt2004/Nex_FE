@@ -124,39 +124,65 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/NEXPAY.png
+  AssetGenImage get nexpay => const AssetGenImage('assets/images/NEXPAY.png');
+
   /// File path: assets/images/bg_splash.jpg
   AssetGenImage get bgSplash =>
       const AssetGenImage('assets/images/bg_splash.jpg');
 
+  /// File path: assets/images/on_boarding.png
+  AssetGenImage get onBoarding =>
+      const AssetGenImage('assets/images/on_boarding.png');
+
+  /// File path: assets/images/on_boarding2.png
+  AssetGenImage get onBoarding2 =>
+      const AssetGenImage('assets/images/on_boarding2.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [bgSplash];
+  List<AssetGenImage> get values => [nexpay, bgSplash, onBoarding, onBoarding2];
 }
 
 class $AssetsIconsHomeGen {
   const $AssetsIconsHomeGen();
 
-  /// File path: assets/icons/home/ic_menu_account.svg
-  SvgGenImage get icMenuAccount =>
-      const SvgGenImage('assets/icons/home/ic_menu_account.svg');
+  /// File path: assets/icons/home/ic_action_receive.svg
+  SvgGenImage get icActionReceive =>
+      const SvgGenImage('assets/icons/home/ic_action_receive.svg');
 
-  /// File path: assets/icons/home/ic_menu_community.svg
-  SvgGenImage get icMenuCommunity =>
-      const SvgGenImage('assets/icons/home/ic_menu_community.svg');
+  /// File path: assets/icons/home/ic_action_sell.svg
+  SvgGenImage get icActionSell =>
+      const SvgGenImage('assets/icons/home/ic_action_sell.svg');
 
-  /// File path: assets/icons/home/ic_menu_live.svg
-  SvgGenImage get icMenuLive =>
-      const SvgGenImage('assets/icons/home/ic_menu_live.svg');
+  /// File path: assets/icons/home/ic_action_send.svg
+  SvgGenImage get icActionSend =>
+      const SvgGenImage('assets/icons/home/ic_action_send.svg');
 
-  /// File path: assets/icons/home/ic_menu_message.svg
-  SvgGenImage get icMenuMessage =>
-      const SvgGenImage('assets/icons/home/ic_menu_message.svg');
+  /// File path: assets/icons/home/ic_menu_discover.svg
+  SvgGenImage get icMenuDiscover =>
+      const SvgGenImage('assets/icons/home/ic_menu_discover.svg');
+
+  /// File path: assets/icons/home/ic_menu_swap.svg
+  SvgGenImage get icMenuSwap =>
+      const SvgGenImage('assets/icons/home/ic_menu_swap.svg');
+
+  /// File path: assets/icons/home/ic_menu_trending.svg
+  SvgGenImage get icMenuTrending =>
+      const SvgGenImage('assets/icons/home/ic_menu_trending.svg');
+
+  /// File path: assets/icons/home/ic_tsx_buy.svg
+  SvgGenImage get icTsxBuy =>
+      const SvgGenImage('assets/icons/home/ic_tsx_buy.svg');
 
   /// List of all assets
   List<SvgGenImage> get values => [
-    icMenuAccount,
-    icMenuCommunity,
-    icMenuLive,
-    icMenuMessage,
+    icActionReceive,
+    icActionSell,
+    icActionSend,
+    icMenuDiscover,
+    icMenuSwap,
+    icMenuTrending,
+    icTsxBuy,
   ];
 }
 

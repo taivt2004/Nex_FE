@@ -4,15 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
-import 'package:nexpaylab/feature/on_boarding/cubit/onboarding_cubit.dart';
-import 'package:nexpaylab/feature/on_boarding/data/onboarding_data.dart';
-import 'package:nexpaylab/feature/on_boarding/widget/onboarding_button.dart';
-import 'package:nexpaylab/feature/on_boarding/widget/onboarding_content.dart';
-import 'package:nexpaylab/feature/on_boarding/widget/onboarding_footer.dart';
-import 'package:nexpaylab/feature/on_boarding/widget/onboarding_illustration.dart';
-import 'package:nexpaylab/feature/on_boarding/widget/onboarding_indicator.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/cubit/onboarding_cubit.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/data/onboarding_data.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/widget/onboarding_button.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/widget/onboarding_content.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/widget/onboarding_footer.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/widget/onboarding_illustration.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/widget/onboarding_indicator.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
-import 'package:nexpaylab/feature/on_boarding/widget/already_have_wallet_sheet.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/widget/already_have_wallet_sheet.dart';
 import 'package:nexpaylab/share/utils/colors.dart';
 
 class OnboardingPage extends StatefulWidget {

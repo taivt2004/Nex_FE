@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nexpaylab/share/theme/app_style.dart';
-
 import 'package:nexpaylab/share/ui/widget/navigation/constants/constants.dart';
 
 class BottomBarPainter extends CustomPainter {
@@ -16,6 +14,7 @@ class BottomBarPainter extends CustomPainter {
     this.shadowElevation,
     this.shader,
     this.gradient,
+    this.topBorderOnly = false,
   }) : _paint = Paint()
          ..color = color
          ..style = PaintingStyle.fill
@@ -35,7 +34,7 @@ class BottomBarPainter extends CustomPainter {
            ),
          ),
        _shadowPaint = Paint()
-         ..color = OlaColors.gray200
+         ..color = const Color(0XFF2C2C2C)
          ..style = PaintingStyle.stroke
          ..strokeWidth = 1
          ..isAntiAlias = true;
@@ -80,6 +79,9 @@ class BottomBarPainter extends CustomPainter {
 
   /// To add any gradient to the notch
   final double elevation;
+
+  /// Show only top border
+  final bool topBorderOnly;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -146,7 +148,43 @@ class BottomBarPainter extends CustomPainter {
     }
     canvas.drawPath(path, _paint);
     if (showBorder) {
-      canvas.drawPath(path, _shadowPaint);
+      if (topBorderOnly) {
+        final borderPath = Path()
+          ..moveTo(left, top + kTopRadius)
+          ..relativeArcToPoint(
+            Offset(kTopRadius, -kTopRadius),
+            radius: Radius.circular(kTopRadius),
+          )
+          ..lineTo(
+            showNotch ? (position - kTopRadius) : (right - kTopRadius),
+            top,
+          );
+        if (showNotch) {
+          borderPath
+            ..relativeArcToPoint(
+              Offset(kTopRadius, kTopRadius),
+              radius: Radius.circular(kTopRadius),
+            )
+            ..relativeArcToPoint(
+              const Offset((kCircleRadius + kCircleMargin) * 2, 0),
+              radius: const Radius.circular(kCircleRadius + kCircleMargin),
+              clockwise: false,
+            )
+            ..relativeArcToPoint(
+              Offset(kTopRadius, -kTopRadius),
+              radius: Radius.circular(kTopRadius),
+            );
+        }
+        borderPath
+          ..lineTo(right - kTopRadius, top)
+          ..relativeArcToPoint(
+            Offset(kTopRadius, kTopRadius),
+            radius: Radius.circular(kTopRadius),
+          );
+        canvas.drawPath(borderPath, _shadowPaint);
+      } else {
+        canvas.drawPath(path, _shadowPaint);
+      }
     }
   }
 

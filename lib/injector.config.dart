@@ -26,10 +26,10 @@ import 'package:nexpaylab/app/core/network/request_interceptor.dart' as _i697;
 import 'package:nexpaylab/app/core/user.session.dart' as _i505;
 import 'package:nexpaylab/app/database/database.dart' as _i867;
 import 'package:nexpaylab/app/di/app_module.dart' as _i566;
+import 'package:nexpaylab/feature/home/coinmarket/marketplace_bloc/marketplace_bloc.dart'
+    as _i1036;
 import 'package:nexpaylab/feature/home/presentation/bloc/home_bloc.dart'
     as _i554;
-import 'package:nexpaylab/feature/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart'
-    as _i158;
 import 'package:nexpaylab/feature/login.register/bloc/login_bloc.dart' as _i894;
 import 'package:nexpaylab/feature/login.register/bloc/register_bloc.dart'
     as _i444;
@@ -79,8 +79,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i715.NetworkChecker>(
       () => _i715.NetworkChecker(gh<_i715.NetworkStateStream>()),
     );
-    gh.factory<_i158.MarketplaceBloc>(
-      () => _i158.MarketplaceBloc(gh<_i614.CoinRepository>()),
+    gh.factory<_i1036.MarketplaceBloc>(
+      () => _i1036.MarketplaceBloc(gh<_i614.CoinRepository>()),
     );
     gh.factory<_i563.AppConfigRepository>(
       () => _i563.AppConfigRepositoryImp(

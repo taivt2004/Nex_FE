@@ -18,7 +18,7 @@ class ThemeModel extends ChangeNotifier {
       primary: const Color(0xff2970ff),
       onPrimary: const Color(0xff499eef),
       scheme: FlexScheme.bahamaBlue,
-      scaffoldBackground: const Color(0xff1C1C1D),
+      scaffoldBackground: const Color(0xFF121314),
       appBarElevation: 2,
       applyElevationOverlayColor: true,
       appBarStyle: FlexAppBarStyle.scaffoldBackground,
@@ -32,8 +32,9 @@ class ThemeModel extends ChangeNotifier {
   ThemeMode? themeMode;
 
   void toggleTheme() {
-    themeMode =
-        (themeMode == ThemeMode.dark) ? ThemeMode.light : ThemeMode.dark;
+    themeMode = (themeMode == ThemeMode.dark)
+        ? ThemeMode.light
+        : ThemeMode.dark;
     notifyListeners();
   }
 }

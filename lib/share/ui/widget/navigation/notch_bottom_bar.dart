@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
 
 import 'package:nexpaylab/share/ui/widget/navigation/bottom_bar_active_item.dart';
 import 'package:nexpaylab/share/ui/widget/navigation/bottom_bar_inactive_item.dart';
@@ -22,6 +23,7 @@ class AnimatedNotchBottomBar extends StatefulWidget {
     this.showBorder = true,
     this.color = Colors.white,
     this.itemLabelStyle,
+    this.activeItemLabelStyle,
     this.shadowElevation,
     this.showShadow = true,
     this.showLabel = true,
@@ -45,6 +47,7 @@ class AnimatedNotchBottomBar extends StatefulWidget {
     this.textDirection,
     this.topMargin = 10.0,
     this.circleMargin = 8.0,
+    this.topBorderOnly = false,
   });
 
   /// Controller for animation
@@ -67,6 +70,9 @@ class AnimatedNotchBottomBar extends StatefulWidget {
 
   /// TextStyle to show bottom text
   final TextStyle? itemLabelStyle;
+
+  /// TextStyle to show active bottom text
+  final TextStyle? activeItemLabelStyle;
 
   ///Boolean to show blur effect
   final bool showBlurBottomBar;
@@ -141,6 +147,9 @@ class AnimatedNotchBottomBar extends StatefulWidget {
   /// set top margin
   final double topMargin;
 
+  /// Show only top border
+  final bool topBorderOnly;
+
   @override
   State<AnimatedNotchBottomBar> createState() => _AnimatedNotchBottomBarState();
 }
@@ -200,7 +209,8 @@ class _AnimatedNotchBottomBarState extends State<AnimatedNotchBottomBar>
         ' Initial page index cannot be higher than bottom bar items length',
       );
     }
-    final height = kHeight + kMargin * 2;
+    final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
+    final height = kHeight + kMargin * 2 + bottomPadding;
 
     return widget.bottomBarItems.length > maxCount
         ? const SizedBox.shrink()
@@ -265,6 +275,7 @@ class _AnimatedNotchBottomBarState extends State<AnimatedNotchBottomBar>
                               kBottomRadius: widget.kBottomRadius,
                               gradient: widget.notchGradient,
                               elevation: widget.elevation,
+                              topBorderOnly: widget.topBorderOnly,
                             ),
                           ),
                         ),
@@ -297,7 +308,11 @@ class _AnimatedNotchBottomBarState extends State<AnimatedNotchBottomBar>
                           if (i != currentIndex)
                             Positioned(
                               top: kMargin + (kHeight - kCircleRadius * 2) / 2,
-                              left: widget.circleMargin + _itemPosByIndex(i),
+                              left:
+                                  widget.circleMargin +
+                                  _itemPosByIndex(i) +
+                                  kCircleRadius -
+                                  40, // Center 80px width item (80/2 = 40)
                               child: BottomBarInActiveItem(
                                 i,
                                 textOverflow: widget.textOverflow,
@@ -329,7 +344,11 @@ class _AnimatedNotchBottomBarState extends State<AnimatedNotchBottomBar>
                         ) ...[
                           Positioned(
                             top: kMargin + (kHeight - kCircleRadius * 2) / 2,
-                            left: widget.circleMargin + _itemPosByIndex(i),
+                            left:
+                                widget.circleMargin +
+                                _itemPosByIndex(i) +
+                                kCircleRadius -
+                                40, // Center 80px width item
                             child: BottomBarInActiveItem(
                               i,
                               textOverflow: widget.textOverflow,
@@ -350,9 +369,10 @@ class _AnimatedNotchBottomBarState extends State<AnimatedNotchBottomBar>
                               },
                               showLabel: widget.showLabel,
                               labelStyle: i == currentIndex
-                                  ? (widget.itemLabelStyle ??
+                                  ? (widget.activeItemLabelStyle ??
+                                        widget.itemLabelStyle ??
                                         const TextStyle(
-                                          color: Color(0xFF8B5CF6),
+                                          color: OlaColors.primarycolor,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
                                         ))

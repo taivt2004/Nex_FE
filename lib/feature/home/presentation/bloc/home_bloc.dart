@@ -66,6 +66,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (fail is ExceptionHandler &&
             fail.serverity == ExceptServerity.normal) {
           emit(HomeSuccess());
+        } else if (fail.toString().contains('Not Found')) {
+          emit(HomeSuccess());
         } else {
           emit(HomeNetworkError(error: fail as String));
         }

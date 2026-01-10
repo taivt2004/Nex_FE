@@ -5,6 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 class OlaColors {
   OlaColors._();
 
+  static const Color actionBtnColor = Color(0xFFE0E0E0);
+  static const Color splashcreen = Color(0XFF06071C);
+  static const Color appbackground = Color(0xFF121314);
+  static const Color primarycolor = Color(0xFF7E11D8);
   static const Color basewhite = Color(0xffffffff);
   static const Color baseblack = Color(0xff212121);
   static const Color base499EEF = Color(0xff499eef);
@@ -421,6 +425,42 @@ class PoppinsTextStyles {
     fontWeight: FontWeight.w700,
     height: 44 / 36,
     letterSpacing: -2,
+  );
+
+  static TextStyle get display16Regular => GoogleFonts.poppins(
+    fontSize: 16.sp,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 44 / 36,
+    letterSpacing: -1,
+  );
+
+  static TextStyle get display16Medium => GoogleFonts.poppins(
+    fontSize: 16.sp,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 44 / 36,
+    letterSpacing: -1,
+  );
+
+  static TextStyle get display16Bold => GoogleFonts.poppins(
+    fontSize: 16.sp,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 44 / 36,
+    letterSpacing: -2,
+  );
+
+  static TextStyle get display14Bold => GoogleFonts.poppins(
+    fontSize: 24.sp,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 44 / 36,
+    letterSpacing: -1,
   );
 
   static TextStyle get primary14Regular => GoogleFonts.poppins(

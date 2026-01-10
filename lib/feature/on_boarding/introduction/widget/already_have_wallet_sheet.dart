@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nexpaylab/feature/on_boarding/data/already_have_wallet_data.dart';
+import 'package:nexpaylab/feature/on_boarding/introduction/data/already_have_wallet_data.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
 
 Future<void> showAlreadyHaveWalletSheet(
@@ -12,8 +12,8 @@ Future<void> showAlreadyHaveWalletSheet(
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (ctx) {
-      bool agree1 = false;
-      bool agree2 = false;
+      var agree1 = false;
+      var agree2 = false;
       return StatefulBuilder(
         builder: (context, setState) {
           final canContinue = agree1 && agree2;
@@ -88,7 +88,11 @@ Future<void> showAlreadyHaveWalletSheet(
                               ),
                             ),
                             child: agree1
-                                ? Icon(Icons.check, size: 16.sp, color: Colors.white)
+                                ? Icon(
+                                    Icons.check,
+                                    size: 16.sp,
+                                    color: Colors.white,
+                                  )
                                 : null,
                           ),
                         ),
@@ -127,7 +131,11 @@ Future<void> showAlreadyHaveWalletSheet(
                               ),
                             ),
                             child: agree2
-                                ? Icon(Icons.check, size: 16.sp, color: Colors.white)
+                                ? Icon(
+                                    Icons.check,
+                                    size: 16.sp,
+                                    color: Colors.white,
+                                  )
                                 : null,
                           ),
                         ),
@@ -154,11 +162,11 @@ Future<void> showAlreadyHaveWalletSheet(
                           : null,
                       child: Container(
                         width: double.infinity,
-                        height: 52.h,
+                        height: 56.h,
                         decoration: BoxDecoration(
                           color: canContinue
-                              ? const Color(0xFF7E11D8)
-                              : const Color(0xFF7E11D8).withOpacity(0.5),
+                              ? OlaColors.primarycolor
+                              : OlaColors.primarycolor.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(16.r),
                         ),
                         alignment: Alignment.center,

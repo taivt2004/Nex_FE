@@ -72,7 +72,7 @@ class _PassphraseSectionState extends State<PassphraseSection> {
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: widget.isSecure
-                ? Border.all(color: const Color(0xFF7E11D8), width: 1.5)
+                ? Border.all(color: OlaColors.primarycolor, width: 1.5)
                 : Border.all(color: Colors.white24, width: 1),
             borderRadius: BorderRadius.circular(16.r),
           ),
@@ -91,12 +91,12 @@ class _PassphraseSectionState extends State<PassphraseSection> {
                       height: 24.h,
                       decoration: BoxDecoration(
                         color: widget.isSecure
-                            ? const Color(0xFF7E11D8)
+                            ? OlaColors.primarycolor
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(6.r),
                         border: Border.all(
                           color: widget.isSecure
-                              ? const Color(0xFF7E11D8)
+                              ? OlaColors.primarycolor
                               : Colors.white54,
                           width: 2,
                         ),
@@ -253,7 +253,7 @@ class _PinInputState extends State<_PinInput> {
                         )
                       : BoxDecoration(
                           color: filled
-                              ? const Color(0xFF7E11D8)
+                              ? OlaColors.primarycolor
                               : Colors.white12,
                           shape: BoxShape.circle,
                         ),

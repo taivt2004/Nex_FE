@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nexpaylab/app/core/network.checker.dart';
+import 'package:nexpaylab/feature/home/coinmarket/marketplace_bloc/marketplace_bloc.dart';
 import 'package:nexpaylab/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:nexpaylab/feature/home/presentation/bloc/home_event.dart';
 import 'package:nexpaylab/feature/home/presentation/bloc/home_state.dart';
@@ -19,8 +22,6 @@ import 'package:nexpaylab/share/ui/loading/loading_screen.dart';
 import 'package:nexpaylab/share/ui/widget/navigation/models/bottom_bar_item_model.dart';
 import 'package:nexpaylab/share/ui/widget/navigation/notch_bottom_bar.dart';
 import 'package:nexpaylab/share/ui/widget/navigation/notch_bottom_bar_controller.dart';
-
-import 'package:nexpaylab/feature/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -55,25 +56,38 @@ class _HomeFormState extends State<HomeForm> {
 
   late List<Widget> bottomBarPages;
 
+  late StreamSubscription<bool> _networkSub;
+  bool _connected = true;
+
   final bottomBarItems = [
     const BottomBarItem(
       inActiveItem: Icon(Icons.home_rounded, color: OlaColors.gray400),
-      activeItem: Icon(Icons.home_rounded, color: Color(0xFF8B5CF6)),
+      activeItem: Icon(Icons.home_rounded, color: OlaColors.primarycolor),
       itemLabel: 'Home',
     ),
-    const BottomBarItem(
-      inActiveItem: Icon(Icons.swap_horiz_rounded, color: OlaColors.gray400),
-      activeItem: Icon(Icons.swap_horiz_rounded, color: Color(0xFF8B5CF6)),
+    BottomBarItem(
+      inActiveItem: Assets.icons.home.icMenuSwap.load(color: OlaColors.gray400),
+      activeItem: Assets.icons.home.icMenuSwap.load(
+        color: OlaColors.primarycolor,
+      ),
       itemLabel: 'Swap',
     ),
-    const BottomBarItem(
-      inActiveItem: Icon(Icons.show_chart_rounded, color: OlaColors.gray400),
-      activeItem: Icon(Icons.show_chart_rounded, color: Color(0xFF8B5CF6)),
+    BottomBarItem(
+      inActiveItem: Assets.icons.home.icMenuTrending.load(
+        color: OlaColors.gray400,
+      ),
+      activeItem: Assets.icons.home.icMenuTrending.load(
+        color: OlaColors.primarycolor,
+      ),
       itemLabel: 'Trending',
     ),
-    const BottomBarItem(
-      inActiveItem: Icon(Icons.explore_rounded, color: OlaColors.gray400),
-      activeItem: Icon(Icons.explore_rounded, color: Color(0xFF8B5CF6)),
+    BottomBarItem(
+      inActiveItem: Assets.icons.home.icMenuDiscover.load(
+        color: OlaColors.gray400,
+      ),
+      activeItem: Assets.icons.home.icMenuDiscover.load(
+        color: OlaColors.primarycolor,
+      ),
       itemLabel: 'Discover',
     ),
   ];
@@ -88,6 +102,15 @@ class _HomeFormState extends State<HomeForm> {
       const DummyPage03(),
       const DummyPage04(),
     ];
+    _networkSub = getIt<NetworkStateStream>().stream.distinct().listen((c) {
+      _connected = c;
+      if (c) {
+        context.read<HomeBloc>().add(LoadHomeConfig(showLoading: false));
+      }
+      if (mounted) {
+        setState(() {});
+      }
+    });
     super.initState();
   }
 
@@ -121,64 +144,47 @@ class _HomeFormState extends State<HomeForm> {
                   (index) => bottomBarPages[index],
                 ),
               ),
-              StreamBuilder<bool>(
-                stream: getIt<NetworkStateStream>().stream,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const SizedBox.shrink();
-                  }
-                  final connected = snapshot.requireData;
-                  talker.debug('home page network connected: $connected');
-                  if (connected) {
-                    context.read<HomeBloc>().add(
-                      LoadHomeConfig(showLoading: false),
-                    );
-                    return const SizedBox.shrink();
-                  } else {
-                    return Positioned(
-                      left: 0,
-                      right: 0,
-                      child: ColoredBox(
-                        color: const Color.fromRGBO(255, 0, 0, 0.6),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            child: Text(
-                              'Vui lòng kiểm tra kết nối mạng',
-                              style: OlaTextStyles.subtext12regular.copyWith(
-                                color: Colors.white,
-                              ),
-                            ),
+              if (!_connected)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  child: ColoredBox(
+                    color: const Color.fromRGBO(255, 0, 0, 0.6),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Text(
+                          'Vui lòng kiểm tra kết nối mạng',
+                          style: OlaTextStyles.subtext12regular.copyWith(
+                            color: Colors.white,
                           ),
                         ),
                       ),
-                    );
-                  }
-                },
-              ),
+                    ),
+                  ),
+                ),
             ],
           ).toContainerWidget(
             context: context,
-            extendBody: true,
+            extendBody: false,
             safeArea: true,
             showAppBar: false,
             bottomNavigationBar: AnimatedNotchBottomBar(
               bottomBarWidth: constraints.maxWidth,
               notchBottomBarController: _controller,
               showNotch: false,
-              showBorder: false,
-              bottomBarHeight: 52,
+              showBorder: true,
+              topBorderOnly: true,
+              bottomBarHeight: 70.h,
               showLabel: true,
-              showBlurBottomBar: true,
-              blurOpacity: 0.1,
-              blurFilterY: 0,
+              showBlurBottomBar: false,
               textOverflow: TextOverflow.visible,
-              showShadow: true,
-              shadowElevation: 30,
-              elevation: 30,
+              showShadow: false,
+              shadowElevation: 0,
+              elevation: 0,
               kBottomRadius: 0,
               showTopRadius: false,
-              color: const Color(0XFF111213),
+              color: OlaColors.appbackground,
               // notchColor: OlaColors.gray700,
               notchGradient: const LinearGradient(
                 begin: Alignment.topCenter,
@@ -190,6 +196,8 @@ class _HomeFormState extends State<HomeForm> {
               itemLabelStyle: Theme.of(
                 context,
               ).textTheme.labelSmall?.copyWith(fontSize: 10),
+              activeItemLabelStyle: Theme.of(context).textTheme.labelSmall
+                  ?.copyWith(fontSize: 10, color: OlaColors.primarycolor),
               bottomBarItems: bottomBarItems,
               onTap: _pageController.jumpToPage,
               kIconSize: 22,
@@ -203,6 +211,7 @@ class _HomeFormState extends State<HomeForm> {
   @override
   void dispose() {
     _pageController.dispose();
+    _networkSub.cancel();
     // appLifecycle.dispose();
     super.dispose();
   }

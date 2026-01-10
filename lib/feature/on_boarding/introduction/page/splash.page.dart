@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -41,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1B1B27), // Nền tối chuẩn Crypto
+      backgroundColor: OlaColors.splashcreen, // Nền tối chuẩn Crypto
       body: Stack(
         children: [
           // Indicator ở chính giữa màn hình
@@ -51,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 24.h,
               child: CircularProgressIndicator(
                 strokeWidth: 2.w,
-                color: const Color(0xFF9D50FF),
+                color: OlaColors.primarycolor,
               ),
             ),
           ),
