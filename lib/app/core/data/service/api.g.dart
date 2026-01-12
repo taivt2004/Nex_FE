@@ -56,7 +56,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'coins',
+            'v1/coins',
             queryParameters: queryParameters,
             data: _data,
           )

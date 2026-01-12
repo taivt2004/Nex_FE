@@ -124,12 +124,12 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/NEXPAY.png
-  AssetGenImage get nexpay => const AssetGenImage('assets/images/NEXPAY.png');
-
   /// File path: assets/images/bg_splash.jpg
   AssetGenImage get bgSplash =>
       const AssetGenImage('assets/images/bg_splash.jpg');
+
+  /// File path: assets/images/nexpay.svg
+  SvgGenImage get nexpay => const SvgGenImage('assets/images/nexpay.svg');
 
   /// File path: assets/images/on_boarding.png
   AssetGenImage get onBoarding =>
@@ -140,50 +140,122 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/on_boarding2.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [nexpay, bgSplash, onBoarding, onBoarding2];
+  List<dynamic> get values => [bgSplash, nexpay, onBoarding, onBoarding2];
 }
 
 class $AssetsIconsHomeGen {
   const $AssetsIconsHomeGen();
 
-  /// File path: assets/icons/home/ic_action_receive.svg
+  /// Directory path: assets/icons/home/action_btn
+  $AssetsIconsHomeActionBtnGen get actionBtn =>
+      const $AssetsIconsHomeActionBtnGen();
+
+  /// Directory path: assets/icons/home/bottom_menu
+  $AssetsIconsHomeBottomMenuGen get bottomMenu =>
+      const $AssetsIconsHomeBottomMenuGen();
+
+  /// Directory path: assets/icons/home/crypt_actives
+  $AssetsIconsHomeCryptActivesGen get cryptActives =>
+      const $AssetsIconsHomeCryptActivesGen();
+
+  /// Directory path: assets/icons/home/qrscan
+  $AssetsIconsHomeQrscanGen get qrscan => const $AssetsIconsHomeQrscanGen();
+
+  /// Directory path: assets/icons/home/topbar
+  $AssetsIconsHomeTopBarGen get topbar => const $AssetsIconsHomeTopBarGen();
+}
+
+class $AssetsIconsHomeActionBtnGen {
+  const $AssetsIconsHomeActionBtnGen();
+
+  /// File path: assets/icons/home/action_btn/ic_action_receive.svg
   SvgGenImage get icActionReceive =>
-      const SvgGenImage('assets/icons/home/ic_action_receive.svg');
+      const SvgGenImage('assets/icons/home/action_btn/ic_action_receive.svg');
 
-  /// File path: assets/icons/home/ic_action_sell.svg
+  /// File path: assets/icons/home/action_btn/ic_action_sell.svg
   SvgGenImage get icActionSell =>
-      const SvgGenImage('assets/icons/home/ic_action_sell.svg');
+      const SvgGenImage('assets/icons/home/action_btn/ic_action_sell.svg');
 
-  /// File path: assets/icons/home/ic_action_send.svg
+  /// File path: assets/icons/home/action_btn/ic_action_send.svg
   SvgGenImage get icActionSend =>
-      const SvgGenImage('assets/icons/home/ic_action_send.svg');
+      const SvgGenImage('assets/icons/home/action_btn/ic_action_send.svg');
 
-  /// File path: assets/icons/home/ic_menu_discover.svg
-  SvgGenImage get icMenuDiscover =>
-      const SvgGenImage('assets/icons/home/ic_menu_discover.svg');
-
-  /// File path: assets/icons/home/ic_menu_swap.svg
-  SvgGenImage get icMenuSwap =>
-      const SvgGenImage('assets/icons/home/ic_menu_swap.svg');
-
-  /// File path: assets/icons/home/ic_menu_trending.svg
-  SvgGenImage get icMenuTrending =>
-      const SvgGenImage('assets/icons/home/ic_menu_trending.svg');
-
-  /// File path: assets/icons/home/ic_tsx_buy.svg
+  /// File path: assets/icons/home/action_btn/ic_tsx_buy.svg
   SvgGenImage get icTsxBuy =>
-      const SvgGenImage('assets/icons/home/ic_tsx_buy.svg');
+      const SvgGenImage('assets/icons/home/action_btn/ic_tsx_buy.svg');
 
   /// List of all assets
   List<SvgGenImage> get values => [
     icActionReceive,
     icActionSell,
     icActionSend,
-    icMenuDiscover,
-    icMenuSwap,
-    icMenuTrending,
     icTsxBuy,
   ];
+}
+
+class $AssetsIconsHomeBottomMenuGen {
+  const $AssetsIconsHomeBottomMenuGen();
+
+  /// File path: assets/icons/home/bottom_menu/ic_menu_discover.svg
+  SvgGenImage get icMenuDiscover =>
+      const SvgGenImage('assets/icons/home/bottom_menu/ic_menu_discover.svg');
+
+  /// File path: assets/icons/home/bottom_menu/ic_menu_swap.svg
+  SvgGenImage get icMenuSwap =>
+      const SvgGenImage('assets/icons/home/bottom_menu/ic_menu_swap.svg');
+
+  /// File path: assets/icons/home/bottom_menu/ic_menu_trending.svg
+  SvgGenImage get icMenuTrending =>
+      const SvgGenImage('assets/icons/home/bottom_menu/ic_menu_trending.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [icMenuDiscover, icMenuSwap, icMenuTrending];
+}
+
+class $AssetsIconsHomeCryptActivesGen {
+  const $AssetsIconsHomeCryptActivesGen();
+
+  /// File path: assets/icons/home/crypt_actives/history_icon.svg
+  SvgGenImage get historyIcon =>
+      const SvgGenImage('assets/icons/home/crypt_actives/history_icon.svg');
+
+  /// File path: assets/icons/home/crypt_actives/setting_crypt_active.svg
+  SvgGenImage get settingCryptActive => const SvgGenImage(
+    'assets/icons/home/crypt_actives/setting_crypt_active.svg',
+  );
+
+  /// List of all assets
+  List<SvgGenImage> get values => [historyIcon, settingCryptActive];
+}
+
+class $AssetsIconsHomeQrscanGen {
+  const $AssetsIconsHomeQrscanGen();
+
+  /// File path: assets/icons/home/qrscan/qr_scan_icon.svg
+  SvgGenImage get qrScanIcon =>
+      const SvgGenImage('assets/icons/home/qrscan/qr_scan_icon.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [qrScanIcon];
+}
+
+class $AssetsIconsHomeTopBarGen {
+  const $AssetsIconsHomeTopBarGen();
+
+  /// File path: assets/icons/home/topbar/grid_icon.svg
+  SvgGenImage get gridIcon =>
+      const SvgGenImage('assets/icons/home/topbar/grid_icon.svg');
+
+  /// File path: assets/icons/home/topbar/notifi_icon.svg
+  SvgGenImage get notifiIcon =>
+      const SvgGenImage('assets/icons/home/topbar/notifi_icon.svg');
+
+  /// File path: assets/icons/home/topbar/search_icon.svg
+  SvgGenImage get searchIcon =>
+      const SvgGenImage('assets/icons/home/topbar/search_icon.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [gridIcon, notifiIcon, searchIcon];
 }
 
 class Assets {
@@ -193,6 +265,11 @@ class Assets {
   static const $AssetsGoogleFontsGen googleFonts = $AssetsGoogleFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsIconsHomeBottomMenuGen homeBottomMenu = $AssetsIconsHomeBottomMenuGen();
+  static const $AssetsIconsHomeActionBtnGen homeActionBtn = $AssetsIconsHomeActionBtnGen();
+  static const $AssetsIconsHomeCryptActivesGen homeCryptActives = $AssetsIconsHomeCryptActivesGen();
+  static const $AssetsIconsHomeTopBarGen homeTopbar = $AssetsIconsHomeTopBarGen();
+  static const $AssetsIconsHomeQrscanGen homeQrscan = $AssetsIconsHomeQrscanGen();
 }
 
 class AssetGenImage {

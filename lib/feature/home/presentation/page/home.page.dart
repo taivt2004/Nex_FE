@@ -7,10 +7,10 @@ import 'package:nexpaylab/feature/home/coinmarket/marketplace_bloc/marketplace_b
 import 'package:nexpaylab/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:nexpaylab/feature/home/presentation/bloc/home_event.dart';
 import 'package:nexpaylab/feature/home/presentation/bloc/home_state.dart';
-import 'package:nexpaylab/feature/home/presentation/page/dummy_01.page.dart';
-import 'package:nexpaylab/feature/home/presentation/page/dummy_02.page.dart';
-import 'package:nexpaylab/feature/home/presentation/page/dummy_03.page.dart';
-import 'package:nexpaylab/feature/home/presentation/page/dummy_04.page.dart';
+import 'package:nexpaylab/feature/home/presentation/page/discover.page.dart';
+import 'package:nexpaylab/feature/home/presentation/page/home_tab.page.dart';
+import 'package:nexpaylab/feature/home/presentation/page/swap.page.dart';
+import 'package:nexpaylab/feature/home/presentation/page/trending.page.dart';
 import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/injector.dart';
 import 'package:nexpaylab/share/logger.dart';
@@ -66,26 +66,26 @@ class _HomeFormState extends State<HomeForm> {
       itemLabel: 'Home',
     ),
     BottomBarItem(
-      inActiveItem: Assets.icons.home.icMenuSwap.load(color: OlaColors.gray400),
-      activeItem: Assets.icons.home.icMenuSwap.load(
+      inActiveItem: Assets.homeBottomMenu.icMenuSwap.load(color: OlaColors.gray400),
+      activeItem: Assets.homeBottomMenu.icMenuSwap.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Swap',
     ),
     BottomBarItem(
-      inActiveItem: Assets.icons.home.icMenuTrending.load(
+      inActiveItem: Assets.homeBottomMenu.icMenuTrending.load(
         color: OlaColors.gray400,
       ),
-      activeItem: Assets.icons.home.icMenuTrending.load(
+      activeItem: Assets.homeBottomMenu.icMenuTrending.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Trending',
     ),
     BottomBarItem(
-      inActiveItem: Assets.icons.home.icMenuDiscover.load(
+      inActiveItem: Assets.homeBottomMenu.icMenuDiscover.load(
         color: OlaColors.gray400,
       ),
-      activeItem: Assets.icons.home.icMenuDiscover.load(
+      activeItem: Assets.homeBottomMenu.icMenuDiscover.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Discover',
@@ -97,10 +97,10 @@ class _HomeFormState extends State<HomeForm> {
     // appLifecycle.observeAppState();
     context.read<HomeBloc>().add(HomeStarted());
     bottomBarPages = [
-      const DummyPage01(),
-      const DummyPage02(),
-      const DummyPage03(),
-      const DummyPage04(),
+      const HomeTabPage(),
+      const SwapPage(),
+      const TrendingPage(),
+      const DiscoverPage(),
     ];
     _networkSub = getIt<NetworkStateStream>().stream.distinct().listen((c) {
       _connected = c;
@@ -126,7 +126,6 @@ class _HomeFormState extends State<HomeForm> {
           showErrorDialog(context, desc: state.error);
         } else if (state is HomeNetworkError) {
           LoadingScreen.instance().hide();
-          showErrorDialog(context, desc: state.error);
         } else {
           LoadingScreen.instance().hide();
         }

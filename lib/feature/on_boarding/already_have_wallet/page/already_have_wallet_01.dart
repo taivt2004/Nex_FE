@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nexpaylab/share/theme/app_style.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/feature/on_boarding/already_have_wallet/cubit/already_have_wallet_cubit.dart';
 import 'package:nexpaylab/feature/on_boarding/already_have_wallet/widget/secret_phrase_input.dart';
-import 'package:nexpaylab/feature/on_boarding/create_new_wallet/widget/wallet_name_input.dart';
-import 'package:nexpaylab/feature/on_boarding/create_new_wallet/widget/passphrase_section.dart';
 import 'package:nexpaylab/feature/on_boarding/create_new_wallet/widget/create_wallet_button.dart';
+import 'package:nexpaylab/feature/on_boarding/create_new_wallet/widget/passphrase_section.dart';
+import 'package:nexpaylab/feature/on_boarding/create_new_wallet/widget/wallet_name_input.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
 
 class AlreadyHaveWallet01Page extends StatefulWidget {
   const AlreadyHaveWallet01Page({super.key});

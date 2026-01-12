@@ -209,7 +209,8 @@ class _AnimatedNotchBottomBarState extends State<AnimatedNotchBottomBar>
         ' Initial page index cannot be higher than bottom bar items length',
       );
     }
-    final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
+    final viewPaddingBottom = MediaQuery.of(context).viewPadding.bottom;
+    final bottomPadding = viewPaddingBottom.clamp(0.0, 16.0);
     final height = kHeight + kMargin * 2 + bottomPadding;
 
     return widget.bottomBarItems.length > maxCount

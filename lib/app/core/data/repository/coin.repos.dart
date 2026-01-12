@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/core/data/model/coin.dart';
 import 'package:nexpaylab/app/core/data/service/api.dart';
 import 'package:nexpaylab/app/core/data/service/model/coin.res.dart';
 import 'package:nexpaylab/share/utils/result.dart';
@@ -32,7 +31,7 @@ class CoinRepositoryImp implements CoinRepository {
         cached = CoinResponse.fromJson(map);
       }
       final res = await apiService.getCoins(page, limit);
-      final hasData = res.total > 0 && res.data.isNotEmpty;
+      final hasData = res.total > 0 && res.items.isNotEmpty;
       if (hasData) {
         prefs.setString(_key(page, limit), jsonEncode(res.toJson()));
         prefs.setInt(_tsKey(page, limit), now);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
+import 'package:nexpaylab/share/ui/extensions/image.dart';
 
 class HomePaymentCard {
   const HomePaymentCard({required this.image, required this.label});
@@ -55,10 +57,8 @@ class HomePaymentSection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.qr_code_scanner_rounded,
+                  Assets.homeQrscan.qrScanIcon.load(
                     color: Colors.white,
-                    size: 24.sp,
                   ),
                   SizedBox(width: 8.w),
                   Text(
@@ -173,8 +173,8 @@ class _PaymentCardItem extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 64.w,
-          height: 64.w,
+          width: 68.w,
+          height: 68.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.r),
             image: DecorationImage(
@@ -186,7 +186,9 @@ class _PaymentCardItem extends StatelessWidget {
         SizedBox(height: 8.h),
         Text(
           card.label,
-          style: TextStyle(color: Colors.grey, fontSize: 11.sp),
+          style: PoppinsTextStyles.primary12Regular.copyWith(
+            color: Colors.grey,
+          ),
         ),
       ],
     );

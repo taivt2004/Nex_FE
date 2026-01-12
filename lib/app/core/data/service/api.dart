@@ -1,11 +1,7 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:nexpaylab/app/core/data/model/app.config.dart';
-import 'package:nexpaylab/app/core/data/model/user.dart';
 import 'package:nexpaylab/app/core/data/service/model/coin.res.dart';
-import 'package:nexpaylab/app/core/data/service/model/common.res.dart';
 import 'package:nexpaylab/app/core/data/service/model/user.res.dart';
 import 'package:nexpaylab/app/core/data/service/param/login.param.dart';
 import 'package:nexpaylab/app/core/data/service/param/register.param.dart';
@@ -19,7 +15,7 @@ abstract class ApiService {
 
   @GET('v1/configs/list?keys={keys}')
   Future<List<ConfigItem>> getAppConfigs(@Path('keys') String keys);
-  @GET('coins')
+  @GET('v1/coins')
   Future<CoinResponse> getCoins(
       @Query('page') int page,
       @Query('limit') int limit,

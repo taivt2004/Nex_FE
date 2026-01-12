@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
 
 class HomeQuickActionItemData {
   const HomeQuickActionItemData({
@@ -64,8 +65,8 @@ class _HomeActionButton extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 56.w,
-            height: 56.w,
+            width: 62.w,
+            height: 62.h,
             decoration: BoxDecoration(
               color: const Color(0xFF262A34),
               borderRadius: BorderRadius.circular(16.r),
@@ -76,7 +77,9 @@ class _HomeActionButton extends StatelessWidget {
           SizedBox(height: 8.h),
           Text(
             label,
-            style: TextStyle(color: Colors.white, fontSize: 13.sp),
+            style: PoppinsTextStyles.primary14Regular.copyWith(
+                color: Colors.white
+            )
           ),
         ],
       ),

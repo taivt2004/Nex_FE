@@ -30,7 +30,6 @@ import 'package:nexpaylab/feature/home/coinmarket/marketplace_bloc/marketplace_b
     as _i1036;
 import 'package:nexpaylab/feature/home/presentation/bloc/home_bloc.dart'
     as _i554;
-import 'package:nexpaylab/feature/login.register/bloc/login_bloc.dart' as _i894;
 import 'package:nexpaylab/feature/login.register/bloc/register_bloc.dart'
     as _i444;
 import 'package:nexpaylab/feature/login.register/page/login.page.dart' as _i23;
@@ -53,16 +52,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i844.DeviceInfoCollector>(() => _i844.DeviceInfoCollector());
     gh.singleton<_i867.Database>(() => appModule.database);
     gh.singleton<_i1031.AppLifecycle>(() => _i1031.AppLifecycle());
-    gh.lazySingleton<_i715.NetworkStateStream>(
-      () => _i715.NetworkStateStream(),
-    );
-    gh.lazySingleton<_i505.UserSessionStream>(() => _i505.UserSessionStream());
     await gh.lazySingletonAsync<_i460.SharedPreferences>(
       () => appModule.sharedPreference,
       preResolve: true,
     );
     gh.lazySingleton<_i466.ThemeModel>(() => appModule.appTheme);
     gh.lazySingleton<_i289.ApiService>(() => appModule.apiService);
+    gh.lazySingleton<_i505.UserSessionStream>(() => _i505.UserSessionStream());
+    gh.lazySingleton<_i715.NetworkStateStream>(
+      () => _i715.NetworkStateStream(),
+    );
     gh.factory<_i774.AppConfigLocalStore>(
       () => _i774.AppConfigLocalStoreImp(db: gh<_i867.Database>()),
     );
@@ -115,10 +114,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i505.UserSession>(),
         appConfigRepository: gh<_i774.AppConfigLocalStore>(),
       ),
-    );
-    gh.factory<_i894.LoginBloc>(
-      () =>
-          _i894.LoginBloc(gh<_i496.UserRepository>(), gh<_i505.UserSession>()),
     );
     gh.factory<_i444.RegisterBloc>(
       () => _i444.RegisterBloc(

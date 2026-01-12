@@ -1,5 +1,4 @@
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nexpaylab/app/core/data/service/api.dart';
 import 'package:nexpaylab/app/core/network/auth_interceptor.dart';
 import 'package:nexpaylab/app/core/network/dio_client.dart';
@@ -8,6 +7,7 @@ import 'package:nexpaylab/app/database/database.dart';
 import 'package:nexpaylab/constants.dart';
 import 'package:nexpaylab/injector.dart';
 import 'package:nexpaylab/share/theme/theme.mode.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @module
 abstract class AppModule {

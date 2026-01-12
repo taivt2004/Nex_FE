@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
-
+import 'package:nexpaylab/share/ui/extensions/image.dart';
 class HomeTopBar extends StatelessWidget {
   const HomeTopBar({
     this.walletTitle = 'Main Wallet',
@@ -23,7 +24,15 @@ class HomeTopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _TopBarIconButton(icon: Icons.grid_view_rounded, onTap: onMenuTap),
+        _TopBarIconButton(
+          icon: Assets.homeTopbar.gridIcon.load(
+            color: Colors.white,
+            width: 22.sp,
+            height: 22.sp,
+          ),
+          onTap: onMenuTap,
+        ),
+        SizedBox(width: 8.w),
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: onWalletTap,
@@ -37,11 +46,21 @@ class HomeTopBar extends StatelessWidget {
         ),
         Row(
           children: [
-            _TopBarIconButton(icon: Icons.search, onTap: onSearchTap),
+            _TopBarIconButton(
+              icon: Assets.homeTopbar.searchIcon.load(
+                color: Colors.white,
+                width: 22.sp,
+                height: 22.sp,
+              ),
+              onTap: onSearchTap,
+            ),
             SizedBox(width: 8.w),
             _TopBarIconButton(
-              icon: Icons.notifications_outlined,
-              onTap: onNotificationTap,
+              icon: Assets.homeTopbar.notifiIcon.load(
+                color: Colors.white,
+                width: 22.sp,
+                height: 22.sp,
+              ),
             ),
           ],
         ),
@@ -53,7 +72,7 @@ class HomeTopBar extends StatelessWidget {
 class _TopBarIconButton extends StatelessWidget {
   const _TopBarIconButton({required this.icon, this.onTap});
 
-  final IconData icon;
+  final Widget icon;
   final VoidCallback? onTap;
 
   @override
@@ -65,7 +84,7 @@ class _TopBarIconButton extends StatelessWidget {
         width: 32.w,
         height: 32.w,
         child: Center(
-          child: Icon(icon, color: Colors.white, size: 22.sp),
+          child: icon,
         ),
       ),
     );

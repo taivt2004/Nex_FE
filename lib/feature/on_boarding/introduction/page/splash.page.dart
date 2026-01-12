@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
+import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,15 +21,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateToNext() async {
-    // 1. Chờ 2 giây để hiển thị logo
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (!mounted) return;
+    await Future<void>.delayed(const Duration(seconds: 2));
 
     // 2. Kiểm tra trạng thái đăng nhập (giả lập là chưa login)
     // Sau này sẽ check UserSession ở đây
     // bool isLoggedIn = await getIt<UserSession>().isLoggedIn();
-    const isLoggedIn = false;
+    final isLoggedIn = await Future<bool>.value(false);
+
+    if (!mounted) return;
 
     // 3. Điều hướng
     if (isLoggedIn) {
@@ -61,10 +62,8 @@ class _SplashScreenState extends State<SplashScreen> {
             alignment: const Alignment(0, -0.35),
             child: Container(
               decoration: const BoxDecoration(shape: BoxShape.circle),
-              child: Image.asset(
-                'assets/images/NEXPAY.png',
-                width: 200.w,
-                height: 200.h,
+              child: SvgPicture.asset(
+                Assets.images.nexpay.path,
               ),
             ),
           ),

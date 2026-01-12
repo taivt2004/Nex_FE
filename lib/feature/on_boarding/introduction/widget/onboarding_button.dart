@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
-import 'package:nexpaylab/share/utils/colors.dart';
 
 class OnboardingPrimaryButton extends StatelessWidget {
   const OnboardingPrimaryButton({
@@ -27,10 +26,9 @@ class OnboardingPrimaryButton extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(16.r),
           child: Center(
-            child: Text(
+            child: Text(  
               text,
-              style: OlaTextStyles.textlg18regular.copyWith(
-                color: Colors.white,
+              style: PoppinsTextStyles.primary16Semibold.copyWith(
               ),
             ),
           ),
@@ -67,10 +65,7 @@ class OnboardingSecondaryButton extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
+              style: PoppinsTextStyles.primary16Semibold.copyWith(
               ),
             ),
           ),

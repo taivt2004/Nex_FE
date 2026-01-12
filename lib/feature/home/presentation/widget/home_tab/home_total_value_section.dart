@@ -37,12 +37,12 @@ class HomeTotalValueSection extends StatelessWidget {
             Text(
               totalLabel,
               style: PoppinsTextStyles.display16Regular.copyWith(
-                color: Colors.grey,
+                color: Colors.white,
               ),
             ),
             Row(
               children: [
-                Icon(Icons.circle, size: 6.r, color: statusColor),
+                Icon(Icons.circle, size: 10.r, color: statusColor),
                 SizedBox(width: 4.w),
                 Text(
                   isSynced ? 'Sync' : 'Unsync',

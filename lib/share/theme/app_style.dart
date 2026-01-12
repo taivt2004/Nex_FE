@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 class OlaColors {
   OlaColors._();
 
+  static const Color greenColor = Color(0XFF1FB55E);
+  static const Color redColor = Color(0xFFEF0027);
   static const Color actionBtnColor = Color(0xFFE0E0E0);
   static const Color splashcreen = Color(0XFF06071C);
   static const Color appbackground = Color(0xFF121314);
@@ -490,11 +492,39 @@ class PoppinsTextStyles {
     letterSpacing: 0,
   );
 
+
+static TextStyle get primary18Bold => GoogleFonts.poppins(
+    fontSize: 18.sp,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 14 / 14,
+    letterSpacing: 0,
+  );
+
+  static TextStyle get primary16Semibold => GoogleFonts.poppins(
+    fontSize: 16.sp,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 20 / 14,
+    letterSpacing: 0,
+  );
+
+  static TextStyle get primary16Regular => GoogleFonts.poppins(
+    fontSize: 16.sp,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 14 / 14,
+    letterSpacing: 0,
+  );
+
   static TextStyle get primary14Semibold => GoogleFonts.poppins(
     fontSize: 14.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
     height: 20 / 14,
     letterSpacing: 0,
   );
@@ -503,7 +533,7 @@ class PoppinsTextStyles {
     fontSize: 12.sp,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w300,
+    fontWeight: FontWeight.w400,
     height: 16 / 14,
     letterSpacing: 0,
   );

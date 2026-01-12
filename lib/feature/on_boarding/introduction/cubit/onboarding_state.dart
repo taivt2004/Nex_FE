@@ -1,8 +1,8 @@
 part of 'onboarding_cubit.dart';
 
 abstract class OnboardingState extends Equatable {
-  final int currentPage;
   const OnboardingState({required this.currentPage});
+  final int currentPage;
 
   @override
   List<Object> get props => [currentPage];

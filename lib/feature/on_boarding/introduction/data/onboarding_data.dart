@@ -1,11 +1,11 @@
 class OnboardingModel {
-  final String title;
-  final String desc;
-
+  
   const OnboardingModel({
     required this.title,
     required this.desc,
   });
+  final String title;
+  final String desc;
 
   static const List<OnboardingModel> list = [
     OnboardingModel(

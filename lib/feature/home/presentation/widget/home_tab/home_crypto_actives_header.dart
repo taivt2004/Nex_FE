@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nexpaylab/gen/assets.gen.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
+import 'package:nexpaylab/share/ui/extensions/image.dart';
 
 class HomeCryptoActivesHeader extends StatelessWidget {
   const HomeCryptoActivesHeader({
@@ -20,17 +23,27 @@ class HomeCryptoActivesHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
+          style: PoppinsTextStyles.primary16Semibold,
         ),
         Row(
           children: [
-            _SquareIconButton(icon: Icons.tune_rounded, onTap: onFilterTap),
+            _SquareIconButton(
+              icon: Assets.icons.home.cryptActives.settingCryptActive.load(
+                color: Colors.white,
+                width: 18.sp,
+                height: 18.sp,
+              ),
+              onTap: onFilterTap,
+            ),
             SizedBox(width: 8.w),
-            _SquareIconButton(icon: Icons.history_rounded, onTap: onHistoryTap),
+            _SquareIconButton(
+              icon: Assets.icons.home.cryptActives.historyIcon.load(
+                color: Colors.white,
+                width: 18.sp,
+                height: 18.sp,
+              ),
+              onTap: onHistoryTap,
+            ),
           ],
         ),
       ],
@@ -41,7 +54,7 @@ class HomeCryptoActivesHeader extends StatelessWidget {
 class _SquareIconButton extends StatelessWidget {
   const _SquareIconButton({required this.icon, this.onTap});
 
-  final IconData icon;
+  final Widget icon;
   final VoidCallback? onTap;
 
   @override
@@ -52,12 +65,8 @@ class _SquareIconButton extends StatelessWidget {
       child: Container(
         width: 32.w,
         height: 32.w,
-        decoration: BoxDecoration(
-          color: const Color(0xFF262A34),
-          borderRadius: BorderRadius.circular(8.r),
-        ),
         alignment: Alignment.center,
-        child: Icon(icon, color: Colors.white, size: 18.sp),
+        child: icon,
       ),
     );
   }

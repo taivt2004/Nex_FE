@@ -71,3 +71,22 @@ extension ImageExt on AssetGenImage {
     );
   }
 }
+
+class AppAssets {
+  const AppAssets._();
+
+  static const fonts = Assets.fonts;
+  static const googleFonts = Assets.googleFonts;
+  static const icons = Assets.icons;
+  static const images = Assets.images;
+
+  static const homeBottomMenu = Assets.homeBottomMenu;
+  static const homeActionBtn = Assets.homeActionBtn;
+  static const homeCryptActives = Assets.homeCryptActives;
+  static const homeTopbar = Assets.homeTopbar;
+  static const homeQrscan = Assets.homeQrscan;
+
+  static const homeCryptoActives = Assets.homeCryptActives;
+  static const homeTopBar = Assets.homeTopbar;
+  static const homeQrScan = Assets.homeQrscan;
+}

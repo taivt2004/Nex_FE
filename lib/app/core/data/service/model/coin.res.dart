@@ -3,19 +3,44 @@ import 'package:nexpaylab/app/core/data/model/coin.dart';
 
 part 'coin.res.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class CoinResponse {
   CoinResponse({
+    required this.success,
+    required this.code,
+    required this.message,
     required this.data,
-    required this.limit,
-    required this.page,
-    required this.total,
   });
 
   factory CoinResponse.fromJson(Map<String, dynamic> json) =>
       _$CoinResponseFromJson(json);
   Map<String, dynamic> toJson() => _$CoinResponseToJson(this);
-  final List<CoinItemResponse> data;
+
+  final bool success;
+  final int code;
+  final String message;
+  final CoinPageData data;
+
+  List<CoinItemResponse> get items => data.items;
+  int get limit => data.limit;
+  int get page => data.page;
+  int get total => data.total;
+}
+
+@JsonSerializable(explicitToJson: true)
+class CoinPageData {
+  CoinPageData({
+    required this.items,
+    required this.limit,
+    required this.page,
+    required this.total,
+  });
+
+  factory CoinPageData.fromJson(Map<String, dynamic> json) =>
+      _$CoinPageDataFromJson(json);
+  Map<String, dynamic> toJson() => _$CoinPageDataToJson(this);
+
+  final List<CoinItemResponse> items;
   final int limit;
   final int page;
   final int total;

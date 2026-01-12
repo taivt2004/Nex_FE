@@ -7,7 +7,22 @@ part of 'coin.res.dart';
 // **************************************************************************
 
 CoinResponse _$CoinResponseFromJson(Map<String, dynamic> json) => CoinResponse(
-  data: (json['data'] as List<dynamic>)
+  success: json['success'] as bool,
+  code: (json['code'] as num).toInt(),
+  message: json['message'] as String,
+  data: CoinPageData.fromJson(json['data'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$CoinResponseToJson(CoinResponse instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'code': instance.code,
+      'message': instance.message,
+      'data': instance.data,
+    };
+
+CoinPageData _$CoinPageDataFromJson(Map<String, dynamic> json) => CoinPageData(
+  items: (json['items'] as List<dynamic>)
       .map((e) => CoinItemResponse.fromJson(e as Map<String, dynamic>))
       .toList(),
   limit: (json['limit'] as num).toInt(),
@@ -15,9 +30,9 @@ CoinResponse _$CoinResponseFromJson(Map<String, dynamic> json) => CoinResponse(
   total: (json['total'] as num).toInt(),
 );
 
-Map<String, dynamic> _$CoinResponseToJson(CoinResponse instance) =>
+Map<String, dynamic> _$CoinPageDataToJson(CoinPageData instance) =>
     <String, dynamic>{
-      'data': instance.data,
+      'items': instance.items,
       'limit': instance.limit,
       'page': instance.page,
       'total': instance.total,

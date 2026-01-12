@@ -28,7 +28,7 @@ class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
 
     result.maybeWhen(
       success: (CoinResponse res) {
-        final coins = res.data.map((e) => e.toEntity()).toList();
+        final coins = res.items.map((e) => e.toEntity()).toList();
         if (res.total == 0 || coins.isEmpty) {
           if (state.coins.isNotEmpty) {
             emit(
@@ -80,8 +80,9 @@ class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
   ) async {
     if (state.hasReachedMax ||
         state.status == MarketplaceStatus.loading ||
-        state.loadingMore)
+        state.loadingMore) {
       return;
+    }
 
     final nextPage =
         state.currentPage + 1; // Mark that load-more is in progress
@@ -90,7 +91,7 @@ class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
 
     result.maybeWhen(
       success: (CoinResponse res) {
-        final newCoins = res.data.map((e) => e.toEntity()).toList();
+        final newCoins = res.items.map((e) => e.toEntity()).toList();
 
         if (res.total == 0 || newCoins.isEmpty) {
           emit(

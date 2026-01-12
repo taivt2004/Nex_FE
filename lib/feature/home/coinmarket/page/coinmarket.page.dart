@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:nexpaylab/feature/home/coinmarket/marketplace_bloc/marketplace_bloc.dart';
+import 'package:nexpaylab/share/theme/app_style.dart';
 
 class CoinMarketSliver extends StatelessWidget {
   const CoinMarketSliver({super.key});
@@ -31,13 +34,13 @@ class CoinMarketSliver extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             if (index >= state.coins.length) {
-              return const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24),
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.h),
                 child: Center(
                   child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    width: 24.w,
+                    height: 24.h,
+                    child: CircularProgressIndicator(strokeWidth: 2.w),
                   ),
                 ),
               );
@@ -45,18 +48,18 @@ class CoinMarketSliver extends StatelessWidget {
             final coin = state.coins[index];
             final isPositive = coin.change24h >= 0;
             return Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF262A34),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(color: const Color(0xFF2C2F38)),
                 ),
                 child: Row(
                   children: [
                     Container(
-                      width: 48,
-                      height: 48,
+                      width: 44.w,
+                      height: 44.w,
                       decoration: BoxDecoration(
                         color: _getCoinColor(coin.base),
                         shape: BoxShape.circle,
@@ -64,80 +67,60 @@ class CoinMarketSliver extends StatelessWidget {
                       child: Center(
                         child: Text(
                           _getCoinSymbol(coin.base),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
+                          style: PoppinsTextStyles.primary18Regular
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             coin.base,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
+                            style: PoppinsTextStyles.primary14Semibold
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            coin.symbol,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11,
-                            ),
+                            _getFullName(coin.base),
+                            style: PoppinsTextStyles.primary12Regular
                           ),
                         ],
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          '\$${_formatPrice(coin.price)}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            _formatPlain(coin.price),
+                            textAlign: TextAlign.center,
+                            style: PoppinsTextStyles.primary14Semibold
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Vol: ${coin.volume24h?.toStringAsFixed(2) ?? "0.00"}',
-                          style: TextStyle(
-                            color: Colors.grey[500],
-                            fontSize: 11,
+                          const SizedBox(height: 4),
+                          Text(
+                            _formatCurrency(coin.price),
+                            textAlign: TextAlign.center,
+                            style: PoppinsTextStyles.primary12Regular
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(width: 12),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
+                    Container( 
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 6.h,
                       ),
                       decoration: BoxDecoration(
                         color: isPositive
-                            ? const Color(0xFF00C566).withOpacity(0.1)
-                            : const Color(0xFFFF3D00).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(4),
+                            ? OlaColors.greenColor
+                            : OlaColors.redColor,
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
-                        '${isPositive ? '+' : ''}${coin.change24h}%',
-                        style: TextStyle(
-                          color: isPositive
-                              ? const Color(0xFF00C566)
-                              : const Color(0xFFFF3D00),
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        '${isPositive ? '+' : ''}${coin.change24h.toStringAsFixed(2)}%',
+                        style: PoppinsTextStyles.primary12Regular
                       ),
                     ),
                   ],
@@ -173,12 +156,36 @@ String _getCoinSymbol(String base) {
   return symbols[base.toUpperCase()] ?? base[0].toUpperCase();
 }
 
-String _formatPrice(double price) {
+String _formatPlain(double price) {
   if (price < 1) {
     return price.toStringAsFixed(6);
   } else if (price < 100) {
-    return price.toStringAsFixed(4);
+    return price.toStringAsFixed(5);
   } else {
     return price.toStringAsFixed(2);
+  }
+}
+
+String _formatCurrency(double price) {
+  final f = NumberFormat.currency(symbol: r'$', decimalDigits: price < 1 ? 6 : price < 100 ? 2 : 2);
+  return f.format(price);
+}
+
+String _getFullName(String base) {
+  switch (base.toUpperCase()) {
+    case 'BTC':
+      return 'Bitcoin';
+    case 'ETH':
+      return 'Ethereum';
+    case 'ADA':
+      return 'Cardano';
+    case 'SOL':
+      return 'Solana';
+    case 'BNB':
+      return 'BNB';
+    case 'XRP':
+      return 'XRP';
+    default:
+      return base;
   }
 }

@@ -80,4 +80,9 @@ flutter:
     - assets/google_fonts/
     - assets/icons/
     - assets/icons/home/
+    - assets/icons/home/bottom_menu/
+    - assets/icons/home/action_btn/
+    - assets/icons/home/crypt_actives/
+    - assets/icons/home/topbar/
+    - assets/icons/home/qrscan/
     - assets/images/

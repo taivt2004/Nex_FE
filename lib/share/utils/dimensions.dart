@@ -13,15 +13,15 @@ class Dimension {
     vertical: 16.h,
   );
 
-  static const double paddingSmall = 8.0;
-  static const double paddingMedium = 16.0;
-  static const double paddingLarge = 24.0;
+  static const double paddingSmall = 8;
+  static const double paddingMedium = 16;
+  static const double paddingLarge = 24;
 
-  static const double borderRadius = 12.0;
-  static const double fontSizeTitle = 22.0;
-  static const double fontSizeSubtitle = 18.0;
-  static const double fontSizeBody = 14.0;
+  static const double borderRadius = 12;
+  static const double fontSizeTitle = 22;
+  static const double fontSizeSubtitle = 18;
+  static const double fontSizeBody = 14;
 
-  static const double buttonHeight = 48.0;
-  static const double buttonWidth = 200.0;
+  static const double buttonHeight = 48;
+  static const double buttonWidth = 200;
 }

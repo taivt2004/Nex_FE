@@ -9,7 +9,7 @@ class OlaBlocObserver extends BlocObserver {
     super.onEvent(bloc, event);
     talker.debug('e:${event.runtimeType} bloc: ${bloc.runtimeType}');
   }
-
+  
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);

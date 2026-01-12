@@ -13,7 +13,7 @@ class OnboardingFooter extends StatelessWidget {
       child: Text.rich(
         TextSpan(
           text: 'By tapping above button, you agree and consent to our ',
-          style: PoppinsTextStyles.primary14Regular.copyWith(
+          style: PoppinsTextStyles.primary12Regular.copyWith(
             color: Colors.white.withOpacity(0.3),
           ),
           children: [

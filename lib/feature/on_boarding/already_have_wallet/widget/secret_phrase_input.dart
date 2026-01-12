@@ -48,7 +48,7 @@ class SecretPhraseInput extends StatelessWidget {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(
-                    color: Color(0xFF7B61FF),
+                    color: OlaColors.primarycolor,
                     width: 1.5,
                   ),
                   borderRadius: BorderRadius.circular(16.r),

@@ -35,6 +35,8 @@ class _PassphraseSectionState extends State<PassphraseSection> {
   // Controllers for the two input fields
   late final TextEditingController _passphraseController;
   late final TextEditingController _confirmController;
+  late final FocusNode _passphraseFocusNode;
+  late final FocusNode _confirmFocusNode;
   int _lastPassLen = 0;
 
   @override
@@ -42,11 +44,18 @@ class _PassphraseSectionState extends State<PassphraseSection> {
     super.initState();
     _passphraseController = TextEditingController();
     _confirmController = TextEditingController();
+    _passphraseFocusNode = FocusNode();
+    _confirmFocusNode = FocusNode();
+
     _passphraseController.addListener(() {
       final len = _passphraseController.text.length;
       if (_lastPassLen < 6 && len == 6) {
         _confirmController.clear();
         widget.onConfirmPassphraseChanged('');
+        // Auto focus to confirm field when passphrase is full
+        if (widget.enableConfirm) {
+          _confirmFocusNode.requestFocus();
+        }
       }
       _lastPassLen = len;
       setState(() {});
@@ -57,6 +66,8 @@ class _PassphraseSectionState extends State<PassphraseSection> {
   void dispose() {
     _passphraseController.dispose();
     _confirmController.dispose();
+    _passphraseFocusNode.dispose();
+    _confirmFocusNode.dispose();
     super.dispose();
   }
 
@@ -83,7 +94,15 @@ class _PassphraseSectionState extends State<PassphraseSection> {
               // Checkbox Row
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => widget.onChanged(!widget.isSecure),
+                onTap: () {
+                  widget.onChanged(!widget.isSecure);
+                  if (!widget.isSecure) {
+                    // When turning on security, focus on passphrase
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _passphraseFocusNode.requestFocus();
+                    });
+                  }
+                },
                 child: Row(
                   children: [
                     Container(
@@ -124,6 +143,7 @@ class _PassphraseSectionState extends State<PassphraseSection> {
                 SizedBox(height: 24.h),
                 _PinInput(
                   controller: _passphraseController,
+                  focusNode: _passphraseFocusNode,
                   onChanged: widget.onPassphraseChanged,
                 ),
                 if (widget.enableConfirm &&
@@ -143,6 +163,7 @@ class _PassphraseSectionState extends State<PassphraseSection> {
                   SizedBox(height: 12.h),
                   _PinInput(
                     controller: _confirmController,
+                    focusNode: _confirmFocusNode,
                     onChanged: widget.onConfirmPassphraseChanged,
                     hasError: hasError,
                   ),
@@ -193,11 +214,13 @@ class _PinInput extends StatefulWidget {
   const _PinInput({
     required this.controller,
     required this.onChanged,
+    this.focusNode,
     this.hasError = false,
   });
 
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final FocusNode? focusNode;
   final bool hasError;
 
   @override
@@ -205,17 +228,21 @@ class _PinInput extends StatefulWidget {
 }
 
 class _PinInputState extends State<_PinInput> {
-  final FocusNode _focusNode = FocusNode();
+  late FocusNode _internalFocusNode;
+
+  FocusNode get _effectiveFocusNode => widget.focusNode ?? _internalFocusNode;
+
   @override
   void initState() {
     super.initState();
+    _internalFocusNode = FocusNode();
     widget.controller.addListener(_updateState);
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_updateState);
-    _focusNode.dispose();
+    _internalFocusNode.dispose();
     super.dispose();
   }
 
@@ -229,64 +256,68 @@ class _PinInputState extends State<_PinInput> {
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () => FocusScope.of(context).requestFocus(_focusNode),
-      child: Stack(
+      onTap: () => FocusScope.of(context).requestFocus(_effectiveFocusNode),
+      child: Container(
+        height: 44.h, // Tăng chiều cao vùng bấm
         alignment: Alignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(6, (index) {
-              final filled = index < length;
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6.w),
-                child: Container(
-                  width: 12.h,
-                  height: 12.h,
-                  decoration: widget.hasError
-                      ? BoxDecoration(
-                          color: Colors.transparent,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color(0xFFFF3B30),
-                            width: 1.5,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(6, (index) {
+                final filled = index < length;
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6.w),
+                  child: Container(
+                    width: 12.h,
+                    height: 12.h,
+                    decoration: widget.hasError
+                        ? BoxDecoration(
+                            color: Colors.transparent,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color(0xFFFF3B30),
+                              width: 1.5,
+                            ),
+                          )
+                        : BoxDecoration(
+                            color: filled
+                                ? OlaColors.primarycolor
+                                : Colors.white12,
+                            shape: BoxShape.circle,
                           ),
-                        )
-                      : BoxDecoration(
-                          color: filled
-                              ? OlaColors.primarycolor
-                              : Colors.white12,
-                          shape: BoxShape.circle,
-                        ),
-                ),
-              );
-            }),
-          ),
-          Positioned.fill(
-            child: IgnorePointer(
-              ignoring: false,
-              child: Opacity(
-                opacity: 0,
-                child: TextField(
-                  focusNode: _focusNode,
-                  controller: widget.controller,
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(6),
-                  ],
-                  cursorColor: Colors.transparent,
-                  style: TextStyle(color: Colors.transparent, fontSize: 1.sp),
-                  onChanged: widget.onChanged,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
+                  ),
+                );
+              }),
+            ),
+            Positioned.fill(
+              child: IgnorePointer(
+                ignoring: false,
+                child: Opacity(
+                  opacity: 0,
+                  child: TextField(
+                    focusNode: _effectiveFocusNode,
+                    controller: widget.controller,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(6),
+                    ],
+                    cursorColor: Colors.transparent,
+                    style: TextStyle(color: Colors.transparent, fontSize: 1.sp),
+                    onChanged: widget.onChanged,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
