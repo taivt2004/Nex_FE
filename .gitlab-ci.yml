@@ -2,7 +2,7 @@ image: ghcr.io/cirruslabs/flutter:stable
 
 stages:
   #- quality    
-  - verify     
+  #- verify     
   - build      
 
 # 1. Scan code quality
@@ -13,10 +13,10 @@ stages:
 #     - make analyze lib || true 
 
 # 2. Verify unitest
-unit_testing:
-  stage: verify
-  script:
-  - echo "Đang bỏ qua unit test tạm thời."
+# unit_testing:
+#   stage: verify
+#   script:
+#   - echo "Đang bỏ qua unit test tạm thời."
     # - flutter test
 
 # 3. Build APK Android (staging)

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "337752389165",
+    "project_id": "nexpay-cicd",
+    "storage_bucket": "nexpay-cicd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337752389165:android:0ea27f3086e799b9e72aa4",
+        "android_client_info": {
+          "package_name": "com.nexpaylab.stg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJxm75ozr73o-5nN0iYvbt__6Qv4qSb9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
