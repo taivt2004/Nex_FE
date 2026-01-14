@@ -9,23 +9,23 @@ stages:
 static_analysis:
   stage: quality
   script:
-    - flutter pub get
-    - flutter analyze
+    - make get
+    - make analyze
 
 # 2. Verify unitest
 unit_testing:
   stage: verify
   script:
-  - echo "Đang bỏ qua unit test tạm thời theo yêu cầu"
+  - echo "Đang bỏ qua unit test tạm thời"
     # - flutter test
 
-# 3. Build APK Android
-android_build:
+# 3. Build APK Android (staging)
+android_build_staging:
   stage: build
   script:
-    - flutter build apk --release
+    - make apk-stg
   artifacts:
     paths:
-      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/*staging*.apk
   only:
     - master
