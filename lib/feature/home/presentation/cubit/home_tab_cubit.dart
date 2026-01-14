@@ -1,13 +1,13 @@
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'home_tab_state.dart';
 
 class HomeTabCubit extends Cubit<HomeTabState> {
   HomeTabCubit() : super(const HomeTabState());
 
-  void setSynced(bool value) {
+  void setSynced({required bool value}) {
     if (state.isSynced == value) return;
     emit(state.copyWith(isSynced: value));
   }
@@ -17,4 +17,3 @@ class HomeTabCubit extends Cubit<HomeTabState> {
     emit(state.copyWith(currentPaymentPage: value));
   }
 }
-

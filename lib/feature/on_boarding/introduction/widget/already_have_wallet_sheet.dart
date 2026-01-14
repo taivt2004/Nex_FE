@@ -166,7 +166,7 @@ Future<void> showAlreadyHaveWalletSheet(
                         decoration: BoxDecoration(
                           color: canContinue
                               ? OlaColors.primarycolor
-                              : OlaColors.primarycolor.withOpacity(0.5),
+                              : OlaColors.primarycolor.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(16.r),
                         ),
                         alignment: Alignment.center,

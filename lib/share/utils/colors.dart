@@ -76,7 +76,7 @@ class AppColor {
   /// Converts a Color to a string (hexadecimal format)
   static String colorToString(Color color) {
     // Convert the color to a hex string in ARGB format
-    return color.value.toRadixString(16).padLeft(8, '0');
+    return color.toARGB32().toRadixString(16).padLeft(8, '0');
   }
 
   /// Converts a string (hexadecimal) back to a Color

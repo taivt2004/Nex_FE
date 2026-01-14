@@ -162,7 +162,7 @@ class $AssetsIconsHomeGen {
   $AssetsIconsHomeQrscanGen get qrscan => const $AssetsIconsHomeQrscanGen();
 
   /// Directory path: assets/icons/home/topbar
-  $AssetsIconsHomeTopBarGen get topbar => const $AssetsIconsHomeTopBarGen();
+  $AssetsIconsHomeTopbarGen get topbar => const $AssetsIconsHomeTopbarGen();
 }
 
 class $AssetsIconsHomeActionBtnGen {
@@ -239,8 +239,8 @@ class $AssetsIconsHomeQrscanGen {
   List<SvgGenImage> get values => [qrScanIcon];
 }
 
-class $AssetsIconsHomeTopBarGen {
-  const $AssetsIconsHomeTopBarGen();
+class $AssetsIconsHomeTopbarGen {
+  const $AssetsIconsHomeTopbarGen();
 
   /// File path: assets/icons/home/topbar/grid_icon.svg
   SvgGenImage get gridIcon =>
@@ -265,11 +265,12 @@ class Assets {
   static const $AssetsGoogleFontsGen googleFonts = $AssetsGoogleFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
-  static const $AssetsIconsHomeBottomMenuGen homeBottomMenu = $AssetsIconsHomeBottomMenuGen();
-  static const $AssetsIconsHomeActionBtnGen homeActionBtn = $AssetsIconsHomeActionBtnGen();
-  static const $AssetsIconsHomeCryptActivesGen homeCryptActives = $AssetsIconsHomeCryptActivesGen();
-  static const $AssetsIconsHomeTopBarGen homeTopbar = $AssetsIconsHomeTopBarGen();
-  static const $AssetsIconsHomeQrscanGen homeQrscan = $AssetsIconsHomeQrscanGen();
+  static const $AssetsIconsHomeGen iconsHome = $AssetsIconsHomeGen();
+  static const $AssetsIconsHomeActionBtnGen iconsHomeActionBtn = $AssetsIconsHomeActionBtnGen();
+  static const $AssetsIconsHomeBottomMenuGen iconsHomeBottomMenu = $AssetsIconsHomeBottomMenuGen();
+  static const $AssetsIconsHomeCryptActivesGen iconsHomeCryptActives = $AssetsIconsHomeCryptActivesGen();
+  static const $AssetsIconsHomeTopbarGen iconsHomeTopbar = $AssetsIconsHomeTopbarGen();
+  static const $AssetsIconsHomeQrscanGen iconsHomeQrscan = $AssetsIconsHomeQrscanGen();
 }
 
 class AssetGenImage {

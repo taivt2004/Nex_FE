@@ -11,7 +11,7 @@ abstract class Result<T> with _$Result<T> {
 
   const factory Result.success(T data) = Success<T>;
 
-  const factory Result.failure({@required dynamic error}) = Failure<T>;
+  const factory Result.failure({required dynamic error}) = Failure<T>;
 
   static Result<T> guard<T>(T Function() body) {
     try {

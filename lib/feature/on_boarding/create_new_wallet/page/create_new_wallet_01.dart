@@ -75,9 +75,9 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
                             isSecure: state.isSecure,
                             errorText: state.passphraseError,
                             onChanged: (value) {
-                              context.read<CreateWalletCubit>().toggleSecure(
-                                value,
-                              );
+                              context
+                                  .read<CreateWalletCubit>()
+                                  .toggleSecure(isSecure: value);
                             },
                             onPassphraseChanged: (value) {
                               context.read<CreateWalletCubit>().setPassphrase(
@@ -106,7 +106,7 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
                       color: OlaColors.appbackground,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 8,
                           offset: const Offset(0, -2),
                         ),
@@ -115,8 +115,8 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
                     child: CreateWalletButton(
                       enabled: state.isFormValid,
                       onPressed: () {
-                        final cubit = context.read<CreateWalletCubit>();
-                        cubit.setWalletName(_walletNameController.text);
+                        final cubit = context.read<CreateWalletCubit>()
+                          ..setWalletName(_walletNameController.text);
                         if (cubit.state.walletNameError != null) {
                           return;
                         }

@@ -71,7 +71,8 @@ class _RegisterFormState extends State<RegisterForm> {
         if (state is RegisterFailure) {
           onFinishLoading?.call();
           InfoToast.error(
-            backgroundColor: Theme.of(context).dialogBackgroundColor,
+            backgroundColor: Theme.of(context).dialogTheme.backgroundColor ??
+                Theme.of(context).colorScheme.surface,
             shadowColor: Theme.of(context).shadowColor,
             title: Text(state.error),
             displayTitle: false,

@@ -25,7 +25,7 @@ class HomeTopBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _TopBarIconButton(
-          icon: Assets.homeTopbar.gridIcon.load(
+          icon: Assets.iconsHomeTopbar.gridIcon.load(
             color: Colors.white,
             width: 22.sp,
             height: 22.sp,
@@ -47,7 +47,7 @@ class HomeTopBar extends StatelessWidget {
         Row(
           children: [
             _TopBarIconButton(
-              icon: Assets.homeTopbar.searchIcon.load(
+              icon: Assets.iconsHomeTopbar.searchIcon.load(
                 color: Colors.white,
                 width: 22.sp,
                 height: 22.sp,
@@ -56,7 +56,7 @@ class HomeTopBar extends StatelessWidget {
             ),
             SizedBox(width: 8.w),
             _TopBarIconButton(
-              icon: Assets.homeTopbar.notifiIcon.load(
+              icon: Assets.iconsHomeTopbar.notifiIcon.load(
                 color: Colors.white,
                 width: 22.sp,
                 height: 22.sp,

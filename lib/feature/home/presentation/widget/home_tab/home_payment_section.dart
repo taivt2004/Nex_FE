@@ -57,7 +57,7 @@ class HomePaymentSection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Assets.homeQrscan.qrScanIcon.load(
+                  Assets.iconsHomeQrscan.qrScanIcon.load(
                     color: Colors.white,
                   ),
                   SizedBox(width: 8.w),

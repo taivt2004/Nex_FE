@@ -36,4 +36,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       },
     );
   }
-}
+} 

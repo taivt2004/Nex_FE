@@ -55,7 +55,9 @@ class OnboardingSecondaryButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF251A60),
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.1),
+        ),
       ),
       child: Material(
         color: Colors.transparent,

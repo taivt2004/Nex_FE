@@ -11,9 +11,7 @@ import 'package:nexpaylab/feature/home/presentation/widget/home_tab/home_top_bar
 import 'package:nexpaylab/feature/home/presentation/widget/home_tab/home_total_value_section.dart';
 import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
-import 'package:nexpaylab/share/theme/theme.mode.dart';
 import 'package:nexpaylab/share/ui/extensions/image.dart';
-import 'package:provider/provider.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({super.key});
@@ -137,8 +135,9 @@ class _HomeTabPageState extends State<HomeTabPage>
                           builder: (context, tabState) {
                             return HomeTotalValueSection(
                               isSynced: tabState.isSynced,
-                              onSyncTap: () =>
-                                  context.read<HomeTabCubit>().setSynced(true),
+                              onSyncTap: () => context
+                                  .read<HomeTabCubit>()
+                                  .setSynced(value: true),
                             );
                           },
                         ),
@@ -146,7 +145,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                         HomeQuickActionsSection(
                           actions: [
                             HomeQuickActionItemData(
-                              icon: Assets.homeActionBtn.icActionSend.load(
+                              icon: Assets.iconsHomeActionBtn.icActionSend.load(
                                 width: 22.w,
                                 height: 22.h,
                                 color: OlaColors.actionBtnColor,
@@ -154,7 +153,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                               label: 'Send',
                             ),
                             HomeQuickActionItemData(
-                              icon: Assets.homeActionBtn.icActionReceive.load(
+                              icon: Assets.iconsHomeActionBtn.icActionReceive.load(
                                 width: 22.w,
                                 height: 22.h,
                                 color: OlaColors.actionBtnColor,
@@ -162,7 +161,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                               label: 'Receive',
                             ),
                             HomeQuickActionItemData(
-                              icon: Assets.homeActionBtn.icTsxBuy.load(
+                              icon: Assets.iconsHomeActionBtn.icTsxBuy.load(
                                 width: 22.w,
                                 height: 22.h,
                                 color: OlaColors.actionBtnColor,
@@ -170,7 +169,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                               label: 'Buy',
                             ),
                             HomeQuickActionItemData(
-                              icon: Assets.homeActionBtn.icActionSell.load(
+                              icon: Assets.iconsHomeActionBtn.icActionSell.load(
                                 width: 32.w,
                                 height: 32.h,
                                 color: OlaColors.actionBtnColor,

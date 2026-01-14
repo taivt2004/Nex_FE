@@ -22,7 +22,8 @@ class CreateWalletButton extends StatelessWidget {
         onPressed: enabled ? onPressed : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: OlaColors.primarycolor,
-          disabledBackgroundColor: OlaColors.primarycolor.withOpacity(0.5),
+          disabledBackgroundColor:
+              OlaColors.primarycolor.withValues(alpha: 0.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28.r),
           ),

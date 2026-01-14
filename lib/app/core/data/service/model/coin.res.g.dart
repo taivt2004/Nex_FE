@@ -18,7 +18,7 @@ Map<String, dynamic> _$CoinResponseToJson(CoinResponse instance) =>
       'success': instance.success,
       'code': instance.code,
       'message': instance.message,
-      'data': instance.data,
+      'data': instance.data.toJson(),
     };
 
 CoinPageData _$CoinPageDataFromJson(Map<String, dynamic> json) => CoinPageData(
@@ -32,7 +32,7 @@ CoinPageData _$CoinPageDataFromJson(Map<String, dynamic> json) => CoinPageData(
 
 Map<String, dynamic> _$CoinPageDataToJson(CoinPageData instance) =>
     <String, dynamic>{
-      'items': instance.items,
+      'items': instance.items.map((e) => e.toJson()).toList(),
       'limit': instance.limit,
       'page': instance.page,
       'total': instance.total,

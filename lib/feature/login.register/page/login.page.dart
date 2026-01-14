@@ -75,7 +75,8 @@ class _LoginFormState extends State<LoginForm> {
         } else if (state is LoginFailure) {
           onFinishLoading?.call();
           InfoToast.error(
-            backgroundColor: Theme.of(context).dialogBackgroundColor,
+            backgroundColor: Theme.of(context).dialogTheme.backgroundColor ??
+                Theme.of(context).colorScheme.surface,
             shadowColor: Theme.of(context).shadowColor,
             title: Text(state.error),
             displayTitle: false,

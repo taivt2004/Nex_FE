@@ -21,5 +21,5 @@ class HomeTabState extends Equatable {
 
   @override
   List<Object?> get props => [currentPaymentPage, isSynced];
-}
 
+}

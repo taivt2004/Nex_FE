@@ -15,7 +15,7 @@ abstract class ApiService {
 
   @GET('v1/configs/list?keys={keys}')
   Future<List<ConfigItem>> getAppConfigs(@Path('keys') String keys);
-  @GET('v1/coins')
+  @GET('coin-market/v1/coins')
   Future<CoinResponse> getCoins(
       @Query('page') int page,
       @Query('limit') int limit,

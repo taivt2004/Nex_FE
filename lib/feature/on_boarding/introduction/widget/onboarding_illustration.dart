@@ -7,9 +7,7 @@ class OnboardingIllustration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
+    return SizedBox.expand(
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -21,7 +19,8 @@ class OnboardingIllustration extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: AppColor.onboardingIndicatorActive.withOpacity(0.3),
+                  color:
+                      AppColor.onboardingIndicatorActive.withValues(alpha: 0.3),
                   blurRadius: 120.r,
                   spreadRadius: 40.r,
                 ),

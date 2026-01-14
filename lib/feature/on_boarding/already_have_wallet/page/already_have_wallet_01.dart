@@ -80,8 +80,9 @@ class _AlreadyHaveWallet01PageState extends State<AlreadyHaveWallet01Page> {
                                 controller: _walletNameController,
                                 errorText: state.walletNameError,
                                 onChanged: (value) {
-                                  _cubit.setWalletName(value);
-                                  _cubit.validateWalletName();
+                                  _cubit
+                                    ..setWalletName(value)
+                                    ..validateWalletName();
                                 },
                               ),
                               SizedBox(height: 20.h),
@@ -95,7 +96,7 @@ class _AlreadyHaveWallet01PageState extends State<AlreadyHaveWallet01Page> {
                               PassphraseSection(
                                 isSecure: state.isSecure,
                                 onChanged: (value) {
-                                  _cubit.toggleSecure(value);
+                                  _cubit.toggleSecure(isSecure: value);
                                 },
                                 onPassphraseChanged: (value) {
                                   _cubit.setPassphrase(value);
@@ -124,7 +125,7 @@ class _AlreadyHaveWallet01PageState extends State<AlreadyHaveWallet01Page> {
                       color: const Color(0xFF121314),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withValues(alpha: 0.2),
                           blurRadius: 8,
                           offset: const Offset(0, -2),
                         ),

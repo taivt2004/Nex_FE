@@ -33,8 +33,8 @@ class CoinRepositoryImp implements CoinRepository {
       final res = await apiService.getCoins(page, limit);
       final hasData = res.total > 0 && res.items.isNotEmpty;
       if (hasData) {
-        prefs.setString(_key(page, limit), jsonEncode(res.toJson()));
-        prefs.setInt(_tsKey(page, limit), now);
+        await prefs.setString(_key(page, limit), jsonEncode(res.toJson()));
+        await prefs.setInt(_tsKey(page, limit), now);
         return res;
       }
       if (cached != null && isFresh) {

@@ -13,7 +13,7 @@ class AlreadyHaveWalletCubit extends Cubit<AlreadyHaveWalletState> {
     emit(state.copyWith(secretPhrase: phrase));
   }
 
-  void toggleSecure(bool isSecure) {
+  void toggleSecure({required bool isSecure}) {
     emit(state.copyWith(isSecure: isSecure));
   }
 

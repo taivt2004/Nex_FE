@@ -73,15 +73,12 @@ class NiceButtons extends StatefulWidget {
   final double calculatedWidth;
 
   @override
-  State<NiceButtons> createState() => _NiceButtonsState(borderThickness);
+  State<NiceButtons> createState() => _NiceButtonsState();
 }
 
 /// Button state to keep track of press and progress animations.
 class _NiceButtonsState extends State<NiceButtons>
     with TickerProviderStateMixin {
-  _NiceButtonsState(double borderThickness) {
-    _borderThickness = borderThickness;
-  }
   double _borderThickness = 5;
   double _moveMargin = 0;
   double _progressWidth = 0;
@@ -164,8 +161,10 @@ class _NiceButtonsState extends State<NiceButtons>
                   child: InkWell(
                     onTap: widget.disabled || _processing ? null : _onTap,
                     borderRadius: widget.br,
-                    splashColor: Colors.white.withOpacity(0.18),
-                    highlightColor: Colors.white.withOpacity(0.08),
+                    splashColor:
+                        Colors.white.withValues(alpha: 0.18),
+                    highlightColor:
+                        Colors.white.withValues(alpha: 0.08),
                   ),
                 ),
               ),
@@ -233,6 +232,12 @@ class _NiceButtonsState extends State<NiceButtons>
       _processing = false;
       _progressBarMillis = 1;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _borderThickness = widget.borderThickness;
   }
 
   /// The cumulative button widget that builds the front and back layout of the

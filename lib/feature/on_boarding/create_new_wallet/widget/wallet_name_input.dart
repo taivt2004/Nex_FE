@@ -75,9 +75,7 @@ class WalletNameInput extends StatelessWidget {
                     icon: Icon(Icons.close, color: Colors.white70, size: 20.sp),
                     onPressed: () {
                       controller.clear();
-                      if (onChanged != null) {
-                        onChanged!('');
-                      }
+                      onChanged?.call('');
                     },
                     enableFeedback: false,
                     splashRadius: 20.r,

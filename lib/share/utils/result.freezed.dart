@@ -259,7 +259,7 @@ as T,
 
 
 class Failure<T> extends Result<T> with DiagnosticableTreeMixin {
-  const Failure({this.error}): super._();
+  const Failure({required this.error}): super._();
   
 
  final  dynamic error;

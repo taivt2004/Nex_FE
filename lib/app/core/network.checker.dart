@@ -14,8 +14,9 @@ class NetworkStateStream {
   final Duration debounceDuration = const Duration(milliseconds: 100);
 
   // Broadcast the network state to the sink
-  void Function(bool connected) get broadcastNetworkState =>
-      _networkStateSubject.sink.add;
+  void broadcastNetworkState({required bool connected}) {
+    _networkStateSubject.sink.add(connected);
+  }
 
   // Apply debounceTime to the stream to limit how often values are emitted.
   Stream<bool> get stream => _networkStateSubject
@@ -43,9 +44,9 @@ class NetworkChecker {
       talker.debug('on network state changed $status');
       switch (status) {
         case InternetStatus.connected:
-          networkStateStream.broadcastNetworkState(true);
+          networkStateStream.broadcastNetworkState(connected: true);
         case InternetStatus.disconnected:
-          networkStateStream.broadcastNetworkState(false);
+          networkStateStream.broadcastNetworkState(connected: false);
       }
     });
   }
@@ -53,7 +54,7 @@ class NetworkChecker {
   Future<bool> checkConnectivity() async {
     final connected = await isOnline();
     talker.debug('checkConnectivity : $connected');
-    networkStateStream.broadcastNetworkState(connected);
+    networkStateStream.broadcastNetworkState(connected: connected);
     return connected;
   }
 

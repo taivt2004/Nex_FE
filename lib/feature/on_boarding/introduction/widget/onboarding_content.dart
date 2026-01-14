@@ -11,26 +11,28 @@ class OnboardingContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 32.w),
-      child: Column(
-        children: [
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: KoHoTextStyles.display36Medium.copyWith(
-              color: Colors.white,
-              height: 1.2,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: KoHoTextStyles.display36Medium.copyWith(
+                color: Colors.white,
+                height: 1.2,
+              ),
             ),
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            desc,
-            textAlign: TextAlign.center,
-            style: OlaTextStyles.primarytext14regular.copyWith(
-              color: Colors.white.withOpacity(0.7),
-              height: 1.5,
+            SizedBox(height: 16.h),
+            Text(
+              desc,
+              textAlign: TextAlign.center,
+              style: OlaTextStyles.primarytext14regular.copyWith(
+                color: Colors.white.withValues(alpha: 0.7),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

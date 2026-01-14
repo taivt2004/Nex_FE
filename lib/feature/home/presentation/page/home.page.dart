@@ -66,26 +66,26 @@ class _HomeFormState extends State<HomeForm> {
       itemLabel: 'Home',
     ),
     BottomBarItem(
-      inActiveItem: Assets.homeBottomMenu.icMenuSwap.load(color: OlaColors.gray400),
-      activeItem: Assets.homeBottomMenu.icMenuSwap.load(
+      inActiveItem: Assets.iconsHomeBottomMenu.icMenuSwap.load(color: OlaColors.gray400),
+      activeItem: Assets.iconsHomeBottomMenu.icMenuSwap.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Swap',
     ),
     BottomBarItem(
-      inActiveItem: Assets.homeBottomMenu.icMenuTrending.load(
+      inActiveItem: Assets.iconsHomeBottomMenu.icMenuTrending.load(
         color: OlaColors.gray400,
       ),
-      activeItem: Assets.homeBottomMenu.icMenuTrending.load(
+      activeItem: Assets.iconsHomeBottomMenu.icMenuTrending.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Trending',
     ),
     BottomBarItem(
-      inActiveItem: Assets.homeBottomMenu.icMenuDiscover.load(
+      inActiveItem: Assets.iconsHomeBottomMenu.icMenuDiscover.load(
         color: OlaColors.gray400,
       ),
-      activeItem: Assets.homeBottomMenu.icMenuDiscover.load(
+      activeItem: Assets.iconsHomeBottomMenu.icMenuDiscover.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Discover',
@@ -104,10 +104,10 @@ class _HomeFormState extends State<HomeForm> {
     ];
     _networkSub = getIt<NetworkStateStream>().stream.distinct().listen((c) {
       _connected = c;
-      if (c) {
-        context.read<HomeBloc>().add(LoadHomeConfig(showLoading: false));
-      }
       if (mounted) {
+        if (c) {
+          context.read<HomeBloc>().add(LoadHomeConfig(showLoading: false));
+        }
         setState(() {});
       }
     });

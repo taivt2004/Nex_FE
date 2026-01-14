@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'create_wallet_state.dart';
 
@@ -17,9 +17,9 @@ class CreateWalletCubit extends Cubit<CreateWalletState> {
     emit(state.copyWith(walletName: value, walletNameError: error));
   }
 
-  void toggleSecure(bool value) {
+  void toggleSecure({required bool isSecure}) {
     emit(state.copyWith(
-      isSecure: value,
+      isSecure: isSecure,
       // Reset error when toggling secure mode
       passphraseError: null,
       // Keep existing passphrase/confirm to allow user resume

@@ -280,7 +280,7 @@ class InfoToast extends StatefulWidget {
     Navigator.of(context).push(
       PageRouteBuilder<void>(
         fullscreenDialog: false,
-        barrierColor: Colors.grey.withOpacity(0.1),
+        barrierColor: Colors.grey.withValues(alpha: 0.1),
         opaque: false,
         barrierDismissible: true,
         pageBuilder: (context, _, __) => GestureDetector(
