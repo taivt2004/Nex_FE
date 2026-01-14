@@ -1,0 +1,30 @@
+image: ghcr.io/cirruslabs/flutter:stable
+
+stages:
+  - quality    
+  - verify     
+  - build      
+
+# 1. Scan code quality
+static_analysis:
+  stage: quality
+  script:
+    - flutter pub get
+    - flutter analyze
+
+# 2. Verify unitest
+unit_testing:
+  stage: verify
+  script:
+    # - flutter test
+
+# 3. Build APK Android
+android_build:
+  stage: build
+  script:
+    - flutter build apk --release
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/app-release.apk
+  only:
+    - master
