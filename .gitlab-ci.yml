@@ -28,7 +28,7 @@ android_build_staging:
     - chmod +x firebase
     - APK_PATH=$(find build/app/outputs/flutter-apk -maxdepth 1 -name "*arm64-v8a*.apk" | head -n 1)
     - if [ -z "$APK_PATH" ]; then echo "KHÔNG TÌM THẤY FILE APK arm64-v8a"; ls -R build/app/outputs/flutter-apk || true; exit 1; fi
-    - echo "Đang đẩy file $APK_PATH lên Firebase..."
+    - echo "Đang đẩy file $APK_PATH lên Firebase....."
     - ./firebase appdistribution:distribute "$APK_PATH" 
         --app "$FIREBASE_ANDROID_APP_ID_STAGING" 
         --token "$FIREBASE_TOKEN" 
