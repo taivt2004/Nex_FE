@@ -26,7 +26,9 @@ android_build_staging:
     - make apk-stg-split
     - curl -Lo firebase https://firebase.tools/bin/linux/latest
     - chmod +x firebase
-    - ./firebase appdistribution:distribute build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk --app $FIREBASE_ANDROID_APP_ID_STAGING --token $FIREBASE_TOKEN --groups "testers" --release-notes "New staging build"
+    - export APK_FILE=$(find build/app/outputs/flutter-apk -name "*staging*arm64-v8a*.apk" | head -n 1)
+    - echo "Found APK to upload: $APK_FILE"
+    - ./firebase appdistribution:distribute "$APK_FILE" --app $FIREBASE_ANDROID_APP_ID_STAGING --token $FIREBASE_TOKEN --groups "testers" --release-notes "New staging build"
   artifacts:
     paths:
       - build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk
