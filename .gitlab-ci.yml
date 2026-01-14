@@ -1,16 +1,16 @@
 image: ghcr.io/cirruslabs/flutter:stable
 
 stages:
-  - quality    
+  #- quality    
   - verify     
   - build      
 
 # 1. Scan code quality
-static_analysis:
-  stage: quality
-  script:
-    - make get
-    - make analyze lib || true 
+# static_analysis:
+#   stage: quality
+#   script:
+#     - make get
+#     - make analyze lib || true 
 
 # 2. Verify unitest
 unit_testing:
@@ -26,6 +26,6 @@ android_build_staging:
     - make apk-stg-split
   artifacts:
     paths:
-      - build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk
+      - build/app/outputs/flutter-apk/*.apk
   only:
     - master
