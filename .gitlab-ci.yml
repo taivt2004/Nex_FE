@@ -24,8 +24,22 @@ android_build_staging:
   stage: build
   script:
     - make apk-stg-split
+    - npm install -g firebase-tools
+    - firebase appdistribution:distribute build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk --app $FIREBASE_ANDROID_APP_ID_STAGING --token $FIREBASE_TOKEN --groups "testers" --release-notes "New staging build"
   artifacts:
     paths:
-      - build/app/outputs/flutter-apk/app-arm64-v8a-staging-profile.apk
+      - build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk
   only:
     - master
+
+# 4. Build IPA iOS (staging) — requires macOS runner with Xcode
+# ios_build_staging:
+#   stage: build
+#   tags:
+#     - macos
+#   script:
+#     - make ipa-stg
+#     - npm install -g firebase-tools
+#     - firebase appdistribution:distribute build/ios/ipa/*.ipa --app $FIREBASE_IOS_APP_ID_STAGING --token $FIREBASE_TOKEN --groups "testers" --release-notes "New staging build"
+#   only:
+#     - master
