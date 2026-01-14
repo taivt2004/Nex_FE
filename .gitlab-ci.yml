@@ -23,9 +23,9 @@ unit_testing:
 android_build_staging:
   stage: build
   script:
-    - make apk-stg
+    - make apk-stg-split
   artifacts:
     paths:
-      - build/app/outputs/flutter-apk/*staging*.apk
+      - build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk
   only:
     - master

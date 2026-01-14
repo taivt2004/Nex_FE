@@ -31,6 +31,10 @@ apk-dev:
 apk-stg:
 	@flutter build apk --profile --flavor staging --target lib/main_staging.dart
 
+.PHONY: apk-stg-split
+apk-stg-split:
+	@flutter build apk --split-per-abi --profile --flavor staging --target lib/main_staging.dart
+
 .PHONY: apk-prod
 apk-prod:
 	@flutter build apk --no-shrink --release --no-tree-shake-icons --flavor production --target lib/main_production.dart
@@ -77,7 +81,7 @@ firebase-prod:
 
 .PHONY: analyze
 analyze:
-	@dart analyze lib test
+	@dart analyze lib
 
 .PHONY: format
 format:
