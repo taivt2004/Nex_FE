@@ -35,9 +35,6 @@ android_build_staging:
         --groups "testers" 
         --release-notes "New staging build từ GitLab Runner"
         --non-interactive
-  artifacts:
-    paths:
-      - build/app/outputs/flutter-apk/*arm64-v8a*.apk
   only:
     - master
 
