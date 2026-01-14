@@ -16,7 +16,7 @@ stages:
 unit_testing:
   stage: verify
   script:
-  - echo "Đang bỏ qua unit test tạm thời"
+  - echo "Đang bỏ qua unit test tạm thời."
     # - flutter test
 
 # 3. Build APK Android (staging)
