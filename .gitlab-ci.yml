@@ -24,8 +24,9 @@ android_build_staging:
   stage: build
   script:
     - make apk-stg-split
-    - npm install -g firebase-tools
-    - firebase appdistribution:distribute build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk --app $FIREBASE_ANDROID_APP_ID_STAGING --token $FIREBASE_TOKEN --groups "testers" --release-notes "New staging build"
+    - curl -Lo firebase https://firebase.tools/bin/linux/latest
+    - chmod +x firebase
+    - ./firebase appdistribution:distribute build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk --app $FIREBASE_ANDROID_APP_ID_STAGING --token $FIREBASE_TOKEN --groups "testers" --release-notes "New staging build"
   artifacts:
     paths:
       - build/app/outputs/flutter-apk/*staging*arm64-v8a*.apk
