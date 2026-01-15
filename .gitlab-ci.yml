@@ -38,7 +38,7 @@ android_build_staging:
     - if [ -z "$APK_PATH" ]; then echo "KHÔNG TÌM THẤY FILE APK UNIVERSAL"; ls -R build/app/outputs/flutter-apk || true; exit 1; fi
     - echo "Đang đẩy file $APK_PATH lên Firebase....."
 
-    # 5. Dùng firebase CLI đã cài bằng npm
+    # 5. Dùng firebase CLI đã cài bằng npm.
     - firebase appdistribution:distribute "$APK_PATH" \
         --app "$FIREBASE_ANDROID_APP_ID_STAGING" \
         --token "$FIREBASE_TOKEN" \
