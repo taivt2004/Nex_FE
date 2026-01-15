@@ -40,18 +40,9 @@ android_build_staging:
     - APK_PATH=$(find build/app/outputs/flutter-apk -maxdepth 1 -name "app-staging-profile.apk" | head -n 1)
     - if [ -z "$APK_PATH" ]; then echo "KHÔNG TÌM THẤY FILE APK UNIVERSAL"; ls -R build/app/outputs/flutter-apk || true; exit 1; fi
     - echo "Đang đẩy file $APK_PATH lên Firebase....."
-    - if [ -z "$FIREBASE_ANDROID_APP_ID_STAGING" ]; then echo "FIREBASE_ANDROID_APP_ID_STAGING chưa được cấu hình"; exit 1; fi
-    - if [ -z "$FIREBASE_TOKEN" ]; then echo "FIREBASE_TOKEN chưa được cấu hình"; exit 1; fi
-    - echo "App ID: $FIREBASE_ANDROID_APP_ID_STAGING"
 
     # 5. Dùng firebase CLI đã cài bằng npm.
-    - firebase appdistribution:distribute "$APK_PATH" \
-        --app "$FIREBASE_ANDROID_APP_ID_STAGING" \
-        --token "$FIREBASE_TOKEN" \
-        --groups "testers" \
-        --release-notes "New staging build từ GitLab Runner" \
-        --non-interactive \
-        --debug
+    - firebase appdistribution:distribute "$APK_PATH" --app "$FIREBASE_ANDROID_APP_ID_STAGING" --token "$FIREBASE_TOKEN" --groups "testers" --release-notes "Bản build Universal Staging từ GitLab" --non-interactive
   only:
     - master
 
