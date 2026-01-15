@@ -44,7 +44,7 @@ android_distribute_staging:
     - apt-get update && apt-get install -y curl
     - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
     - apt-get install -y nodejs
-
+  
     # 2. Cài Firebase CLI
     - npm install -g firebase-tools
 
