@@ -1,16 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nexpaylab/app/core/data/localstore/app.config.local.dart';
 
 part 'create_wallet_state.dart';
 
 class CreateWalletCubit extends Cubit<CreateWalletState> {
   CreateWalletCubit()
-      : super(const CreateWalletState(
+    : super(
+        const CreateWalletState(
           walletName: 'Wallet 1',
-          isSecure: false,
+          isSecure: false, 
           passphrase: '',
           confirmPassphrase: '',
-        ));
+        ),
+      );
 
   void setWalletName(String value) {
     final error = _validateWalletName(value);
@@ -18,12 +21,14 @@ class CreateWalletCubit extends Cubit<CreateWalletState> {
   }
 
   void toggleSecure({required bool isSecure}) {
-    emit(state.copyWith(
-      isSecure: isSecure,
-      // Reset error when toggling secure mode
-      passphraseError: null,
-      // Keep existing passphrase/confirm to allow user resume
-    ));
+    emit(
+      state.copyWith(
+        isSecure: isSecure,
+        // Reset error when toggling secure mode
+        passphraseError: null,
+        // Keep existing passphrase/confirm to allow user resume
+      ),
+    );
   }
 
   void setPassphrase(String value) {
@@ -45,6 +50,14 @@ class CreateWalletCubit extends Cubit<CreateWalletState> {
       error = 'Passphrase do not match';
     }
     return s.copyWith(passphraseError: error);
+  }
+
+  Future<void> savePassphraseToDB(AppConfigLocalStore configStore) async {
+    if (state.isSecure && state.passphrase.length == 6) {
+      final createdAt = DateTime.now().toIso8601String();
+      await configStore.saveValue('local_passphrase', state.passphrase);
+      await configStore.saveValue('local_passphrase_created_at', createdAt);
+    }
   }
 
   String? _validateWalletName(String value) {

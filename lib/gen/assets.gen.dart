@@ -265,12 +265,6 @@ class Assets {
   static const $AssetsGoogleFontsGen googleFonts = $AssetsGoogleFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
-  static const $AssetsIconsHomeGen iconsHome = $AssetsIconsHomeGen();
-  static const $AssetsIconsHomeActionBtnGen iconsHomeActionBtn = $AssetsIconsHomeActionBtnGen();
-  static const $AssetsIconsHomeBottomMenuGen iconsHomeBottomMenu = $AssetsIconsHomeBottomMenuGen();
-  static const $AssetsIconsHomeCryptActivesGen iconsHomeCryptActives = $AssetsIconsHomeCryptActivesGen();
-  static const $AssetsIconsHomeTopbarGen iconsHomeTopbar = $AssetsIconsHomeTopbarGen();
-  static const $AssetsIconsHomeQrscanGen iconsHomeQrscan = $AssetsIconsHomeQrscanGen();
 }
 
 class AssetGenImage {

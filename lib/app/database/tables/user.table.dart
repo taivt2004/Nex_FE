@@ -13,7 +13,7 @@ class Users extends Table {
   TextColumn get phone => text().nullable()();
   TextColumn get email => text().nullable()();
   TextColumn get address => text().nullable()();
-
+  
   @override
   Set<Column> get primaryKey => {id};
 }

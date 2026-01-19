@@ -42,14 +42,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
     super.dispose();
   }
 
-  
   void _startAutoSlide() {
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       var currentPage = _cubit.state.currentPage;
       if (currentPage < OnboardingModel.list.length - 1) {
         currentPage++;
       } else {
-        currentPage = 0; 
+        currentPage = 0;
       }
 
       if (_pageController.hasClients) {
@@ -70,8 +69,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
   void _showAlreadyHaveWalletSheet() {
     showAlreadyHaveWalletSheet(
       context,
-      onContinue: () => context.push(AppRouter.alreadyHaveWallet01),
+      onContinue: () async {
+        context.go(AppRouter.alreadyHaveWallet01);
+      },
     );
+  }
+
+  Future<void> _onCreateNewWalletTap() async {
+    await context.push(AppRouter.createNewWallet01);
   }
 
   @override
@@ -94,16 +99,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
             child: Column(
               children: [
                 SizedBox(height: 20.h),
-                
-                const Expanded(
-                  flex: 6, 
-                  child: OnboardingIllustration(),
-                ),
 
-                SizedBox(height: 20.h), 
-                
+                const Expanded(flex: 6, child: OnboardingIllustration()),
+
+                SizedBox(height: 20.h),
+
                 Expanded(
-                  flex: 3, 
+                  flex: 3,
                   child: PageView.builder(
                     controller: _pageController,
                     onPageChanged: (value) {
@@ -120,7 +122,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     },
                   ),
                 ),
-                
+
                 BlocBuilder<OnboardingCubit, OnboardingState>(
                   builder: (context, state) {
                     return Row(
@@ -138,17 +140,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
                 SizedBox(height: 32.h),
 
-                
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Column(
                     children: [
-                      OnboardingPrimaryButton(
+             OnboardingPrimaryButton(
                         text: 'Create new wallet',
-                        onTap: () {
-                          
-                          context.push(AppRouter.createNewWallet01);
-                        },
+                        onTap: _onCreateNewWalletTap,
                       ),
                       SizedBox(height: 16.h),
                       OnboardingSecondaryButton(
@@ -161,7 +159,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
                 SizedBox(height: 24.h),
 
-                
                 const OnboardingFooter(),
                 SizedBox(height: 24.h),
               ],

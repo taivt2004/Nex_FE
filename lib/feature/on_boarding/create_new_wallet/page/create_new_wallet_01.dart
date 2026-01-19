@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nexpaylab/app/core/data/localstore/app.config.local.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/feature/on_boarding/create_new_wallet/cubit/create_wallet_cubit.dart';
 import 'package:nexpaylab/feature/on_boarding/create_new_wallet/widget/create_wallet_button.dart';
 import 'package:nexpaylab/feature/on_boarding/create_new_wallet/widget/passphrase_section.dart';
 import 'package:nexpaylab/feature/on_boarding/create_new_wallet/widget/wallet_name_input.dart';
+import 'package:nexpaylab/injector.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
 
 class CreateNewWallet01Page extends StatefulWidget {
@@ -40,7 +42,7 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
           ),
           title: Text(
             'Create new wallet',
@@ -75,9 +77,9 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
                             isSecure: state.isSecure,
                             errorText: state.passphraseError,
                             onChanged: (value) {
-                              context
-                                  .read<CreateWalletCubit>()
-                                  .toggleSecure(isSecure: value);
+                              context.read<CreateWalletCubit>().toggleSecure(
+                                isSecure: value,
+                              );
                             },
                             onPassphraseChanged: (value) {
                               context.read<CreateWalletCubit>().setPassphrase(
@@ -114,13 +116,20 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
                     ),
                     child: CreateWalletButton(
                       enabled: state.isFormValid,
-                      onPressed: () {
+                      onPressed: () async {
                         final cubit = context.read<CreateWalletCubit>()
                           ..setWalletName(_walletNameController.text);
                         if (cubit.state.walletNameError != null) {
                           return;
                         }
-                        context.go(AppRouter.home);
+
+                        await cubit.savePassphraseToDB(
+                          getIt<AppConfigLocalStore>(),
+                        );
+
+                        if (context.mounted) {
+                          context.go(AppRouter.home);
+                        }
                       },
                     ),
                   );

@@ -11,7 +11,6 @@ import 'package:nexpaylab/feature/home/presentation/page/discover.page.dart';
 import 'package:nexpaylab/feature/home/presentation/page/home_tab.page.dart';
 import 'package:nexpaylab/feature/home/presentation/page/swap.page.dart';
 import 'package:nexpaylab/feature/home/presentation/page/trending.page.dart';
-import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/injector.dart';
 import 'package:nexpaylab/share/logger.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
@@ -66,26 +65,28 @@ class _HomeFormState extends State<HomeForm> {
       itemLabel: 'Home',
     ),
     BottomBarItem(
-      inActiveItem: Assets.iconsHomeBottomMenu.icMenuSwap.load(color: OlaColors.gray400),
-      activeItem: Assets.iconsHomeBottomMenu.icMenuSwap.load(
+      inActiveItem: AppAssets.homeBottomMenu.icMenuSwap.load(
+        color: OlaColors.gray400,
+      ),
+      activeItem: AppAssets.homeBottomMenu.icMenuSwap.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Swap',
     ),
     BottomBarItem(
-      inActiveItem: Assets.iconsHomeBottomMenu.icMenuTrending.load(
+      inActiveItem: AppAssets.homeBottomMenu.icMenuTrending.load(
         color: OlaColors.gray400,
       ),
-      activeItem: Assets.iconsHomeBottomMenu.icMenuTrending.load(
+      activeItem: AppAssets.homeBottomMenu.icMenuTrending.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Trending',
     ),
     BottomBarItem(
-      inActiveItem: Assets.iconsHomeBottomMenu.icMenuDiscover.load(
+      inActiveItem: AppAssets.homeBottomMenu.icMenuDiscover.load(
         color: OlaColors.gray400,
       ),
-      activeItem: Assets.iconsHomeBottomMenu.icMenuDiscover.load(
+      activeItem: AppAssets.homeBottomMenu.icMenuDiscover.load(
         color: OlaColors.primarycolor,
       ),
       itemLabel: 'Discover',

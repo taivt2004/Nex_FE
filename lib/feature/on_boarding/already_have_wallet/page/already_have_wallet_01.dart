@@ -51,7 +51,7 @@ class _AlreadyHaveWallet01PageState extends State<AlreadyHaveWallet01Page> {
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
           ),
           title: Text(
             'Add existing wallet',

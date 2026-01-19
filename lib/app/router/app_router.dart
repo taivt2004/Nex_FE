@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/database.dart';
 import 'package:nexpaylab/feature/home/presentation/page/home.page.dart';
+import 'package:nexpaylab/feature/lock_screen/page/lock_screen.page.dart';
 import 'package:nexpaylab/feature/login.register/page/login.page.dart';
 import 'package:nexpaylab/feature/login.register/page/register.page.dart';
 import 'package:nexpaylab/feature/on_boarding/already_have_wallet/page/already_have_wallet_01.dart';
@@ -21,7 +22,7 @@ class AppRouter extends Equatable {
   static const databaseViwer = '/db_viewer';
   static const createNewWallet01 = '/create_new_wallet_01';
   static const alreadyHaveWallet01 = '/already_have_wallet_01';
-
+  static const lockScreen = '/lock_screen';
   @override
   List<Object?> get props => [home];
 }
@@ -61,6 +62,10 @@ GoRouter router([String? initialLocation]) => GoRouter(
     GoRoute(
       path: AppRouter.alreadyHaveWallet01,
       builder: (context, state) => const AlreadyHaveWallet01Page(),
+    ),
+    GoRoute(
+      path: AppRouter.lockScreen,
+      builder: (context, state) => const LockScreenPage(),
     ),
   ],
   redirect: (BuildContext context, GoRouterState state) async {

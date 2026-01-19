@@ -21,11 +21,20 @@ class CreateWalletState extends Equatable {
 
   bool get isFormValid {
     if (walletNameError != null) return false;
+
+    // Always require secure mode (passphrase)
+    // if (!isSecure) return false; // Uncomment if checkbox itself is mandatory, but assuming logic is "must enter passphrase"
+
+    // If secure mode is active (or if we want to force it):
     if (isSecure) {
       if (passphrase.length < 6) return false;
       if (confirmPassphrase.length < 6) return false;
       if (passphrase != confirmPassphrase) return false;
+    } else {
+      // If isSecure is false, disable button
+      return false;
     }
+
     return true;
   }
 
@@ -46,14 +55,14 @@ class CreateWalletState extends Equatable {
       passphraseError: passphraseError,
     );
   }
-  
+
   @override
   List<Object?> get props => [
-        walletName,
-        isSecure,
-        passphrase,
-        confirmPassphrase,
-        walletNameError,
-        passphraseError,
-      ];
+    walletName,
+    isSecure,
+    passphrase,
+    confirmPassphrase,
+    walletNameError,
+    passphraseError,
+  ];
 }

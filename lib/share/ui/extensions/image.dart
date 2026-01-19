@@ -80,12 +80,24 @@ class AppAssets {
   static const icons = Assets.icons;
   static const images = Assets.images;
 
-  static const homeBottomMenu = Assets.iconsHomeBottomMenu;
-  static const homeActionBtn = Assets.iconsHomeActionBtn;
-  static const homeCryptActives = Assets.iconsHomeCryptActives;
-  static const homeTopbar = Assets.iconsHomeTopbar;
-  static const homeQrscan = Assets.iconsHomeQrscan;
+  static $AssetsIconsHomeBottomMenuGen get homeBottomMenu =>
+      Assets.icons.home.bottomMenu;
 
-  static const homeCryptoActives = Assets.iconsHomeCryptActives;
-  static const homeQrScan = Assets.iconsHomeQrscan;
+  static $AssetsIconsHomeActionBtnGen get homeActionBtn =>
+      Assets.icons.home.actionBtn;
+
+  static $AssetsIconsHomeCryptActivesGen get homeCryptActives =>
+      Assets.icons.home.cryptActives;
+
+  static $AssetsIconsHomeTopbarGen get homeTopbar =>
+      Assets.icons.home.topbar;
+
+  static $AssetsIconsHomeQrscanGen get homeQrscan =>
+      Assets.icons.home.qrscan;
+
+  static $AssetsIconsHomeCryptActivesGen get homeCryptoActives =>
+      Assets.icons.home.cryptActives;
+
+  static $AssetsIconsHomeQrscanGen get homeQrScan =>
+      Assets.icons.home.qrscan;
 }

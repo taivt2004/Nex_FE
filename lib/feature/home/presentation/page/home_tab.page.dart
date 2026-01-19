@@ -9,7 +9,6 @@ import 'package:nexpaylab/feature/home/presentation/widget/home_tab/home_payment
 import 'package:nexpaylab/feature/home/presentation/widget/home_tab/home_quick_actions_section.dart';
 import 'package:nexpaylab/feature/home/presentation/widget/home_tab/home_top_bar.dart';
 import 'package:nexpaylab/feature/home/presentation/widget/home_tab/home_total_value_section.dart';
-import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
 import 'package:nexpaylab/share/ui/extensions/image.dart';
 
@@ -145,7 +144,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                         HomeQuickActionsSection(
                           actions: [
                             HomeQuickActionItemData(
-                              icon: Assets.iconsHomeActionBtn.icActionSend.load(
+                              icon: AppAssets.homeActionBtn.icActionSend.load(
                                 width: 22.w,
                                 height: 22.h,
                                 color: OlaColors.actionBtnColor,
@@ -153,7 +152,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                               label: 'Send',
                             ),
                             HomeQuickActionItemData(
-                              icon: Assets.iconsHomeActionBtn.icActionReceive.load(
+                              icon: AppAssets.homeActionBtn.icActionReceive.load(
                                 width: 22.w,
                                 height: 22.h,
                                 color: OlaColors.actionBtnColor,
@@ -161,7 +160,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                               label: 'Receive',
                             ),
                             HomeQuickActionItemData(
-                              icon: Assets.iconsHomeActionBtn.icTsxBuy.load(
+                              icon: AppAssets.homeActionBtn.icTsxBuy.load(
                                 width: 22.w,
                                 height: 22.h,
                                 color: OlaColors.actionBtnColor,
@@ -169,7 +168,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                               label: 'Buy',
                             ),
                             HomeQuickActionItemData(
-                              icon: Assets.iconsHomeActionBtn.icActionSell.load(
+                              icon: AppAssets.homeActionBtn.icActionSell.load(
                                 width: 32.w,
                                 height: 32.h,
                                 color: OlaColors.actionBtnColor,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
 import 'package:nexpaylab/share/ui/extensions/image.dart';
+
 class HomeTopBar extends StatelessWidget {
   const HomeTopBar({
     this.walletTitle = 'Main Wallet',
@@ -25,7 +25,7 @@ class HomeTopBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _TopBarIconButton(
-          icon: Assets.iconsHomeTopbar.gridIcon.load(
+          icon: AppAssets.homeTopbar.gridIcon.load(
             color: Colors.white,
             width: 22.sp,
             height: 22.sp,
@@ -47,7 +47,7 @@ class HomeTopBar extends StatelessWidget {
         Row(
           children: [
             _TopBarIconButton(
-              icon: Assets.iconsHomeTopbar.searchIcon.load(
+              icon: AppAssets.homeTopbar.searchIcon.load(
                 color: Colors.white,
                 width: 22.sp,
                 height: 22.sp,
@@ -56,7 +56,7 @@ class HomeTopBar extends StatelessWidget {
             ),
             SizedBox(width: 8.w),
             _TopBarIconButton(
-              icon: Assets.iconsHomeTopbar.notifiIcon.load(
+              icon: AppAssets.homeTopbar.notifiIcon.load(
                 color: Colors.white,
                 width: 22.sp,
                 height: 22.sp,
@@ -83,9 +83,7 @@ class _TopBarIconButton extends StatelessWidget {
       child: SizedBox(
         width: 32.w,
         height: 32.w,
-        child: Center(
-          child: icon,
-        ),
+        child: Center(child: icon),
       ),
     );
   }

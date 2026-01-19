@@ -1,5 +1,5 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // InjectableConfigGenerator
@@ -52,16 +52,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i844.DeviceInfoCollector>(() => _i844.DeviceInfoCollector());
     gh.singleton<_i867.Database>(() => appModule.database);
     gh.singleton<_i1031.AppLifecycle>(() => _i1031.AppLifecycle());
+    gh.lazySingleton<_i715.NetworkStateStream>(
+      () => _i715.NetworkStateStream(),
+    );
+    gh.lazySingleton<_i505.UserSessionStream>(() => _i505.UserSessionStream());
     await gh.lazySingletonAsync<_i460.SharedPreferences>(
       () => appModule.sharedPreference,
       preResolve: true,
     );
     gh.lazySingleton<_i466.ThemeModel>(() => appModule.appTheme);
     gh.lazySingleton<_i289.ApiService>(() => appModule.apiService);
-    gh.lazySingleton<_i505.UserSessionStream>(() => _i505.UserSessionStream());
-    gh.lazySingleton<_i715.NetworkStateStream>(
-      () => _i715.NetworkStateStream(),
-    );
     gh.factory<_i774.AppConfigLocalStore>(
       () => _i774.AppConfigLocalStoreImp(db: gh<_i867.Database>()),
     );

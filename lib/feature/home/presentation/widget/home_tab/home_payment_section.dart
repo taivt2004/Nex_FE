@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/share/theme/app_style.dart';
 import 'package:nexpaylab/share/ui/extensions/image.dart';
 
@@ -57,7 +56,7 @@ class HomePaymentSection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Assets.iconsHomeQrscan.qrScanIcon.load(
+                  AppAssets.homeQrscan.qrScanIcon.load(
                     color: Colors.white,
                   ),
                   SizedBox(width: 8.w),
