@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 
@@ -6,8 +7,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:nexpaylab/app/database/tables/config.table.dart';
-import 'package:nexpaylab/app/database/tables/user.table.dart';
+import 'package:nexpaylab/app/database/tables/config_table.dart';
+import 'package:nexpaylab/app/database/tables/user_table.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
@@ -57,15 +58,17 @@ Future<String> _obtainOrCreateDbKey() async {
   final random = Random.secure();
   final bytes = List<int>.generate(32, (_) => random.nextInt(256));
   final key = base64UrlEncode(bytes);
+  
   await storage.write(key: _appSecretKeyStorageKey, value: key);
   return key;
 }
 
 Future<void> _setupSqlCipher() async {
-  if (!Platform.isAndroid) {  
-    return;
+  if (Platform.isAndroid) {
+    await applyWorkaroundToOpenSqlCipherOnOldAndroidVersions();
+    open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
+  } else if (Platform.isIOS) {
+    // Force SQLCipher on iOS
+    open.overrideFor(OperatingSystem.iOS, DynamicLibrary.process);
   }
-  
-  await applyWorkaroundToOpenSqlCipherOnOldAndroidVersions();
-  open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
 }

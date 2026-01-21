@@ -1,0 +1,28 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
+abstract class LocalStorageService {
+  Future<void> saveString(String key, String value);
+  String? getString(String key);
+  Future<void> remove(String key);
+}
+
+class SharedPreferencesService implements LocalStorageService {
+  SharedPreferencesService(this._sharedPreferences);
+
+  final SharedPreferences _sharedPreferences;
+
+  @override
+  Future<void> saveString(String key, String value) async {
+    await _sharedPreferences.setString(key, value);
+  }
+
+  @override
+  String? getString(String key) {
+    return _sharedPreferences.getString(key);
+  }
+
+  @override
+  Future<void> remove(String key) async {
+    await _sharedPreferences.remove(key);
+  }
+}

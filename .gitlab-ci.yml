@@ -31,8 +31,8 @@ android_build_staging:
       # Lưu file APK lại để share cho stage sau
       - build/app/outputs/flutter-apk/app-staging-profile.apk
     expire_in: 1 hour
-  only:
-    - master
+  # only:
+  #   - master
 
 # 4. Distribute to Firebase
 android_distribute_staging:
@@ -56,7 +56,7 @@ android_distribute_staging:
     - firebase appdistribution:distribute "$APK_PATH" --app "$FIREBASE_ANDROID_APP_ID_STAGING" --token "$FIREBASE_TOKEN" --groups "testers" --release-notes "Bản build Universal Staging dùng Artifacts" --non-interactive
   only:
     - master
-
+  
 # 5. Build IPA iOS (staging) — requires macOS runner with Xcode
 # ios_build_staging:
 #   stage: build

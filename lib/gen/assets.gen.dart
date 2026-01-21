@@ -180,6 +180,10 @@ class $AssetsIconsHomeActionBtnGen {
   SvgGenImage get icActionSend =>
       const SvgGenImage('assets/icons/home/action_btn/ic_action_send.svg');
 
+  /// File path: assets/icons/home/action_btn/ic_action_swap.svg
+  SvgGenImage get icActionSwap =>
+      const SvgGenImage('assets/icons/home/action_btn/ic_action_swap.svg');
+
   /// File path: assets/icons/home/action_btn/ic_tsx_buy.svg
   SvgGenImage get icTsxBuy =>
       const SvgGenImage('assets/icons/home/action_btn/ic_tsx_buy.svg');
@@ -189,6 +193,7 @@ class $AssetsIconsHomeActionBtnGen {
     icActionReceive,
     icActionSell,
     icActionSend,
+    icActionSwap,
     icTsxBuy,
   ];
 }

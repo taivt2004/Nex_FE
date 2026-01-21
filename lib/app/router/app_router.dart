@@ -4,14 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/database.dart';
-import 'package:nexpaylab/feature/home/presentation/page/home.page.dart';
-import 'package:nexpaylab/feature/lock_screen/page/lock_screen.page.dart';
-import 'package:nexpaylab/feature/login.register/page/login.page.dart';
-import 'package:nexpaylab/feature/login.register/page/register.page.dart';
-import 'package:nexpaylab/feature/on_boarding/already_have_wallet/page/already_have_wallet_01.dart';
-import 'package:nexpaylab/feature/on_boarding/create_new_wallet/page/create_new_wallet_01.dart';
-import 'package:nexpaylab/feature/on_boarding/introduction/page/onboarding.page.dart';
-import 'package:nexpaylab/feature/on_boarding/introduction/page/splash.page.dart';
+import 'package:nexpaylab/features/auth/presentation/page/login_page.dart';
+import 'package:nexpaylab/features/auth/presentation/page/register_page.dart';
+import 'package:nexpaylab/features/home/presentation/page/home_page.dart';
+import 'package:nexpaylab/features/lock_screen/presentation/page/lock_screen_page.dart';
+import 'package:nexpaylab/features/on_boarding/already_have_wallet/page/already_have_wallet_01.dart';
+import 'package:nexpaylab/features/on_boarding/create_new_wallet/page/create_new_wallet_01.dart';
+import 'package:nexpaylab/features/on_boarding/introduction/page/onboarding_page.dart';
+import 'package:nexpaylab/features/on_boarding/introduction/page/splash_page.dart';
 
 class AppRouter extends Equatable {
   static const home = '/';

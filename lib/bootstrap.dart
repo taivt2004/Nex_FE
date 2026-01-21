@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:nexpaylab/bloc.observer.dart';
-import 'package:nexpaylab/injector.dart';
-import 'package:nexpaylab/share/logger.dart';
+import 'package:nexpaylab/app/bloc_observer.dart';
+import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/shared/logger.dart';
 
 Future<void> bootstrap(
   FutureOr<Widget> Function() builder,

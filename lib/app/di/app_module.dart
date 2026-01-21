@@ -1,12 +1,14 @@
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/core/data/service/api.dart';
-import 'package:nexpaylab/app/core/network/auth_interceptor.dart';
-import 'package:nexpaylab/app/core/network/dio_client.dart';
-import 'package:nexpaylab/app/core/network/request_interceptor.dart';
+import 'package:nexpaylab/app/data/service/api.dart';
+import 'package:nexpaylab/app/data/service/local_storage_service.dart';
 import 'package:nexpaylab/app/database/database.dart';
-import 'package:nexpaylab/constants.dart';
-import 'package:nexpaylab/injector.dart';
-import 'package:nexpaylab/share/theme/theme.mode.dart';
+import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/app/network/auth_interceptor.dart';
+import 'package:nexpaylab/app/network/dio_client.dart';
+import 'package:nexpaylab/app/network/request_interceptor.dart';
+import 'package:nexpaylab/shared/constants/core_constants.dart';
+import 'package:nexpaylab/shared/language/language_model.dart';
+import 'package:nexpaylab/shared/theme/theme_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @module
@@ -14,13 +16,18 @@ abstract class AppModule {
   @singleton
   Database get database => Database();
 
-  @lazySingleton
   @preResolve
-  Future<SharedPreferences> get sharedPreference async =>
-      SharedPreferences.getInstance();
+  Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+
+  @singleton
+  LocalStorageService get localStorageService =>
+      SharedPreferencesService(getIt<SharedPreferences>());
 
   @lazySingleton
-  ThemeModel get appTheme => ThemeModel();
+  ThemeModel get themeModel => ThemeModel(getIt<LocalStorageService>());
+
+  @lazySingleton
+  LanguageModel get languageModel => LanguageModel(getIt<LocalStorageService>());
 
   @lazySingleton
   ApiService get apiService => ApiService(
