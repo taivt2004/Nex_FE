@@ -54,8 +54,8 @@ android_distribute_staging:
 
     # 4. Distribute
     - firebase appdistribution:distribute "$APK_PATH" --app "$FIREBASE_ANDROID_APP_ID_STAGING" --token "$FIREBASE_TOKEN" --groups "testers" --release-notes "Bản build Universal Staging dùng Artifacts" --non-interactive
-  only:
-    - master
+  # only:
+  #   - master
   
 # 5. Build IPA iOS (staging) — requires macOS runner with Xcode
 # ios_build_staging:
