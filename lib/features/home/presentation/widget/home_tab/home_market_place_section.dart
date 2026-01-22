@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:nexpaylab/features/home/coinmarket/marketplace_bloc/marketplace_bloc.dart';
+import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';
 import 'package:nexpaylab/shared/theme/app_style.dart';
 
-class CoinMarketSliver extends StatelessWidget {
-  const CoinMarketSliver({super.key});
+class HomeMarketPlaceSection extends StatelessWidget {
+  const HomeMarketPlaceSection({super.key});
 
   @override
   Widget build(BuildContext context) {

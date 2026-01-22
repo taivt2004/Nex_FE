@@ -124,9 +124,22 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/app_icon.png
+  AssetGenImage get appIcon =>
+      const AssetGenImage('assets/images/app_icon.png');
+
   /// File path: assets/images/bg_splash.jpg
   AssetGenImage get bgSplash =>
       const AssetGenImage('assets/images/bg_splash.jpg');
+
+  /// File path: assets/images/ic_app.png
+  AssetGenImage get icAppPng => const AssetGenImage('assets/images/ic_app.png');
+
+  /// File path: assets/images/ic_app.svg
+  SvgGenImage get icAppSvg => const SvgGenImage('assets/images/ic_app.svg');
+
+  /// File path: assets/images/icon.png
+  AssetGenImage get icon => const AssetGenImage('assets/images/icon.png');
 
   /// File path: assets/images/nexpay.svg
   SvgGenImage get nexpay => const SvgGenImage('assets/images/nexpay.svg');
@@ -140,7 +153,16 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/on_boarding2.png');
 
   /// List of all assets
-  List<dynamic> get values => [bgSplash, nexpay, onBoarding, onBoarding2];
+  List<dynamic> get values => [
+    appIcon,
+    bgSplash,
+    icAppPng,
+    icAppSvg,
+    icon,
+    nexpay,
+    onBoarding,
+    onBoarding2,
+  ];
 }
 
 class $AssetsIconsHomeGen {

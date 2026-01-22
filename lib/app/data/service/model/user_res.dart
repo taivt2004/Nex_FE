@@ -4,14 +4,14 @@ import 'package:nexpaylab/app/data/model/user.dart';
 part 'user_res.g.dart';
 
 @JsonSerializable()
-class UserResponse {
-  UserResponse({required this.token, required this.user});
+class UserRes {
+  UserRes({required this.token, required this.user});
 
-  factory UserResponse.fromJson(Map<String, dynamic> json) =>
-      _$UserResponseFromJson(json);
+  factory UserRes.fromJson(Map<String, dynamic> json) =>
+      _$UserResFromJson(json);
 
   final String token;
   final User user;
 
-  Map<String, dynamic> toJson() => _$UserResponseToJson(this);
+  Map<String, dynamic> toJson() => _$UserResToJson(this);
 }

@@ -9,7 +9,7 @@ import 'package:nexpaylab/shared/utils/result.dart';
 import 'package:nexpaylab/shared/utils/string_utils.dart';
 
 mixin AppConfigRepository {
-  Future<Result<List<ConfigItem>>> getAppConfigs();
+  Future<Result<List<ConfigItemRes>>> getAppConfigs();
 }
 
 @Injectable(as: AppConfigRepository)
@@ -23,7 +23,7 @@ class AppConfigRepositoryImp implements AppConfigRepository {
   final AppConfigLocalStore localStore;
 
   @override
-  Future<Result<List<ConfigItem>>> getAppConfigs() async {
+  Future<Result<List<ConfigItemRes>>> getAppConfigs() async {
     return Result.guardFuture(() async {
       final keys =
           '${toStrings(userConfigKeys)},${toStrings(systemConfigKeys)}';

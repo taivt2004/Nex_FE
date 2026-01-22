@@ -13,6 +13,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
 import 'package:sqlite3/open.dart';
+import 'package:sqlite3/sqlite3.dart' as sql;
 
 part 'database.g.dart';
 
@@ -33,6 +34,37 @@ LazyDatabase _openConnection() {
     await _setupSqlCipher();
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
+
+    // Check if the database file is valid (encrypted with the correct key)
+    if (file.existsSync()) {
+      try {
+        final db = sql.sqlite3.open(file.path);
+        try {
+          final escapedKey = dbKey.replaceAll("'", "''");
+          db
+            ..execute("PRAGMA key = '$escapedKey';")
+            ..select('SELECT count(*) FROM sqlite_master');
+        } finally {
+          db.dispose();
+        }
+      } on sql.SqliteException catch (e) {
+        // Code 26: SQLITE_NOTADB (File is not a database)
+        // Code 11: SQLITE_CORRUPT (Database disk image is malformed)
+        if (e.resultCode == 26 || e.resultCode == 11) {
+          try {
+            await file.delete();
+          } catch (_) {
+            // Ignore delete errors
+          }
+        }
+      } catch (_) {
+        // Fallback for other errors: try to delete if we can't open/read
+        try {
+          await file.delete();
+        } catch (_) {}
+      }
+    }
+
     return NativeDatabase.createInBackground(
       file,
       isolateSetup: () async {

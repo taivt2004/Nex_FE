@@ -4,8 +4,8 @@ import 'package:injectable/injectable.dart';
 import 'package:nexpaylab/app/data/model/app_config.dart';
 import 'package:nexpaylab/app/data/model/user.dart';
 import 'package:nexpaylab/app/data/service/api.dart';
-import 'package:nexpaylab/app/data/service/param/login_param.dart';
-import 'package:nexpaylab/app/data/service/param/register_param.dart';
+import 'package:nexpaylab/app/data/service/param/login_req.dart';
+import 'package:nexpaylab/app/data/service/param/register_req.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
 import 'package:nexpaylab/app/database/user_local.dart';
 import 'package:nexpaylab/shared/constants/core_constants.dart';
@@ -33,14 +33,14 @@ class UserRepositoryImp implements UserRepository {
   Future<Result<User>> login(String username, String password) async {
     return Result.guardFuture(() async {
       final res = await apiService
-          .login(LoginParam(username: username, password: password));
+          .login(LoginReq(username: username, password: password));
       final user = res.user;
       unawaited(userLocalStore.saveOrUpdateUser(user));
       unawaited(
         appConfigLocalStore.saveInBatch(
           [
-            ConfigItem(key: tokenKey, value: res.token),
-            ConfigItem(key: userKey, value: user.id.toString()),
+            ConfigItemRes(key: tokenKey, value: res.token),
+            ConfigItemRes(key: userKey, value: user.id.toString()),
           ],
         ),
       );
@@ -52,14 +52,14 @@ class UserRepositoryImp implements UserRepository {
   Future<Result<User>> register(String username, String password) async {
     return Result.guardFuture(() async {
       final res = await apiService
-          .register(RegisterParam(username: username, password: password));
+          .register(RegisterReq(username: username, password: password));
       final user = res.user;
       unawaited(userLocalStore.saveOrUpdateUser(user));
       unawaited(
         appConfigLocalStore.saveInBatch(
           [
-            ConfigItem(key: tokenKey, value: res.token),
-            ConfigItem(key: userKey, value: user.id.toString()),
+            ConfigItemRes(key: tokenKey, value: res.token),
+            ConfigItemRes(key: userKey, value: user.id.toString()),
           ],
         ),
       );

@@ -68,6 +68,7 @@ class OnboardingSecondaryButton extends StatelessWidget {
             child: Text(
               text,
               style: PoppinsTextStyles.primary16Semibold.copyWith(
+                color: Colors.white,
               ),
             ),
           ),

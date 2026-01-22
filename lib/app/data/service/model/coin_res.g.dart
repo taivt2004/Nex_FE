@@ -6,51 +6,49 @@ part of 'coin_res.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CoinResponse _$CoinResponseFromJson(Map<String, dynamic> json) => CoinResponse(
+CoinRes _$CoinResFromJson(Map<String, dynamic> json) => CoinRes(
   success: json['success'] as bool,
   code: (json['code'] as num).toInt(),
   message: json['message'] as String,
-  data: CoinPageData.fromJson(json['data'] as Map<String, dynamic>),
+  data: (json['data'] as List<dynamic>)
+      .map((e) => CoinItemRes.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  meta: CoinMetaRes.fromJson(json['meta'] as Map<String, dynamic>),
 );
 
-Map<String, dynamic> _$CoinResponseToJson(CoinResponse instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'code': instance.code,
-      'message': instance.message,
-      'data': instance.data.toJson(),
-    };
+Map<String, dynamic> _$CoinResToJson(CoinRes instance) => <String, dynamic>{
+  'success': instance.success,
+  'code': instance.code,
+  'message': instance.message,
+  'data': instance.data.map((e) => e.toJson()).toList(),
+  'meta': instance.meta.toJson(),
+};
 
-CoinPageData _$CoinPageDataFromJson(Map<String, dynamic> json) => CoinPageData(
-  items: (json['items'] as List<dynamic>)
-      .map((e) => CoinItemResponse.fromJson(e as Map<String, dynamic>))
-      .toList(),
+CoinMetaRes _$CoinMetaResFromJson(Map<String, dynamic> json) => CoinMetaRes(
   limit: (json['limit'] as num).toInt(),
   page: (json['page'] as num).toInt(),
   total: (json['total'] as num).toInt(),
 );
 
-Map<String, dynamic> _$CoinPageDataToJson(CoinPageData instance) =>
+Map<String, dynamic> _$CoinMetaResToJson(CoinMetaRes instance) =>
     <String, dynamic>{
-      'items': instance.items.map((e) => e.toJson()).toList(),
       'limit': instance.limit,
       'page': instance.page,
       'total': instance.total,
     };
 
-CoinItemResponse _$CoinItemResponseFromJson(Map<String, dynamic> json) =>
-    CoinItemResponse(
-      symbol: json['symbol'] as String,
-      base: json['base'] as String,
-      quote: json['quote'] as String,
-      price: (json['price'] as num).toDouble(),
-      change24h: (json['change_24h'] as num).toDouble(),
-      volume24h: (json['volume_24h'] as num).toDouble(),
-      quoteVolume24h: (json['quote_volume_24h'] as num).toDouble(),
-      exchange: json['exchange'] as String,
-    );
+CoinItemRes _$CoinItemResFromJson(Map<String, dynamic> json) => CoinItemRes(
+  symbol: json['symbol'] as String,
+  base: json['base'] as String,
+  quote: json['quote'] as String,
+  price: (json['price'] as num).toDouble(),
+  change24h: (json['change_24h'] as num).toDouble(),
+  volume24h: (json['volume_24h'] as num).toDouble(),
+  quoteVolume24h: (json['quote_volume_24h'] as num).toDouble(),
+  exchange: json['exchange'] as String,
+);
 
-Map<String, dynamic> _$CoinItemResponseToJson(CoinItemResponse instance) =>
+Map<String, dynamic> _$CoinItemResToJson(CoinItemRes instance) =>
     <String, dynamic>{
       'symbol': instance.symbol,
       'base': instance.base,

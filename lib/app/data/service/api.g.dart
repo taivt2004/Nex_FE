@@ -20,12 +20,12 @@ class _ApiService implements ApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<ConfigItem>> getAppConfigs(String keys) async {
+  Future<List<ConfigItemRes>> getAppConfigs(String keys) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ConfigItem>>(
+    final _options = _setStreamType<List<ConfigItemRes>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,10 +36,10 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ConfigItem> _value;
+    late List<ConfigItemRes> _value;
     try {
       _value = _result.data!
-          .map((dynamic i) => ConfigItem.fromJson(i as Map<String, dynamic>))
+          .map((dynamic i) => ConfigItemRes.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -49,12 +49,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<CoinResponse> getCoins(int page, int limit) async {
+  Future<CoinRes> getCoins(int page, int limit) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': page, r'limit': limit};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<CoinResponse>(
+    final _options = _setStreamType<CoinRes>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -65,9 +65,9 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CoinResponse _value;
+    late CoinRes _value;
     try {
-      _value = CoinResponse.fromJson(_result.data!);
+      _value = CoinRes.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -76,13 +76,13 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<UserResponse> login(LoginParam param) async {
+  Future<UserRes> login(LoginReq param) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(param.toJson());
-    final _options = _setStreamType<UserResponse>(
+    final _options = _setStreamType<UserRes>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -93,9 +93,9 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserResponse _value;
+    late UserRes _value;
     try {
-      _value = UserResponse.fromJson(_result.data!);
+      _value = UserRes.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -104,13 +104,13 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<UserResponse> register(RegisterParam param) async {
+  Future<UserRes> register(RegisterReq param) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(param.toJson());
-    final _options = _setStreamType<UserResponse>(
+    final _options = _setStreamType<UserRes>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -121,9 +121,9 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserResponse _value;
+    late UserRes _value;
     try {
-      _value = UserResponse.fromJson(_result.data!);
+      _value = UserRes.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

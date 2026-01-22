@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nexpaylab/features/home/coinmarket/marketplace_bloc/marketplace_bloc.dart';
-import 'package:nexpaylab/features/home/coinmarket/page/coinmarket_page.dart';
+import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
 import 'package:nexpaylab/features/home/presentation/cubit/home_tab_cubit.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_crypto_actives_header.dart';
+import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_market_place_section.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_payment_section.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_quick_actions_section.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_top_bar.dart';
@@ -97,31 +97,39 @@ class _HomeTabPageState extends State<HomeTabPage>
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: () async {
-              context.read<MarketplaceBloc>().add(FetchMarketplace());
-            },
-            child: CustomScrollView(
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.dg),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                         HomeTopBar(
-                          onMenuTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute<void>(
-                                    builder: (_) => const SettingsPage(),
-                                  ),
-                                );
-                              },
-                        ),
-                        SizedBox(height: 24.h),
-                        BlocBuilder<HomeTabCubit, HomeTabState>(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.dg)
+                    .copyWith(top: 16.dg),
+                child: HomeTopBar(
+                  onMenuTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const SettingsPage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<MarketplaceBloc>().add(FetchMarketplace());
+                  },
+                  child: CustomScrollView(
+                    controller: _scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.dg)
+                              .copyWith(bottom: 16.dg),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 24.h),
+                              BlocBuilder<HomeTabCubit, HomeTabState>(
                           buildWhen: (prev, next) => prev.isSynced != next.isSynced,
                           builder: (context, tabState) {
                             return HomeTotalValueSection(
@@ -186,12 +194,16 @@ class _HomeTabPageState extends State<HomeTabPage>
                     ),
                   ),
                 ),
-                const CoinMarketSliver(),
+                const HomeMarketPlaceSection(),
               ],
             ),
           ),
         ),
-      ),
+      ],
+    ),
+  ),
+),
     );
+    
   }
 }

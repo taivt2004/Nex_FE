@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
-import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/lock_screen/presentation/widget/lock_pin_input.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';

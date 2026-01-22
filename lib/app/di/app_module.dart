@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:nexpaylab/app/data/service/api.dart';
 import 'package:nexpaylab/app/data/service/local_storage_service.dart';
 import 'package:nexpaylab/app/database/database.dart';
-import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/app/network/auth_interceptor.dart';
 import 'package:nexpaylab/app/network/dio_client.dart';
 import 'package:nexpaylab/app/network/request_interceptor.dart';
@@ -32,6 +32,6 @@ abstract class AppModule {
   @lazySingleton
   ApiService get apiService => ApiService(
     DioClient.build([getIt<AuthInterceptor>(), getIt<RequestInterceptor>()]),
-    baseUrl: baseUrlApiLocal,
+    baseUrl: baseUrl,
   );
 }

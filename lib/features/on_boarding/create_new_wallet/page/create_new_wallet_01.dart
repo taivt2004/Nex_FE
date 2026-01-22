@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
-import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/on_boarding/create_new_wallet/cubit/create_wallet_cubit.dart';
 import 'package:nexpaylab/features/on_boarding/widget/common/create_wallet_button.dart';

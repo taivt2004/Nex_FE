@@ -4,9 +4,9 @@ import 'package:nexpaylab/app/data/model/app_config.dart';
 import 'package:nexpaylab/app/database/database.dart';
 
 abstract class AppConfigLocalStore {
-  SingleOrNullSelectable<ConfigItem?> getConfigByKey(String key);
+  SingleOrNullSelectable<ConfigItemRes?> getConfigByKey(String key);
   SingleOrNullSelectable<dynamic> getValueByKey(String key);
-  Future<void> saveInBatch(List<ConfigItem> configs);
+  Future<void> saveInBatch(List<ConfigItemRes> configs);
   Future<int> saveValue(String key, String value);
   Future<int> clearConfig(String key);
   Future<int> clearConfigAll();
@@ -19,10 +19,10 @@ class AppConfigLocalStoreImp extends AppConfigLocalStore {
   final Database db;
 
   @override
-  SingleOrNullSelectable<ConfigItem?> getConfigByKey(String key) {
+  SingleOrNullSelectable<ConfigItemRes?> getConfigByKey(String key) {
     final query = db.select(db.appConfigs)..where((t) => t.key.equals(key));
     return query.map((it) {
-      return ConfigItem(key: it.key, value: it.value);
+      return ConfigItemRes(key: it.key, value: it.value);
     });
   }
 
@@ -33,7 +33,7 @@ class AppConfigLocalStoreImp extends AppConfigLocalStore {
   }
 
   @override
-  Future<void> saveInBatch(List<ConfigItem> configs) async {
+  Future<void> saveInBatch(List<ConfigItemRes> configs) async {
     await db.batch((batch) {
       batch.insertAllOnConflictUpdate(
         db.appConfigs,

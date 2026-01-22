@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';
 import 'package:nexpaylab/shared/constants/app_constants.dart';

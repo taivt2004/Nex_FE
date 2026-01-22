@@ -5,16 +5,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:nexpaylab/app/bloc_observer.dart';
-import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/shared/logger.dart';
 
 Future<void> bootstrap(
   FutureOr<Widget> Function() builder,
   String environment,
 ) async {
-  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   // Pass all uncaught asynchronous errors that aren't handled
   PlatformDispatcher.instance.onError = (error, stack) {
@@ -26,7 +26,7 @@ Future<void> bootstrap(
     }
   };
 
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await configureDependencies(environment: environment);
 
@@ -51,5 +51,5 @@ Future<void> bootstrap(
     runApp(await builder());
   });
 
-  FlutterNativeSplash.remove();
+  // FlutterNativeSplash.remove();
 }

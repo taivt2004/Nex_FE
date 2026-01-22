@@ -6,8 +6,14 @@ part of 'app_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ConfigItem _$ConfigItemFromJson(Map<String, dynamic> json) =>
-    ConfigItem(key: json['key'] as String, value: json['value'] as String);
+ConfigItemRes _$ConfigItemResFromJson(Map<String, dynamic> json) =>
+    ConfigItemRes(key: json['key'] as String, value: json['value'] as String);
 
-Map<String, dynamic> _$ConfigItemToJson(ConfigItem instance) =>
+Map<String, dynamic> _$ConfigItemResToJson(ConfigItemRes instance) =>
+    <String, dynamic>{'key': instance.key, 'value': instance.value};
+
+ConfigItemReq _$ConfigItemReqFromJson(Map<String, dynamic> json) =>
+    ConfigItemReq(key: json['key'] as String, value: json['value'] as String);
+
+Map<String, dynamic> _$ConfigItemReqToJson(ConfigItemReq instance) =>
     <String, dynamic>{'key': instance.key, 'value': instance.value};

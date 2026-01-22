@@ -1,6 +1,6 @@
 # flutter pub run flutter_launcher_icons
 flutter_launcher_icons:
-  image_path: "assets/icons/ic_ball.png"
+  image_path: "assets/images/ic_app.png"
 
   android: "launcher_icon"
   # image_path_android: "assets/icon/icon.png"
@@ -11,7 +11,7 @@ flutter_launcher_icons:
 
   ios: true
   # image_path_ios: "assets/icon/icon.png"
-  remove_alpha_channel_ios: true
+  remove_alpha_ios: true
   # image_path_ios_dark_transparent: "assets/icon/icon_dark.png"
   # image_path_ios_tinted_grayscale: "assets/icon/icon_tinted.png"
   # desaturate_tinted_to_grayscale_ios: true
@@ -30,3 +30,24 @@ flutter_launcher_icons:
   macos:
     generate: false
     image_path: "path/to/image.png"
+
+    
+flavors:
+    development:
+      image_path: "assets/images/ic_app.png"
+      android: "launcher_icon"
+      ios: "AppIcon-dev"
+      remove_alpha_ios: true
+      
+    staging:
+      image_path: "assets/images/ic_app.png"
+      android: "launcher_icon"
+      ios: "AppIcon-stg"
+      remove_alpha_ios: true
+      
+    production:
+      image_path: "assets/images/ic_app.png"
+      android: "launcher_icon"
+      ios: "AppIcon"
+      remove_alpha_ios: true
+      

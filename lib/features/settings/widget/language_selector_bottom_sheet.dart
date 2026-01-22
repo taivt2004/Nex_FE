@@ -26,14 +26,14 @@ class LanguageSelectorBottomSheet extends StatelessWidget {
           SizedBox(height: 16.h),
           _buildOption(
             context,
-            title: 'English',
+            title: AppLocalizations.of(context).english,
             code: 'en',
             isSelected: languageModel.currentLocale?.languageCode == 'en',
             onTap: () => languageModel.setLocale('en'),
           ),
           _buildOption(
             context,
-            title: 'Tiếng Việt',
+            title: AppLocalizations.of(context).vietnamese,
             code: 'vi',
             isSelected: languageModel.currentLocale?.languageCode == 'vi',
             onTap: () => languageModel.setLocale('vi'),

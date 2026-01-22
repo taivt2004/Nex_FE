@@ -4,51 +4,51 @@ import 'package:nexpaylab/app/data/model/coin.dart';
 part 'coin_res.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class CoinResponse {
-  CoinResponse({
+class CoinRes {
+  CoinRes({
     required this.success,
     required this.code,
     required this.message,
     required this.data,
+    required this.meta,
   });
 
-  factory CoinResponse.fromJson(Map<String, dynamic> json) =>
-      _$CoinResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$CoinResponseToJson(this);
+  factory CoinRes.fromJson(Map<String, dynamic> json) =>
+      _$CoinResFromJson(json);
+  Map<String, dynamic> toJson() => _$CoinResToJson(this);
 
   final bool success;
   final int code;
   final String message;
-  final CoinPageData data;
+  final List<CoinItemRes> data;
+  final CoinMetaRes meta;
 
-  List<CoinItemResponse> get items => data.items;
-  int get limit => data.limit;
-  int get page => data.page;
-  int get total => data.total;
+  List<CoinItemRes> get items => data;
+  int get limit => meta.limit;
+  int get page => meta.page;
+  int get total => meta.total;
 }
 
 @JsonSerializable(explicitToJson: true)
-class CoinPageData {
-  CoinPageData({
-    required this.items,
+class CoinMetaRes {
+  CoinMetaRes({
     required this.limit,
     required this.page,
     required this.total,
   });
 
-  factory CoinPageData.fromJson(Map<String, dynamic> json) =>
-      _$CoinPageDataFromJson(json);
-  Map<String, dynamic> toJson() => _$CoinPageDataToJson(this);
+  factory CoinMetaRes.fromJson(Map<String, dynamic> json) =>
+      _$CoinMetaResFromJson(json);
+  Map<String, dynamic> toJson() => _$CoinMetaResToJson(this);
 
-  final List<CoinItemResponse> items;
   final int limit;
   final int page;
   final int total;
 }
 
 @JsonSerializable()
-class CoinItemResponse {
-  CoinItemResponse({
+class CoinItemRes {
+  CoinItemRes({
     required this.symbol,
     required this.base,
     required this.quote,
@@ -59,9 +59,9 @@ class CoinItemResponse {
     required this.exchange,
   });
 
-  factory CoinItemResponse.fromJson(Map<String, dynamic> json) =>
-      _$CoinItemResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$CoinItemResponseToJson(this);
+  factory CoinItemRes.fromJson(Map<String, dynamic> json) =>
+      _$CoinItemResFromJson(json);
+  Map<String, dynamic> toJson() => _$CoinItemResToJson(this);
   final String symbol;
   final String base;
   final String quote;

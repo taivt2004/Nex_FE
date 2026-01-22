@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/features/auth/presentation/bloc/register_bloc.dart';
 import 'package:nexpaylab/features/auth/presentation/bloc/register_event.dart';
 import 'package:nexpaylab/features/auth/presentation/bloc/register_state.dart';
@@ -57,7 +57,7 @@ class _RegisterFormState extends State<RegisterForm> {
         final password = _passwordController.text;
 
         context.read<RegisterBloc>().add(
-              SubmitRegister(username: username, password: password),
+              RegisterSubmitted(username: username, password: password),
             );
       }
     });

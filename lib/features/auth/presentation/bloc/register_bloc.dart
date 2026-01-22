@@ -13,14 +13,14 @@ import 'package:nexpaylab/shared/utils/result.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc(this.userRepository, this.userSession)
     : super(RegisterInitial()) {
-    on<SubmitRegister>(onRegister);
+    on<RegisterSubmitted>(onRegister);
   }
 
   final UserRepository userRepository;
   final UserSession userSession;
 
   Future<void> onRegister(
-    SubmitRegister event,
+    RegisterSubmitted event,
     Emitter<RegisterState> emit,
   ) async {
     emit(RegisterLoading());

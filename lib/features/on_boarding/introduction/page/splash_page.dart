@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
-import 'package:nexpaylab/app/di/injector.dart';
+import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/gen/assets.gen.dart';
 import 'package:nexpaylab/shared/theme/app_style.dart';
@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
           ),
-          // Logo đặt phía trên trung tâm một chút
+          // 
           Align(
             alignment: const Alignment(0, -0.35),
             child: Container(

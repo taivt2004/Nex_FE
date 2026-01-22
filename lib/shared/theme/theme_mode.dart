@@ -73,7 +73,7 @@ class ThemeModel extends ChangeNotifier {
     } else if (savedTheme == 'light') {
       themeMode = ThemeMode.light;
     } else {
-      themeMode = ThemeMode.system;
+      themeMode = ThemeMode.dark;
     }
     notifyListeners();
   }
