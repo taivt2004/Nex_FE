@@ -33,7 +33,7 @@ android_build_staging:
 # 4. Distribute to Firebase
 android_distribute_staging:
   stage: distribution
-  # 5. TỐI ƯU QUAN TRỌNG: Dùng image Node.js nhẹ thay vì image Flutter nặng nề
+  
   image: node:20-alpine 
   dependencies:
     - android_build_staging

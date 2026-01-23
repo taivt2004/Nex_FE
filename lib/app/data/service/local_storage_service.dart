@@ -10,7 +10,7 @@ class SharedPreferencesService implements LocalStorageService {
   SharedPreferencesService(this._sharedPreferences);
 
   final SharedPreferences _sharedPreferences;
-
+  
   @override
   Future<void> saveString(String key, String value) async {
     await _sharedPreferences.setString(key, value);

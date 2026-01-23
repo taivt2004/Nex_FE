@@ -11,7 +11,7 @@ class LanguageModel extends ChangeNotifier {
   
   Locale? _currentLocale;
   Locale? get currentLocale => _currentLocale;
-
+  
   void _loadLanguage() {
     final savedLang = _localStorageService.getString(_languageKey);
     if (savedLang != null) {
