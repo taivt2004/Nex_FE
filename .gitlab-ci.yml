@@ -1,71 +1,48 @@
 image: ghcr.io/cirruslabs/flutter:stable
 
+variables:
+  # 1. Định nghĩa thư mục cache cho Flutter Pub
+  PUB_CACHE: $CI_PROJECT_DIR/.pub-cache
+
+# 2. Cấu hình Cache toàn cục
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .pub-cache/
+    - android/.gradle/wrapper/
+    - android/.gradle/caches/
+
 stages:
-  #- quality    
-  #- verify     
-  - build      
+  - build
   - distribution
-
-# 1. Scan code quality
-# static_analysis:
-#   stage: quality
-#   script:
-#     - make get
-#     - make analyze lib || true 
-
-# 2. Verify unitest
-# unit_testing:
-#   stage: verify
-#   script:
-#   - echo "Đang bỏ qua unit test tạm thời."
-    # - flutter test
 
 # 3. Build APK Android (staging)
 android_build_staging:
   stage: build
   timeout: 3 hours
+  before_script:
+    - export PUB_CACHE=$CI_PROJECT_DIR/.pub-cache
+    - flutter pub get
   script:
-    # Build universal APK
     - make apk-stg
   artifacts:
     paths:
-      # Lưu file APK lại để share cho stage sau
       - build/app/outputs/flutter-apk/app-staging-profile.apk
     expire_in: 1 hour
-  # only:
-  #   - master
 
 # 4. Distribute to Firebase
 android_distribute_staging:
   stage: distribution
+  # 5. TỐI ƯU QUAN TRỌNG: Dùng image Node.js nhẹ thay vì image Flutter nặng nề
+  image: node:20-alpine 
   dependencies:
     - android_build_staging
   script:
-    # 1. Cài Node.js 20 + npm
-    - apt-get update && apt-get install -y curl
-    - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-    - apt-get install -y nodejs
-  
-    # 2. Cài Firebase CLI
+    # Không cần cài Node.js nữa vì image đã có sẵn
+    # Chỉ cần cài Firebase CLI
     - npm install -g firebase-tools
 
-    # 3. File APK được lấy từ artifact của stage trước
     - APK_PATH="build/app/outputs/flutter-apk/app-staging-profile.apk"
     - echo "Đang đẩy file artifact $APK_PATH lên Firebase....."
 
-    # 4. Distribute
     - firebase appdistribution:distribute "$APK_PATH" --app "$FIREBASE_ANDROID_APP_ID_STAGING" --token "$FIREBASE_TOKEN" --groups "testers" --release-notes "Bản build Universal Staging dùng Artifacts" --non-interactive
-  # only:
-  #   - master
-  
-# 5. Build IPA iOS (staging) — requires macOS runner with Xcode
-# ios_build_staging:
-#   stage: build
-#   tags:
-#     - macos
-#   script:
-#     - make ipa-stg
-#     - npm install -g firebase-tools
-#     - firebase appdistribution:distribute build/ios/ipa/*.ipa --app $FIREBASE_IOS_APP_ID_STAGING --token $FIREBASE_TOKEN --groups "testers" --release-notes "New staging build"
-#   only:
-#     - master
