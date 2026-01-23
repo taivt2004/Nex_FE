@@ -23,6 +23,7 @@ stages:
 # 3. Build APK Android (staging)
 android_build_staging:
   stage: build
+  timeout: 3 hours
   script:
     # Build universal APK
     - make apk-stg
