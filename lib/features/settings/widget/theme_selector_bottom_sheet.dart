@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';
+import 'package:nexpaylab/shared/theme/app_style.dart';
 import 'package:nexpaylab/shared/theme/theme_mode.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class ThemeSelectorBottomSheet extends StatelessWidget {
         children: [
           Text(
             l10n.theme,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: PoppinsTextStyles.display16Medium,
           ),
           SizedBox(height: 16.h),
           _buildOption(
@@ -68,9 +69,8 @@ class ThemeSelectorBottomSheet extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: PoppinsTextStyles.display16Medium.copyWith(
           color: isSelected ? Theme.of(context).primaryColor : null,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
       trailing: isSelected

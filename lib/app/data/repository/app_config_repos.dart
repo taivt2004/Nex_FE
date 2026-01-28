@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/data/model/app_config.dart';
+import 'package:nexpaylab/app/data/model/common/app_config.dart';
 import 'package:nexpaylab/app/data/service/api.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
 import 'package:nexpaylab/shared/constants/core_constants.dart';

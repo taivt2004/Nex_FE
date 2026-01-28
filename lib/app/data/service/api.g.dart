@@ -49,12 +49,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<CoinRes> getCoins(int page, int limit) async {
+  Future<BaseResponse<List<Coin>>> getCoins(int page, int limit) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': page, r'limit': limit};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<CoinRes>(
+    final _options = _setStreamType<BaseResponse<List<Coin>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -65,9 +65,14 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CoinRes _value;
+    late BaseResponse<List<Coin>> _value;
     try {
-      _value = CoinRes.fromJson(_result.data!);
+      _value = BaseResponse<List<Coin>>.fromJson(
+        _result.data!,
+        (json) => (json as List<dynamic>)
+            .map<Coin>((i) => Coin.fromJson(i as Map<String, dynamic>))
+            .toList(),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -76,13 +81,13 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<UserRes> login(LoginReq param) async {
+  Future<AuthRes> login(LoginReq param) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(param.toJson());
-    final _options = _setStreamType<UserRes>(
+    final _options = _setStreamType<AuthRes>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -93,9 +98,9 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserRes _value;
+    late AuthRes _value;
     try {
-      _value = UserRes.fromJson(_result.data!);
+      _value = AuthRes.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -104,13 +109,13 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<UserRes> register(RegisterReq param) async {
+  Future<AuthRes> register(RegisterReq param) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(param.toJson());
-    final _options = _setStreamType<UserRes>(
+    final _options = _setStreamType<AuthRes>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -121,9 +126,9 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserRes _value;
+    late AuthRes _value;
     try {
-      _value = UserRes.fromJson(_result.data!);
+      _value = AuthRes.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

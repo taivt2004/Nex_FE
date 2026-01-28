@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';
 import 'package:nexpaylab/shared/language/language_model.dart';
+import 'package:nexpaylab/shared/theme/app_style.dart';
 import 'package:provider/provider.dart';
 class LanguageSelectorBottomSheet extends StatelessWidget {
   const LanguageSelectorBottomSheet({super.key});
@@ -54,16 +55,12 @@ class LanguageSelectorBottomSheet extends StatelessWidget {
     return ListTile(
       leading: Text(
         code.toUpperCase(),
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: isSelected ? Theme.of(context).primaryColor : null,
-        ),
+        style: PoppinsTextStyles.display16Medium
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: PoppinsTextStyles.display16Medium.copyWith(
           color: isSelected ? Theme.of(context).primaryColor : null,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
       trailing: isSelected

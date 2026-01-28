@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => getIt<HomeBloc>()),
         BlocProvider(
-          create: (_) => getIt<MarketplaceBloc>()..add(FetchMarketplace()),
+          create: (_) => getIt<MarketplaceBloc>()..add(const FetchMarketplace()),
         ),
       ],
       child: const HomeForm(),

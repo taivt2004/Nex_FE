@@ -25,7 +25,7 @@ class HomeMarketPlaceSection extends StatelessWidget {
             child: Center(
               child: ElevatedButton(
                 onPressed: () =>
-                    context.read<MarketplaceBloc>().add(FetchMarketplace()),
+                    context.read<MarketplaceBloc>().add(const FetchMarketplace()),
                 child: Text(AppLocalizations.of(context).retry),
               ),
             ),

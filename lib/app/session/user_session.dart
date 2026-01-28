@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/data/model/user.dart';
+import 'package:nexpaylab/app/data/model/user/user.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
 import 'package:nexpaylab/app/database/user_local.dart';
 import 'package:nexpaylab/shared/constants/core_constants.dart';

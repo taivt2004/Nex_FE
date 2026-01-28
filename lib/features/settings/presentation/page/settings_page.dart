@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nexpaylab/features/settings/widget/language_selector_bottom_sheet.dart';
 import 'package:nexpaylab/features/settings/widget/theme_selector_bottom_sheet.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';
+import 'package:nexpaylab/shared/ui/widget/appbar_cpn.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -9,9 +10,8 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).settingsTitle),
-        centerTitle: true,
+      appBar: AppbarCpn(
+        title: AppLocalizations.of(context).settingsTitle,
       ),
       body: ListView(
         children: [

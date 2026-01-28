@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/data/model/user.dart' as model;
+import 'package:nexpaylab/app/data/model/user/user.dart' as model;
 import 'package:nexpaylab/app/database/database.dart';
 
 abstract class UserLocalStore {

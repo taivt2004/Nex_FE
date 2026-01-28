@@ -10,6 +10,6 @@ class LoginReq {
 
   final String username;
   final String password;
-
+  
   Map<String, dynamic> toJson() => _$LoginReqToJson(this);
 }

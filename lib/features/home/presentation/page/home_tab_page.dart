@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
 import 'package:nexpaylab/features/home/presentation/cubit/home_tab_cubit.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_crypto_actives_header.dart';
@@ -9,7 +11,6 @@ import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_paymen
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_quick_actions_section.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_top_bar.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_total_value_section.dart';
-import 'package:nexpaylab/features/settings/presentation/page/settings_page.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';
 import 'package:nexpaylab/shared/ui/extensions/image.dart';
 
@@ -27,7 +28,7 @@ class _HomeTabPageState extends State<HomeTabPage>
 
   @override
   bool get wantKeepAlive => true;
-
+  
   @override
   void initState() {
     super.initState();
@@ -46,10 +47,10 @@ class _HomeTabPageState extends State<HomeTabPage>
   void _onScroll() {
     if (_isBottom) {
       final bloc = context.read<MarketplaceBloc>();
-
+      
       if (bloc.state.status != MarketplaceStatus.loading &&
           !bloc.state.hasReachedMax) {
-        bloc.add(LoadMoreMarketplace());
+        bloc.add(const LoadMoreMarketplace());
       }
     }
   }
@@ -84,9 +85,29 @@ class _HomeTabPageState extends State<HomeTabPage>
             'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
         label: l10n.paymentPayBills,
       ),
+      HomePaymentCard(
+        image:
+            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
+        label: l10n.paymentPayBills,
+      ),
+      HomePaymentCard(
+        image:
+            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
+        label: l10n.paymentPayBills,
+      ),
+      HomePaymentCard(
+        image:
+            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
+        label: l10n.paymentPayBills,
+      ),
+      HomePaymentCard(
+        image:
+            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
+        label: l10n.paymentPayBills,
+      ),
     ];
   }
-
+  
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -104,18 +125,14 @@ class _HomeTabPageState extends State<HomeTabPage>
                     .copyWith(top: 16.dg),
                 child: HomeTopBar(
                   onMenuTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const SettingsPage(),
-                      ),
-                    );
+                    context.push(AppRouter.settings);
                   },
                 ),
               ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    context.read<MarketplaceBloc>().add(FetchMarketplace());
+                    context.read<MarketplaceBloc>().add(const FetchMarketplace());
                   },
                   child: CustomScrollView(
                     controller: _scrollController,

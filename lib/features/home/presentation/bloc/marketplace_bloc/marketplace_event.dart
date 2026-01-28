@@ -1,11 +1,19 @@
 part of 'marketplace_bloc.dart';
 
-abstract class MarketplaceEvent {
+abstract class MarketplaceEvent extends Equatable {
   const MarketplaceEvent();
+  @override
+  List<Object?> get props => [];
 }
 
-// Sự kiện khi mới vào trang hoặc Pull-to-refresh
-class FetchMarketplace extends MarketplaceEvent {}
+final class FetchMarketplace extends MarketplaceEvent {
+  const FetchMarketplace();
+}
 
-// Sự kiện khi người dùng cuộn xuống dưới cùng để tải thêm
-class LoadMoreMarketplace extends MarketplaceEvent {}
+final class LoadMoreMarketplace extends MarketplaceEvent {
+  const LoadMoreMarketplace();
+}
+
+final class RefreshMarketplace extends MarketplaceEvent {
+  const RefreshMarketplace();
+}

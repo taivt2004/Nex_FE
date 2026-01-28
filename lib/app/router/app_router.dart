@@ -12,6 +12,7 @@ import 'package:nexpaylab/features/on_boarding/already_have_wallet/page/already_
 import 'package:nexpaylab/features/on_boarding/create_new_wallet/page/create_new_wallet_01.dart';
 import 'package:nexpaylab/features/on_boarding/introduction/page/onboarding_page.dart';
 import 'package:nexpaylab/features/on_boarding/introduction/page/splash_page.dart';
+import 'package:nexpaylab/features/settings/presentation/page/settings_page.dart';
 
 class AppRouter extends Equatable {
   static const home = '/';
@@ -23,6 +24,7 @@ class AppRouter extends Equatable {
   static const createNewWallet01 = '/create_new_wallet_01';
   static const alreadyHaveWallet01 = '/already_have_wallet_01';
   static const lockScreen = '/lock_screen';
+  static const settings = '/settings';
   @override
   List<Object?> get props => [home];
 }
@@ -42,6 +44,10 @@ GoRouter router([String? initialLocation]) => GoRouter(
     GoRoute(
       path: AppRouter.home,
       builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: AppRouter.settings,
+      builder: (context, state) => const SettingsPage(),
     ),
     GoRoute(
       path: AppRouter.login,

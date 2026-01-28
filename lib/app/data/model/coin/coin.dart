@@ -8,22 +8,35 @@ class Coin {
     required this.symbol,
     required this.base,
     required this.quote,
-    required this.name,
     required this.price,
     required this.change24h,
-    this.volume24h,
-    this.exchange,
+    required this.volume24h,
+    required this.quoteVolume24h,
+    required this.exchange,
   });
-
+  
   factory Coin.fromJson(Map<String, dynamic> json) => _$CoinFromJson(json);
   Map<String, dynamic> toJson() => _$CoinToJson(this);
 
   final String symbol;
   final String base;
   final String quote;
-  final String name;
   final double price;
+
+  @JsonKey(name: 'change_24h')
   final double change24h;
-  final double? volume24h;
-  final String? exchange;
+
+  @JsonKey(name: 'volume_24h')
+  final double volume24h; // Base Volume
+
+  @JsonKey(name: 'quote_volume_24h')
+  final double quoteVolume24h; // Quote Volume (USDT)
+
+  final String exchange;
+
+  
+  String get name => base;
+  
+
+  double get volume => quoteVolume24h; 
 }

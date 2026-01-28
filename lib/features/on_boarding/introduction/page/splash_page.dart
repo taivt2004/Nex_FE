@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
@@ -48,18 +47,6 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: OlaColors.splashcreen, // Nền tối chuẩn Crypto
       body: Stack(
         children: [
-          // Indicator ở chính giữa màn hình
-          Center(
-            child: SizedBox(
-              width: 24.w,
-              height: 24.h,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.w,
-                color: OlaColors.primarycolor,
-              ),
-            ),
-          ),
-          // 
           Align(
             alignment: const Alignment(0, -0.35),
             child: Container(

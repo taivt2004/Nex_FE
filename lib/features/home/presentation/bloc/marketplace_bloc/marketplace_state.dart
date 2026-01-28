@@ -2,37 +2,42 @@ part of 'marketplace_bloc.dart';
 
 enum MarketplaceStatus { initial, loading, success, failure }
 
-class MarketplaceState {
+class MarketplaceState extends Equatable {
   const MarketplaceState({
     this.status = MarketplaceStatus.initial,
-    this.coins = const [],
+    this.coins = const <Coin>[],
+    this.page = 1,
     this.hasReachedMax = false,
-    this.currentPage = 1,
     this.loadingMore = false,
-    this.stale = false,
+    this.errorMessage = '',
   });
 
   final MarketplaceStatus status;
   final List<Coin> coins;
+  final int page;
   final bool hasReachedMax;
-  final int currentPage;
   final bool loadingMore;
-  final bool stale;
+  final String errorMessage;
+
   MarketplaceState copyWith({
     MarketplaceStatus? status,
     List<Coin>? coins,
+    int? page,
     bool? hasReachedMax,
-    int? currentPage,
     bool? loadingMore,
-    bool? stale,
+    String? errorMessage,
   }) {
     return MarketplaceState(
       status: status ?? this.status,
       coins: coins ?? this.coins,
+      page: page ?? this.page,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      currentPage: currentPage ?? this.currentPage,
       loadingMore: loadingMore ?? this.loadingMore,
-      stale: stale ?? this.stale,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [status, coins, page, hasReachedMax, loadingMore, errorMessage];
 }
