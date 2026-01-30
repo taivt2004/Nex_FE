@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
-import 'package:nexpaylab/features/home/presentation/cubit/home_tab_cubit.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_crypto_actives_header.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_market_place_section.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_payment_section.dart';
@@ -25,6 +24,8 @@ class _HomeTabPageState extends State<HomeTabPage>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
   late final PageController _paymentPageController;
+  bool _isSynced = false;
+  int _currentPaymentPage = 0;
 
   @override
   bool get wantKeepAlive => true;
@@ -113,114 +114,102 @@ class _HomeTabPageState extends State<HomeTabPage>
     super.build(context);
     final l10n = AppLocalizations.of(context);
 
-    return BlocProvider(
-      create: (_) => HomeTabCubit(),
-      child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.dg)
-                    .copyWith(top: 16.dg),
-                child: HomeTopBar(
-                  onMenuTap: () {
-                    context.push(AppRouter.settings);
-                  },
-                ),
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.dg)
+                  .copyWith(top: 16.dg),
+              child: HomeTopBar(
+                onMenuTap: () {
+                  context.push(AppRouter.settings);
+                },
               ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    context.read<MarketplaceBloc>().add(const FetchMarketplace());
-                  },
-                  child: CustomScrollView(
-                    controller: _scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.dg)
-                              .copyWith(bottom: 16.dg),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 24.h),
-                              BlocBuilder<HomeTabCubit, HomeTabState>(
-                          buildWhen: (prev, next) => prev.isSynced != next.isSynced,
-                          builder: (context, tabState) {
-                            return HomeTotalValueSection(
-                              isSynced: tabState.isSynced,
+            ),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  context.read<MarketplaceBloc>().add(const FetchMarketplace());
+                },
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.dg)
+                            .copyWith(bottom: 16.dg),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 24.h),
+                            HomeTotalValueSection(
+                              isSynced: _isSynced,
                               totalLabel: l10n.totalValue,
-                              onSyncTap: () => context
-                                  .read<HomeTabCubit>()
-                                  .setSynced(value: true),
-                            );
-                          },
-                        ),
-                        SizedBox(height: 14.h),
-                        HomeQuickActionsSection(
-                          actions: [
-                            HomeQuickActionItemData(
-                              icon: AppAssets.homeActionBtn.icActionSend.load(
-                                width: 22.w,
-                                height: 22.h,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                              label: l10n.actionSend,
+                              onSyncTap: () {
+                                setState(() {
+                                  _isSynced = true;
+                                });
+                              },
                             ),
-                            HomeQuickActionItemData(
-                              icon: AppAssets.homeActionBtn.icActionReceive.load(
-                                width: 22.w,
-                                height: 22.h,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                              label: l10n.actionReceive,
+                            SizedBox(height: 14.h),
+                            HomeQuickActionsSection(
+                              actions: [
+                                HomeQuickActionItemData(
+                                  icon: AppAssets.homeActionBtn.icActionSend.load(
+                                    width: 22.w,
+                                    height: 22.h,
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                  label: l10n.actionSend,
+                                ),
+                                HomeQuickActionItemData(
+                                  icon: AppAssets.homeActionBtn.icActionReceive.load(
+                                    width: 22.w,
+                                    height: 22.h,
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                  label: l10n.actionReceive,
+                                ),
+                                HomeQuickActionItemData(
+                                  icon: AppAssets.homeActionBtn.icActionSwap.load(
+                                    width: 22.w,
+                                    height: 22.h,
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                  label: l10n.actionSwap,
+                                ),
+                              ],
                             ),
-                            HomeQuickActionItemData(
-                              icon: AppAssets.homeActionBtn.icActionSwap.load(
-                                width: 22.w,
-                                height: 22.h,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                              label: l10n.actionSwap,
-                            ),
-                          
-                          ],
-                        ),
-                        SizedBox(height: 24.h),
-                        BlocBuilder<HomeTabCubit, HomeTabState>(
-                          buildWhen: (prev, next) =>
-                              prev.currentPaymentPage != next.currentPaymentPage,
-                          builder: (context, tabState) {
-                            return HomePaymentSection(
+                            SizedBox(height: 24.h),
+                            HomePaymentSection(
                               cards: _getPaymentCards(context),
                               pageController: _paymentPageController,
-                              currentPage: tabState.currentPaymentPage,
-                              onPageChanged: (index) => context
-                                  .read<HomeTabCubit>()
-                                  .setCurrentPaymentPage(index),
+                              currentPage: _currentPaymentPage,
+                              onPageChanged: (index) {
+                                setState(() {
+                                  _currentPaymentPage = index;
+                                });
+                              },
                               onScanTap: () {},
-                            );
-                          },
+                            ),
+                            SizedBox(height: 24.h),
+                            const HomeCryptoActivesHeader(),
+                            SizedBox(height: 16.h),
+                          ],
                         ),
-                        SizedBox(height: 24.h),
-                        const HomeCryptoActivesHeader(),
-                        SizedBox(height: 16.h),
-                      ],
+                      ),
                     ),
-                  ),
+                    const HomeMarketPlaceSection(),
+                  ],
                 ),
-                const HomeMarketPlaceSection(),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-      ],
-    ),
-  ),
-),
+      ),
     );
-    
   }
 }

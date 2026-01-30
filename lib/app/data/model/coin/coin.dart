@@ -3,8 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'coin.g.dart';
 
 @JsonSerializable()
-class Coin {
-  Coin({
+class CoinRes {
+  CoinRes({
     required this.symbol,
     required this.base,
     required this.quote,
@@ -15,8 +15,8 @@ class Coin {
     required this.exchange,
   });
   
-  factory Coin.fromJson(Map<String, dynamic> json) => _$CoinFromJson(json);
-  Map<String, dynamic> toJson() => _$CoinToJson(this);
+  factory CoinRes.fromJson(Map<String, dynamic> json) => _$CoinResFromJson(json);
+  Map<String, dynamic> toJson() => _$CoinResToJson(this);
 
   final String symbol;
   final String base;

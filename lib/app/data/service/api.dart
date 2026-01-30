@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:nexpaylab/app/data/model/auth/auth_res.dart';
 import 'package:nexpaylab/app/data/model/auth/login_req.dart';
 import 'package:nexpaylab/app/data/model/auth/register_req.dart';
-import 'package:nexpaylab/app/data/model/base/base_response.dart';
+import 'package:nexpaylab/app/data/model/base/base_res.dart';
 import 'package:nexpaylab/app/data/model/coin/coin.dart';
-import 'package:nexpaylab/app/data/model/common/app_config.dart';
+import 'package:nexpaylab/app/data/model/common/config_res.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api.g.dart';
@@ -14,11 +14,11 @@ part 'api.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
-  @GET('configuration/api/v1/business-configs?keys={keys}')
-  Future<List<ConfigItemRes>> getAppConfigs(@Query('keys') String keys);
+  @GET('configuration/api/v1/business-configs')
+  Future<BaseRes<ConfigRes>> getAppConfigs(@Query('keys') String keys);
     
   @GET('coin-market/api/v1/coins')
-  Future<BaseResponse<List<Coin>>> getCoins(
+  Future<BaseRes<List<CoinRes>>> getCoins(
       @Query('page') int page,
       @Query('limit') int limit,
       );

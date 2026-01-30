@@ -4,22 +4,36 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
-            "name": "mobile-app",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "mobile-app (profile mode)",
+            "name": "mobile-app (development)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "program": "lib/main_development.dart",
+            "args": [
+                "--flavor",
+                "development"
+            ]
         },
         {
-            "name": "mobile-app (release mode)",
+            "name": "mobile-app (staging)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
-        }
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging"
+            ]
+        },
+        {
+            "name": "mobile-app (production)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production"
+            ]
+        },
     ]
 }

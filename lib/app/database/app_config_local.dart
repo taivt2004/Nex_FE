@@ -10,6 +10,7 @@ abstract class AppConfigLocalStore {
   Future<int> saveValue(String key, String value);
   Future<int> clearConfig(String key);
   Future<int> clearConfigAll();
+  Stream<List<AppConfig>> watchConfigs(List<String> keys);
 }
 
 @Injectable(as: AppConfigLocalStore)
@@ -17,6 +18,11 @@ class AppConfigLocalStoreImp extends AppConfigLocalStore {
   AppConfigLocalStoreImp({required this.db});
   
   final Database db;
+  
+  @override
+  Stream<List<AppConfig>> watchConfigs(List<String> keys) {
+    return (db.select(db.appConfigs)..where((tbl) => tbl.key.isIn(keys))).watch();
+  }
 
   @override
   SingleOrNullSelectable<ConfigItemRes?> getConfigByKey(String key) {

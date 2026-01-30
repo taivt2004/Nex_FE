@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:nexpaylab/shared/theme/app_style.dart';
+import 'package:nexpaylab/shared/ui/widget/appbar_cpn.dart';
 
 class OnboardingScaffold extends StatelessWidget {
   const OnboardingScaffold({
@@ -21,20 +20,8 @@ class OnboardingScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
-        ),
-        title: Text(
-          title,
-          style: PoppinsTextStyles.primary18Regular.copyWith(
-            color: Colors.white,
-          ),
-        ),
+      appBar: AppbarCpn(
+        title: title,
       ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(

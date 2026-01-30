@@ -107,5 +107,9 @@
     "english": "English",
     "vietnamese": "Tiếng Việt",
     "spanish": "Español",
-    "errNetworkConnection": "Vui lòng kiểm tra kết nối mạng"
+    "errNetworkConnection": "Vui lòng kiểm tra kết nối mạng",
+    "updateApp": "Cập nhật ứng dụng",
+    "updateAppContent": "Phiên bản hiện tại đã cũ. Vui lòng cập nhật để tiếp tục sử dụng.",
+    "skip" : "Bỏ qua",
+    "updateNow" : "Cập nhật ngay"
 }

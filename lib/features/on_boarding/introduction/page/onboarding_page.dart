@@ -78,9 +78,10 @@ class _OnboardingViewState extends State<OnboardingView> {
     showAlreadyHaveWalletSheet(
       context,
       onContinue: () async {
-        context.go(AppRouter.alreadyHaveWallet01);
+        await context.push(AppRouter.alreadyHaveWallet01);
       },
     );
+
   }
 
   Future<void> _onCreateNewWalletTap() async {

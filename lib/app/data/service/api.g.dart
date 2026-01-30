@@ -20,27 +20,28 @@ class _ApiService implements ApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<ConfigItemRes>> getAppConfigs(String keys) async {
+  Future<BaseRes<ConfigRes>> getAppConfigs(String keys) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'keys': keys};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ConfigItemRes>>(
+    final _options = _setStreamType<BaseRes<ConfigRes>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'v1/configs/list?keys=${keys}',
+            'configuration/api/v1/business-configs',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ConfigItemRes> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late BaseRes<ConfigRes> _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => ConfigItemRes.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = BaseRes<ConfigRes>.fromJson(
+        _result.data!,
+        (json) => ConfigRes.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -49,12 +50,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<BaseResponse<List<Coin>>> getCoins(int page, int limit) async {
+  Future<BaseRes<List<CoinRes>>> getCoins(int page, int limit) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': page, r'limit': limit};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<BaseResponse<List<Coin>>>(
+    final _options = _setStreamType<BaseRes<List<CoinRes>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -65,13 +66,17 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late BaseResponse<List<Coin>> _value;
+    late BaseRes<List<CoinRes>> _value;
     try {
-      _value = BaseResponse<List<Coin>>.fromJson(
+      _value = BaseRes<List<CoinRes>>.fromJson(
         _result.data!,
-        (json) => (json as List<dynamic>)
-            .map<Coin>((i) => Coin.fromJson(i as Map<String, dynamic>))
-            .toList(),
+        (json) => json is List<dynamic>
+            ? json
+                  .map<CoinRes>(
+                    (i) => CoinRes.fromJson(i as Map<String, dynamic>),
+                  )
+                  .toList()
+            : List.empty(),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

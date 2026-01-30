@@ -11,8 +11,8 @@ import 'package:nexpaylab/features/lock_screen/presentation/page/lock_screen_pag
 import 'package:nexpaylab/features/on_boarding/already_have_wallet/page/already_have_wallet_01.dart';
 import 'package:nexpaylab/features/on_boarding/create_new_wallet/page/create_new_wallet_01.dart';
 import 'package:nexpaylab/features/on_boarding/introduction/page/onboarding_page.dart';
-import 'package:nexpaylab/features/on_boarding/introduction/page/splash_page.dart';
 import 'package:nexpaylab/features/settings/presentation/page/settings_page.dart';
+import 'package:nexpaylab/features/splash/presentation/page/splash_page.dart';
 
 class AppRouter extends Equatable {
   static const home = '/';

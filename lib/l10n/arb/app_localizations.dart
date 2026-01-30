@@ -717,6 +717,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please check your network connection'**
   String get errNetworkConnection;
+
+  /// No description provided for @updateApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Update application'**
+  String get updateApp;
+
+  /// No description provided for @updateAppContent.
+  ///
+  /// In en, this message translates to:
+  /// **'The current version is outdated. Please update to continue using it.'**
+  String get updateAppContent;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @updateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Update now'**
+  String get updateNow;
 }
 
 class _AppLocalizationsDelegate

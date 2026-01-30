@@ -106,5 +106,9 @@
     "english": "English",
     "vietnamese": "Tiếng Việt",
     "spanish": "Español",
-    "errNetworkConnection": "Please check your network connection"
+    "errNetworkConnection": "Please check your network connection",
+    "updateApp": "Update application",
+    "updateAppContent": "The current version is outdated. Please update to continue using it.",
+    "skip": "Skip",
+    "updateNow": "Update now"
 }

@@ -6,7 +6,7 @@ part of 'coin.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Coin _$CoinFromJson(Map<String, dynamic> json) => Coin(
+CoinRes _$CoinResFromJson(Map<String, dynamic> json) => CoinRes(
   symbol: json['symbol'] as String,
   base: json['base'] as String,
   quote: json['quote'] as String,
@@ -17,7 +17,7 @@ Coin _$CoinFromJson(Map<String, dynamic> json) => Coin(
   exchange: json['exchange'] as String,
 );
 
-Map<String, dynamic> _$CoinToJson(Coin instance) => <String, dynamic>{
+Map<String, dynamic> _$CoinResToJson(CoinRes instance) => <String, dynamic>{
   'symbol': instance.symbol,
   'base': instance.base,
   'quote': instance.quote,

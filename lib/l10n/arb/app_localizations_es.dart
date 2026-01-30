@@ -334,4 +334,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errNetworkConnection => 'Por favor verifique su conexión de red';
+
+  @override
+  String get updateApp => 'Update application';
+
+  @override
+  String get updateAppContent =>
+      'The current version is outdated. Please update to continue using it.';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get updateNow => 'Update now';
 }

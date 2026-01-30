@@ -19,7 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this.networkChecker,
     this.appConfigLocalStore,
     this.userSession,
-  ) : super(HomeInitial()) {
+  ) : super(const HomeState()) {
     on<InitializeHome>(onInitializeHome);
     on<LoadHomeConfig>(onLoadHomeConfig);
   }
@@ -35,11 +35,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       talker.warning('onInitializeHome: Vui lòng đăng nhập để tiếp tục sử dụng.');
       return;
     }
-    final isOnline = await networkChecker.isOnline();
-    if (!isOnline) {
-      talker.warning('onInitializeHome: Vui lòng kiểm tra kết nối mạng');
-      return;
-    }
+
+    add(LoadHomeConfig(showLoading: false));
   }
 
   Future<void> onLoadHomeConfig(
@@ -48,28 +45,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final isOnline = await networkChecker.isOnline();
     if (!isOnline) {
-      emit(HomeNetworkError(error: 'Vui lòng kiểm tra kết nối mạng.'));
+      // If not online, then use local data
       return;
     }
 
     if (event.showLoading) {
-      emit(HomeLoading(message: 'Tải danh sách...'));
+      emit(state.copyWith(status: HomeStatus.loading));
     }
 
-    final results = await Future.wait([appConfigRepository.getAppConfigs()]);
-
-    await results[0].when(
-      success: (categories) async {
-        emit(HomeSuccess());
+    
+    final result = await appConfigRepository.getAppConfigs(['f_swap', 'f_product']);
+    
+    await result.when(
+      success: (configs) async {
+        emit(state.copyWith(status: HomeStatus.success));
       },
       failure: (fail) {
         if (fail is ExceptionHandler &&
             fail.serverity == ExceptServerity.normal) {
-          emit(HomeSuccess());
+           emit(state.copyWith(status: HomeStatus.success));
         } else if (fail.toString().contains('Not Found')) {
-          emit(HomeSuccess());
+           emit(state.copyWith(status: HomeStatus.success));
         } else {
-          emit(HomeNetworkError(error: fail as String));
+           
+           emit(state.copyWith(
+             status: HomeStatus.failure, 
+             errorMessage: fail.toString()
+           ));
         }
       },
     );

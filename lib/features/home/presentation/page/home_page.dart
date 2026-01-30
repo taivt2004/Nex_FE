@@ -9,6 +9,7 @@ import 'package:nexpaylab/features/home/presentation/bloc/home_bloc.dart';
 import 'package:nexpaylab/features/home/presentation/bloc/home_event.dart';
 import 'package:nexpaylab/features/home/presentation/bloc/home_state.dart';
 import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
+import 'package:nexpaylab/features/home/presentation/cubit/home_config_cubit.dart';
 import 'package:nexpaylab/features/home/presentation/page/discover_page.dart';
 import 'package:nexpaylab/features/home/presentation/page/home_tab_page.dart';
 import 'package:nexpaylab/features/home/presentation/page/swap_page.dart';
@@ -32,6 +33,7 @@ class HomePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => getIt<HomeBloc>()),
+        BlocProvider(create: (_) => getIt<HomeConfigCubit>()),
         BlocProvider(
           create: (_) => getIt<MarketplaceBloc>()..add(const FetchMarketplace()),
         ),
@@ -54,6 +56,7 @@ class _HomeFormState extends State<HomeForm> {
   final _pageController = PageController(initialPage: 0);
 
   final _controller = NotchBottomBarController(index: 0);
+  int _selectedIndex = 0;
 
   late List<Widget> bottomBarPages;
 
@@ -122,93 +125,127 @@ class _HomeFormState extends State<HomeForm> {
         itemLabel: l10n.discover,
       ),
     ];
-    return BlocListener<HomeBloc, HomeState>(
+    return BlocConsumer<HomeBloc, HomeState>(
       listener: (context, state) {
-        if (state is HomeLoading) {
-          LoadingScreen.instance().show(context: context, text: state.message);
-        } else if (state is HomeError) {
+        if (state.status == HomeStatus.loading) {
+          LoadingScreen.instance().show(context: context, text: 'Loading...');
+        } else if (state.status == HomeStatus.failure) {
           LoadingScreen.instance().hide();
-          showErrorDialog(context, desc: state.error);
-        } else if (state is HomeNetworkError) {
-          LoadingScreen.instance().hide();
+          showErrorDialog(context, desc: state.errorMessage ?? 'Unknown error');
         } else {
           LoadingScreen.instance().hide();
         }
       },
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: List.generate(
-                  bottomBarPages.length,
-                  (index) => bottomBarPages[index],
-                ),
-              ),
-              if (!_connected)
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  child: ColoredBox(
-                    color: const Color.fromRGBO(255, 0, 0, 0.6),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: Text(
-                          AppLocalizations.of(context).checkNetworkConnection,
-                          style: OlaTextStyles.subtext12regular.copyWith(
-                            color: Colors.white,
+      builder: (context, state) {
+        return BlocBuilder<HomeConfigCubit, HomeConfigState>(
+          builder: (context, configState) {
+            final disabledIndices = configState.disabledIndices;
+
+            final displayedItems = List<BottomBarItem>.generate(bottomBarItems.length, (index) {
+              final item = bottomBarItems[index];
+              final isDisabled = disabledIndices.contains(index);
+              if (isDisabled) {
+                return BottomBarItem(
+                  inActiveItem: Opacity(opacity: 0.3, child: item.inActiveItem),
+                  activeItem: Opacity(opacity: 0.3, child: item.activeItem),
+                  itemLabel: item.itemLabel,
+                );
+              }
+              return item;
+            });
+
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    PageView(
+                      controller: _pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: bottomBarPages,
+                    ),
+                    if (!_connected)
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        child: ColoredBox(
+                          color: const Color.fromRGBO(255, 0, 0, 0.6),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Text(
+                                AppLocalizations.of(context)
+                                    .checkNetworkConnection,
+                                style: OlaTextStyles.subtext12regular.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
+                  ],
+                ).toContainerWidget(
+                  context: context,
+                  extendBody: false,
+                  safeArea: true,
+                  showAppBar: false,
+                  bottomNavigationBar: AnimatedNotchBottomBar(
+                    bottomBarWidth: constraints.maxWidth,
+                    notchBottomBarController: _controller,
+                    showNotch: false,
+                    showBorder: true,
+                    topBorderOnly: true,
+                    bottomBarHeight: 70.h,
+                    showLabel: true,
+                    showBlurBottomBar: false,
+                    textOverflow: TextOverflow.visible,
+                    showShadow: false,
+                    shadowElevation: 0,
+                    elevation: 0,
+                    kBottomRadius: 0,
+                    showTopRadius: false,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    notchGradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [OlaColors.gray50, OlaColors.gray100],
                     ),
+                    removeMargins: true,
+                    durationInMilliSeconds: 200,
+                    itemLabelStyle: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.copyWith(fontSize: 10),
+                    activeItemLabelStyle:
+                        Theme.of(context).textTheme.labelSmall?.copyWith(
+                              fontSize: 10,
+                              color: OlaColors.primarycolor,
+                            ),
+                    bottomBarItems: displayedItems,
+                    onTap: (index) {
+                      if (disabledIndices.contains(index)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Tính năng hiện đang bảo trì'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                        _controller.jumpTo(_selectedIndex);
+                      } else {
+                        setState(() {
+                          _selectedIndex = index;
+                        });
+                        _pageController.jumpToPage(index);
+                      }
+                    },
+                    kIconSize: 22,
                   ),
-                ),
-            ],
-          ).toContainerWidget(
-            context: context,
-            extendBody: false,
-            safeArea: true,
-            showAppBar: false,
-            bottomNavigationBar: AnimatedNotchBottomBar(
-              bottomBarWidth: constraints.maxWidth,
-              notchBottomBarController: _controller,
-              showNotch: false,
-              showBorder: true,
-              topBorderOnly: true,
-              bottomBarHeight: 70.h,
-              showLabel: true,
-              showBlurBottomBar: false,
-              textOverflow: TextOverflow.visible,
-              showShadow: false,
-              shadowElevation: 0,
-              elevation: 0,
-              kBottomRadius: 0,
-              showTopRadius: false,
-              color: Theme.of(context).scaffoldBackgroundColor,
-              // notchColor: OlaColors.gray700,
-              notchGradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [OlaColors.gray50, OlaColors.gray100],
-              ),
-              removeMargins: true,
-              durationInMilliSeconds: 200,
-              itemLabelStyle: Theme.of(
-                context,
-              ).textTheme.labelSmall?.copyWith(fontSize: 10),
-              activeItemLabelStyle: Theme.of(context).textTheme.labelSmall
-                  ?.copyWith(fontSize: 10, color: OlaColors.primarycolor),
-              bottomBarItems: bottomBarItems,
-              onTap: _pageController.jumpToPage,
-              kIconSize: 22,
-            ),
-          );
-        },
-      ),
+                );
+              },
+            );
+          },
+        );
+      },
     );
   }
 

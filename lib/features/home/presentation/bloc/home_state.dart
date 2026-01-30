@@ -1,21 +1,28 @@
-abstract class HomeState {}
+import 'package:nexpaylab/app/data/model/base/base_res.dart';
+import 'package:nexpaylab/app/data/model/common/config_res.dart';
 
-class HomeInitial extends HomeState {}
+enum HomeStatus { idle, loading, success, failure }
 
-class HomeLoading extends HomeState {
-  HomeLoading({required this.message});
+class HomeState {
+  const HomeState({
+    this.status = HomeStatus.idle,
+    this.config,
+    this.errorMessage,
+  });
 
-  final String message;
-}
+  final HomeStatus status;
+  final BaseRes<ConfigRes>? config;
+  final String? errorMessage;
 
-class HomeSuccess extends HomeState {}
-
-class HomeError extends HomeState {
-  HomeError({required this.error});
-  final String error;
-}
-
-class HomeNetworkError extends HomeState {
-  HomeNetworkError({required this.error});
-  final String error;
+  HomeState copyWith({
+    HomeStatus? status,
+    BaseRes<ConfigRes>? config,
+    String? errorMessage,
+  }) {
+    return HomeState(
+      status: status ?? this.status,
+      config: config ?? this.config,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }

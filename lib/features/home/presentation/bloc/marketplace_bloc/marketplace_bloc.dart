@@ -2,9 +2,10 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/data/model/base/base_response.dart';
+import 'package:nexpaylab/app/data/model/base/data_list.dart';
 import 'package:nexpaylab/app/data/model/coin/coin.dart';
 import 'package:nexpaylab/app/data/repository/coin_repos.dart';
+import 'package:nexpaylab/app/database/coin_local.dart';
 import 'package:nexpaylab/shared/logger.dart';
 import 'package:nexpaylab/shared/utils/result.dart';
 
@@ -14,7 +15,7 @@ part 'marketplace_state.dart';
 
 @injectable
 class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
-  MarketplaceBloc(this._marketplaceRepository)
+  MarketplaceBloc(this._marketplaceRepository, this._coinLocal)
       : super(const MarketplaceState()) {
     on<FetchMarketplace>(_onFetch, transformer: droppable());
     on<LoadMoreMarketplace>(_onLoadMore, transformer: droppable());
@@ -22,6 +23,7 @@ class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
   }
 
   final CoinRepository _marketplaceRepository;
+  final CoinLocal _coinLocal;
   static const int _limit = 20;
 
   Future<void> _onFetch(
@@ -33,7 +35,7 @@ class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
 
     // try to get local data first
     try {
-      final localRes = await _marketplaceRepository.getCoinsLocal(
+      final localRes = await _coinLocal.getCoinsLocal(
         page,
         _limit,
       );
@@ -55,14 +57,14 @@ class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
     try {
       // if local data is empty or failed, try to get remote data
       final remoteResult = await _marketplaceRepository.getCoinsRemote(page, _limit);
-      
+
       await remoteResult.when(
-        success: (BaseResponse<List<Coin>> res) async {
-          final items = res.data ?? [];
+        success: (DataList<CoinRes> res) async {
+          final items = res.data;
 
           // save to local for next time
           try {
-            await _marketplaceRepository.saveCoinsLocal(page, _limit, res);
+            await _coinLocal.saveCoinsLocal(page, _limit, res);
           } catch (e) {
             talker.error('Save local failed', e);
           }
@@ -117,8 +119,8 @@ class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
     final result = await _marketplaceRepository.getCoinsRemote(nextPage, _limit);
 
     result.when(
-      success: (BaseResponse<List<Coin>> res) {
-        final newItems = res.data ?? [];
+      success: (DataList<CoinRes> res) {
+        final newItems = res.data;
       
         if (newItems.isEmpty) {
           emit(
@@ -129,7 +131,7 @@ class MarketplaceBloc extends Bloc<MarketplaceEvent, MarketplaceState> {
           return;
         }
 
-        final allCoins = List<Coin>.from(state.coins)..addAll(newItems);
+        final allCoins = List<CoinRes>.from(state.coins)..addAll(newItems);
 
         emit(
           state.copyWith(

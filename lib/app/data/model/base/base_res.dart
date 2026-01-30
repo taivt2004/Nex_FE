@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nexpaylab/app/data/model/base/meta.dart';
 
-part 'base_response.g.dart';
+part 'base_res.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
-class BaseResponse<T> {
-  BaseResponse({
+class BaseRes<T> {
+  BaseRes({
     required this.code,
     required this.message,
     this.success,
@@ -13,11 +13,11 @@ class BaseResponse<T> {
     this.meta,
   });
   
-  factory BaseResponse.fromJson(
+  factory BaseRes.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
   ) =>
-      _$BaseResponseFromJson(json, fromJsonT);
+      _$BaseResFromJson(json, fromJsonT);
 
   final bool? success;
   final int code;
@@ -26,5 +26,5 @@ class BaseResponse<T> {
   final Meta? meta;
 
   Map<String, dynamic> toJson(Object? Function(T value) toJsonT) =>
-      _$BaseResponseToJson(this, toJsonT);
+      _$BaseResToJson(this, toJsonT);
 }

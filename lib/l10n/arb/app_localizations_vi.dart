@@ -330,4 +330,17 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get errNetworkConnection => 'Vui lòng kiểm tra kết nối mạng';
+
+  @override
+  String get updateApp => 'Cập nhật ứng dụng';
+
+  @override
+  String get updateAppContent =>
+      'Phiên bản hiện tại đã cũ. Vui lòng cập nhật để tiếp tục sử dụng.';
+
+  @override
+  String get skip => 'Bỏ qua';
+
+  @override
+  String get updateNow => 'Cập nhật ngay';
 }

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
+import 'package:nexpaylab/shared/constants/core_constants.dart';
 
 part 'create_wallet_state.dart';
 
@@ -54,8 +55,8 @@ class CreateWalletCubit extends Cubit<CreateWalletState> {
   Future<void> savePassphraseToDB(AppConfigLocalStore configStore) async {
     if (state.isSecure && state.passphrase.length == 6) {
       final createdAt = DateTime.now().toIso8601String();
-      await configStore.saveValue('local_passphrase', state.passphrase);
-      await configStore.saveValue('local_passphrase_created_at', createdAt);
+      await configStore.saveValue(keyLocalPassphrase, state.passphrase);
+      await configStore.saveValue(keyLocalPassphraseCreatedAt, createdAt);
     }
   }
 }
