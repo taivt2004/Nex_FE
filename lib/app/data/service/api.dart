@@ -4,7 +4,7 @@ import 'package:nexpaylab/app/data/model/auth/auth_res.dart';
 import 'package:nexpaylab/app/data/model/auth/login_req.dart';
 import 'package:nexpaylab/app/data/model/auth/register_req.dart';
 import 'package:nexpaylab/app/data/model/base/base_res.dart';
-import 'package:nexpaylab/app/data/model/coin/coin.dart';
+import 'package:nexpaylab/app/data/model/coin/coin_res.dart';
 import 'package:nexpaylab/app/data/model/common/config_res.dart';
 import 'package:retrofit/retrofit.dart';
 

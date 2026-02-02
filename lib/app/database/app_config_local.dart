@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/data/model/common/app_config.dart';
+import 'package:nexpaylab/app/data/model/common/config_item_res.dart';
 import 'package:nexpaylab/app/database/database.dart';
 
 abstract class AppConfigLocalStore {

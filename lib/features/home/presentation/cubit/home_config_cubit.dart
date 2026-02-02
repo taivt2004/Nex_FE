@@ -30,7 +30,6 @@ class HomeConfigCubit extends Cubit<HomeConfigState> {
         disabledIndices.add(1);
       }
 
-      // Check f_product (Index 2, 3)
       final productConfig = configs.firstWhere(
         (c) => c.key == 'f_product',
         orElse: () => const AppConfig(key: 'f_product', value: 'on'),

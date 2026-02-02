@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/data/localstore/app.config.local.dart';
-import 'package:nexpaylab/app/data/model/common/app_config.dart';
+import 'package:nexpaylab/app/data/localstore/app_config_local_store.dart';
+import 'package:nexpaylab/app/data/model/common/config_item_res.dart';
 import 'package:nexpaylab/app/data/service/api.dart';
 import 'package:nexpaylab/shared/utils/result.dart';
 
@@ -28,7 +28,7 @@ class AppConfigRepositoryImp implements AppConfigRepository {
       final configsMap = res.data?.configs ?? <String, dynamic>{};
       
       final configs = configsMap.map((key, value) => MapEntry(key, value.toString()));
-      
+
       await localStore.saveInBatch(configs.entries.map((e) => ConfigItemRes(key: e.key, value: e.value)).toList());
       return configs;  
     });

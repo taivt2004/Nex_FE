@@ -67,7 +67,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         } else if (fail.toString().contains('Not Found')) {
            emit(state.copyWith(status: HomeStatus.success));
         } else {
-           
            emit(state.copyWith(
              status: HomeStatus.failure, 
              errorMessage: fail.toString()

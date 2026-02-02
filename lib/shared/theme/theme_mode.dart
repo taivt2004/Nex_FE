@@ -8,6 +8,7 @@ class ThemeModel extends ChangeNotifier {
   ThemeModel(this._localStorageService) {
     _loadTheme();
     currentTheme = FlexThemeData.light(
+      error: OlaColors.redColor,
       scheme: FlexScheme.greys,
       primary: OlaColors.gray800,
       secondary: OlaColors.gray800,

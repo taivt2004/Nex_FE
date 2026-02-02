@@ -11,7 +11,6 @@ class LockBloc extends Bloc<LockScreenEvent, LockScreenState> {
   LockBloc(this._configStore) : super(const LockScreenState()) {
     on<LockStarted>(_onStarted);
     on<PassphraseChanged>(_onChanged);
-    on<PassphraseSubmitted>(_onSubmitted);
     on<ResetWalletConfirmed>(_onResetConfirmed);
   }
 
@@ -33,13 +32,13 @@ class LockBloc extends Bloc<LockScreenEvent, LockScreenState> {
     if (state.error != LockError.none) {
       emit(state.copyWith(error: LockError.none));
     }
-  }
-
-  void _onSubmitted(PassphraseSubmitted e, Emitter<LockScreenState> emit) {
-    if (e.value == state.storedPassphrase) {
-      emit(state.copyWith(status: LockStatus.authenticated));
-    } else {
-      emit(state.copyWith(error: LockError.incorrectPassphrase));
+    // Auto submit when length is 6
+    if (e.value.length == 6) {
+      if (e.value == state.storedPassphrase) {
+        emit(state.copyWith(status: LockStatus.authenticated));
+      } else {
+        emit(state.copyWith(error: LockError.incorrectPassphrase));
+      }
     }
   }
 

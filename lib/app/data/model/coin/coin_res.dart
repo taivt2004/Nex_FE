@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'coin.g.dart';
+part 'coin_res.g.dart';
 
 @JsonSerializable()
 class CoinRes {

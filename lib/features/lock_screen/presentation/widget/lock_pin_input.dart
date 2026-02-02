@@ -47,6 +47,10 @@ class _LockPinInputState extends State<LockPinInput> {
   @override
   Widget build(BuildContext context) {
     final length = widget.controller.text.length;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
+    
+    final emptyDotColor = isDarkMode ? Colors.white24 : Colors.black12;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -78,7 +82,7 @@ class _LockPinInputState extends State<LockPinInput> {
                         : BoxDecoration(
                             color: filled
                                 ? OlaColors.primarycolor
-                                : Colors.white12,
+                                : emptyDotColor,
                             shape: BoxShape.circle,
                           ),
                   ),

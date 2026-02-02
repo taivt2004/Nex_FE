@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nexpaylab/app/data/model/common/app_config.dart';
+import 'package:nexpaylab/app/data/model/common/config_item_res.dart';
 import 'package:nexpaylab/app/database/database.dart';
 
 abstract class AppConfigLocalStore {
@@ -31,8 +31,8 @@ class AppConfigLocalStoreImp extends AppConfigLocalStore {
   Stream<List<AppConfig>> watchConfigs(List<String> keys) {
     return (db.select(db.appConfigs)..where((tbl) => tbl.key.isIn(keys))).watch();
   }
-
-
+  
+  
   @override
   SingleOrNullSelectable<dynamic> getValueByKey(String key) {
     final query = db.select(db.appConfigs)..where((t) => t.key.equals(key));

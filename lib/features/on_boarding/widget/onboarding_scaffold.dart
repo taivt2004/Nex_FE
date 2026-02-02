@@ -22,6 +22,7 @@ class OnboardingScaffold extends StatelessWidget {
       backgroundColor: backgroundColor,
       appBar: AppbarCpn(
         title: title,
+        backgroundColor: backgroundColor,
       ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(

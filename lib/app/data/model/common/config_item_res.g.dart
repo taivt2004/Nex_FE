@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'app_config.dart';
+part of 'config_item_res.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

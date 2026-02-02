@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'app_config.g.dart';
+part 'config_item_res.g.dart';
 
 @JsonSerializable()
 class ConfigItemRes {

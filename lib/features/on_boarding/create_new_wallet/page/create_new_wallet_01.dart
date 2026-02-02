@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
 import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
-import 'package:nexpaylab/features/on_boarding/create_new_wallet/cubit/create_wallet_cubit.dart';
+import 'package:nexpaylab/features/on_boarding/create_new_wallet/bloc/create_wallet_bloc.dart';
 import 'package:nexpaylab/features/on_boarding/widget/common/create_wallet_button.dart';
 import 'package:nexpaylab/features/on_boarding/widget/common/passphrase_section.dart';
 import 'package:nexpaylab/features/on_boarding/widget/common/wallet_name_input.dart';
@@ -29,15 +29,6 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
     _walletNameController = TextEditingController(text: 'Wallet 1');
   }
 
-  CreateWalletError? _validateWalletName(String value) {
-    final trimmed = value.trim();
-    if (trimmed.isEmpty) return CreateWalletError.walletNameRequired;
-    if (trimmed.length > 24) return CreateWalletError.walletNameLength;
-    final valid = RegExp(r'^[A-Za-z0-9 ]+$');
-    if (!valid.hasMatch(trimmed)) return CreateWalletError.walletNameInvalid;
-    return null;
-  }
-  
   String? _getWalletNameErrorText(
     CreateWalletError? error,
     AppLocalizations l10n,
@@ -50,7 +41,7 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
       case CreateWalletError.walletNameInvalid:
         return l10n.errorWalletNameInvalid;
       case null:
-      case CreateWalletError.passphraseMismatch: // Should not happen for wallet name
+      case CreateWalletError.passphraseMismatch:
         return null;
     }
   }
@@ -75,12 +66,15 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return BlocProvider(
-      create: (_) => CreateWalletCubit()
-        ..setWalletName(
-          _walletNameController.text,
-          error: _validateWalletName(_walletNameController.text),
-        ),
-      child: BlocBuilder<CreateWalletCubit, CreateWalletState>(
+      create: (_) => CreateWalletBloc(getIt<AppConfigLocalStore>())
+        ..add(WalletNameChanged(_walletNameController.text)),
+      child: BlocConsumer<CreateWalletBloc, CreateWalletState>(
+        listenWhen: (previous, current) => previous.status != current.status,
+        listener: (context, state) {
+          if (state.status == CreateWalletStatus.success) {
+            context.go(AppRouter.home);
+          }
+        },
         builder: (context, state) {
           return OnboardingScaffold(
             title: l10n.createNewWallet,
@@ -93,9 +87,8 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
                   errorText:
                       _getWalletNameErrorText(state.walletNameError, l10n),
                   onChanged: (value) {
-                    context.read<CreateWalletCubit>().setWalletName(
-                          value,
-                          error: _validateWalletName(value),
+                    context.read<CreateWalletBloc>().add(
+                          WalletNameChanged(value),
                         );
                   },
                 ),
@@ -104,17 +97,19 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
                   isSecure: state.isSecure,
                   errorText: _getPassphraseErrorText(state.passphraseError, l10n),
                   onChanged: (value) {
-                    context.read<CreateWalletCubit>().toggleSecure(
-                          isSecure: value,
+                    context.read<CreateWalletBloc>().add(
+                          SecureToggled(isSecure: value),
                         );
                   },
                   onPassphraseChanged: (value) {
-                    context.read<CreateWalletCubit>().setPassphrase(
-                          value,
+                    context.read<CreateWalletBloc>().add(
+                          PassphraseChanged(value),
                         );
                   },
                   onConfirmPassphraseChanged: (value) {
-                    context.read<CreateWalletCubit>().setConfirmPassphrase(value);
+                    context.read<CreateWalletBloc>().add(
+                          ConfirmPassphraseChanged(value),
+                        );
                   },
                 ),
                 SizedBox(height: 24.h),
@@ -122,22 +117,12 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
             ),
             bottomButton: CreateWalletButton(
               text: l10n.createAction,
-              enabled: state.isFormValid,
-              onPressed: () async {
-                final cubit = context.read<CreateWalletCubit>();
-                final error = _validateWalletName(_walletNameController.text);
-                cubit.setWalletName(_walletNameController.text, error: error);
-                if (cubit.state.walletNameError != null) {
-                  return;
-                }
-
-                await cubit.savePassphraseToDB(
-                  getIt<AppConfigLocalStore>(),
-                );
-
-                if (context.mounted) {
-                  context.go(AppRouter.home);
-                }
+              enabled: state.isFormValid &&
+                  state.status != CreateWalletStatus.submitting,
+              onPressed: () {
+                context.read<CreateWalletBloc>().add(
+                      const CreateWalletSubmitted(),
+                    );
               },
             ),
           );

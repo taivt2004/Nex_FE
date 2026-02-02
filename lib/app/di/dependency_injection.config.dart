@@ -12,7 +12,8 @@
 import 'package:flutter/material.dart' as _i409;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:nexpaylab/app/data/localstore/app.config.local.dart' as _i404;
+import 'package:nexpaylab/app/data/localstore/app_config_local_store.dart'
+    as _i932;
 import 'package:nexpaylab/app/data/repository/app_config_repos.dart' as _i282;
 import 'package:nexpaylab/app/data/repository/coin_repos.dart' as _i117;
 import 'package:nexpaylab/app/data/repository/user_repos.dart' as _i514;
@@ -41,8 +42,10 @@ import 'package:nexpaylab/features/home/presentation/cubit/home_config_cubit.dar
     as _i703;
 import 'package:nexpaylab/features/lock_screen/presentation/bloc/lock_screen_bloc.dart'
     as _i111;
-import 'package:nexpaylab/features/splash/presentation/bloc/splash_bloc.dart'
-    as _i376;
+import 'package:nexpaylab/features/splash/presentation/bloc/app_config/app_config_bloc.dart'
+    as _i220;
+import 'package:nexpaylab/features/splash/presentation/bloc/auth_check/auth_check_bloc.dart'
+    as _i911;
 import 'package:nexpaylab/shared/language/language_model.dart' as _i846;
 import 'package:nexpaylab/shared/theme/theme_mode.dart' as _i805;
 import 'package:nexpaylab/shared/ui/app_lifecycle.dart' as _i458;
@@ -85,11 +88,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i744.RegisterPage>(
       () => _i744.RegisterPage(key: gh<_i409.Key>()),
     );
+    gh.factory<_i932.AppConfigLocalStore>(
+      () => _i932.AppConfigLocalStoreImp(db: gh<_i867.Database>()),
+    );
     gh.factory<_i338.AppConfigLocalStore>(
       () => _i338.AppConfigLocalStoreImp(db: gh<_i867.Database>()),
-    );
-    gh.factory<_i404.AppConfigLocalStore>(
-      () => _i404.AppConfigLocalStoreImp(db: gh<_i867.Database>()),
     );
     gh.factory<_i117.CoinRepository>(
       () => _i117.CoinRepositoryImp(apiService: gh<_i833.ApiService>()),
@@ -97,21 +100,24 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i703.HomeConfigCubit>(
       () => _i703.HomeConfigCubit(gh<_i338.AppConfigLocalStore>()),
     );
-    gh.factory<_i111.LockBloc>(
-      () => _i111.LockBloc(gh<_i338.AppConfigLocalStore>()),
-    );
     gh.factory<_i59.MarketplaceBloc>(
       () => _i59.MarketplaceBloc(
         gh<_i117.CoinRepository>(),
         gh<_i1061.CoinLocal>(),
       ),
     );
+    gh.factory<_i911.AuthCheckBloc>(
+      () => _i911.AuthCheckBloc(gh<_i338.AppConfigLocalStore>()),
+    );
+    gh.factory<_i111.LockBloc>(
+      () => _i111.LockBloc(gh<_i338.AppConfigLocalStore>()),
+    );
     gh.factory<_i260.UserLocalStore>(
       () => _i260.UserLocalStoreImp(database: gh<_i867.Database>()),
     );
     gh.factory<_i282.AppConfigRepository>(
       () => _i282.AppConfigRepositoryImp(
-        gh<_i404.AppConfigLocalStore>(),
+        gh<_i932.AppConfigLocalStore>(),
         gh<_i833.ApiService>(),
       ),
     );
@@ -120,12 +126,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i260.UserLocalStore>(),
         appConfigLocalStore: gh<_i338.AppConfigLocalStore>(),
         apiService: gh<_i833.ApiService>(),
-      ),
-    );
-    gh.factory<_i376.SplashBloc>(
-      () => _i376.SplashBloc(
-        gh<_i282.AppConfigRepository>(),
-        gh<_i338.AppConfigLocalStore>(),
       ),
     );
     gh.lazySingleton<_i75.UserSession>(
@@ -148,6 +148,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i338.AppConfigLocalStore>(),
         gh<_i75.UserSession>(),
       ),
+    );
+    gh.factory<_i220.AppConfigBloc>(
+      () => _i220.AppConfigBloc(gh<_i282.AppConfigRepository>()),
     );
     gh.factory<_i717.RegisterBloc>(
       () => _i717.RegisterBloc(

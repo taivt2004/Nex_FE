@@ -1,32 +1,30 @@
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nexpaylab/app/data/repository/app_config_repos.dart';
-import 'package:nexpaylab/app/database/app_config_local.dart';
 import 'package:nexpaylab/shared/constants/core_constants.dart';
 import 'package:nexpaylab/shared/utils/result.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-part 'splash_event.dart';
-part 'splash_state.dart';
+part 'app_config_event.dart';
+part 'app_config_state.dart';
 
 @injectable
-class SplashBloc extends Bloc<SplashEvent, SplashState> {
-  SplashBloc(this._appConfigRepository, this._appConfigLocalStore)
-      : super(const SplashState()) {
-    on<SplashStarted>(_onSplashStarted);
-    on<SplashSkippedUpdate>(_onSplashSkippedUpdate);
+class AppConfigBloc extends Bloc<AppConfigEvent, AppConfigState> {
+  AppConfigBloc(this._appConfigRepository) : super(const AppConfigState()) {
+    on<AppConfigStarted>(_onAppConfigStarted);
   }
-
+  
   final AppConfigRepository _appConfigRepository;
-  final AppConfigLocalStore _appConfigLocalStore;
 
-  Future<void> _onSplashStarted(
-      SplashStarted event, Emitter<SplashState> emit) async {
-    emit(state.copyWith(status: SplashStatus.loading));
+  Future<void> _onAppConfigStarted(
+    AppConfigStarted event,
+    Emitter<AppConfigState> emit,
+  ) async {
+    emit(state.copyWith(status: AppConfigStatus.loading));
     try {
-      // 1. Fetch Configs
       final result = await _appConfigRepository.getAppConfigs([
         keyLatestAppVersion,
         keyForceAppUpdate,
@@ -35,8 +33,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       ]);
 
       await result.when(
-        success: (configs) async {
-          // 2. Check Version
+        success: (Map<String, String> configs) async {
           final packageInfo = await PackageInfo.fromPlatform();
           final currentVersion = packageInfo.version;
 
@@ -44,44 +41,31 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
           final forceUpdate = configs[keyForceAppUpdate]?.toString() == 'on';
 
           final storeUrl = Platform.isAndroid
-              ? configs[keyStoreUrlAndroid]?.toString()
-              : configs[keyStoreUrlIos]?.toString();
+              ? (configs[keyStoreUrlAndroid]?.isNotEmpty ?? false
+                  ? configs[keyStoreUrlAndroid]!
+                  : 'https://play.google.com/store/apps/details?id=${packageInfo.packageName}')
+              : (configs[keyStoreUrlIos]?.isNotEmpty ?? false
+                  ? configs[keyStoreUrlIos]!
+                  : 'https://apps.apple.com/app/id6476123456'); // Replace with actual App ID when available
 
           if (_isUpdateRequired(currentVersion, latestVersion)) {
             emit(state.copyWith(
-              status: SplashStatus.updateRequired,
+              status: AppConfigStatus.updateRequired,
               storeUrl: storeUrl,
               isForceUpdate: forceUpdate,
             ));
-            return;
+          } else {
+            emit(state.copyWith(status: AppConfigStatus.success));
           }
-          await _checkAuthAndNavigate(emit);
         },
         failure: (e) async {
-          emit(state.copyWith(status: SplashStatus.unauthenticated));
+          // If config fetch fails, we usually proceed to app (maybe with default config)
+          // or show error. Here assuming we proceed.
+          emit(state.copyWith(status: AppConfigStatus.success));
         },
       );
     } catch (e) {
-      emit(state.copyWith(
-          status: SplashStatus.failure, errorMessage: e.toString()));
-    }
-  }
-
-  Future<void> _onSplashSkippedUpdate(
-      SplashSkippedUpdate event, Emitter<SplashState> emit) async {
-    await _checkAuthAndNavigate(emit);
-  }
-
-  Future<void> _checkAuthAndNavigate(Emitter<SplashState> emit) async {
-    // 3. Check Auth / Wallet
-    final passphraseConfig = await _appConfigLocalStore
-        .getConfigByKey(keyLocalPassphrase)
-        .getSingleOrNull();
-
-    if (passphraseConfig != null && passphraseConfig.value.isNotEmpty) {
-      emit(state.copyWith(status: SplashStatus.authenticated));
-    } else {
-      emit(state.copyWith(status: SplashStatus.unauthenticated));
+      emit(state.copyWith(status: AppConfigStatus.failure));
     }
   }
 

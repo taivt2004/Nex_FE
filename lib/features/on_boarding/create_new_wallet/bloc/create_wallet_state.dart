@@ -1,4 +1,6 @@
-part of 'create_wallet_cubit.dart';
+part of 'create_wallet_bloc.dart';
+
+enum CreateWalletStatus { initial, submitting, success, failure }
 
 enum CreateWalletError {
   walletNameRequired,
@@ -9,10 +11,11 @@ enum CreateWalletError {
 
 class CreateWalletState extends Equatable {
   const CreateWalletState({
-    required this.walletName,
-    required this.isSecure,
-    required this.passphrase,
-    required this.confirmPassphrase,
+    this.walletName = '',
+    this.isSecure = false,
+    this.passphrase = '',
+    this.confirmPassphrase = '',
+    this.status = CreateWalletStatus.initial,
     this.walletNameError,
     this.passphraseError,
   });
@@ -21,27 +24,16 @@ class CreateWalletState extends Equatable {
   final bool isSecure;
   final String passphrase;
   final String confirmPassphrase;
+  final CreateWalletStatus status;
   final CreateWalletError? walletNameError;
   final CreateWalletError? passphraseError;
 
-  bool get showConfirm => isSecure && passphrase.length == 6;
-
   bool get isFormValid {
-    if (walletNameError != null) return false;
-
-    // Always require secure mode (passphrase)
-    // if (!isSecure) return false; // Uncomment if checkbox itself is mandatory, but assuming logic is "must enter passphrase"
-
-    // If secure mode is active (or if we want to force it):
+    if (walletNameError != null || walletName.isEmpty) return false;
     if (isSecure) {
-      if (passphrase.length < 6) return false;
-      if (confirmPassphrase.length < 6) return false;
+      if (passphraseError != null || passphrase.isEmpty) return false;
       if (passphrase != confirmPassphrase) return false;
-    } else {
-      // If isSecure is false, disable button
-      return false;
     }
-
     return true;
   }
 
@@ -50,27 +42,33 @@ class CreateWalletState extends Equatable {
     bool? isSecure,
     String? passphrase,
     String? confirmPassphrase,
-    CreateWalletError? walletNameError,
-    CreateWalletError? passphraseError,
-    
+    CreateWalletStatus? status,
+    CreateWalletError? Function()? walletNameError,
+    CreateWalletError? Function()? passphraseError,
   }) {
     return CreateWalletState(
       walletName: walletName ?? this.walletName,
       isSecure: isSecure ?? this.isSecure,
       passphrase: passphrase ?? this.passphrase,
       confirmPassphrase: confirmPassphrase ?? this.confirmPassphrase,
-      walletNameError: walletNameError,
-      passphraseError: passphraseError,
+      status: status ?? this.status,
+      walletNameError: walletNameError != null
+          ? walletNameError()
+          : this.walletNameError,
+      passphraseError: passphraseError != null
+          ? passphraseError()
+          : this.passphraseError,
     );
   }
 
   @override
   List<Object?> get props => [
-    walletName,
-    isSecure,
-    passphrase,
-    confirmPassphrase,
-    walletNameError,
-    passphraseError,
-  ];
+        walletName,
+        isSecure,
+        passphrase,
+        confirmPassphrase,
+        status,
+        walletNameError,
+        passphraseError,
+      ];
 }

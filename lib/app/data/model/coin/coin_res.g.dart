@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'coin.dart';
+part of 'coin_res.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

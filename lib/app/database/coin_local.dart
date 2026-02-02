@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:injectable/injectable.dart';
 import 'package:nexpaylab/app/data/model/base/data_list.dart';
 import 'package:nexpaylab/app/data/model/base/meta.dart';
-import 'package:nexpaylab/app/data/model/coin/coin.dart';
+import 'package:nexpaylab/app/data/model/coin/coin_res.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 1. Định nghĩa Interface

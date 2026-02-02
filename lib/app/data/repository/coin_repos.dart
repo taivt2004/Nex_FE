@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:nexpaylab/app/data/model/base/data_list.dart';
-import 'package:nexpaylab/app/data/model/coin/coin.dart';
+import 'package:nexpaylab/app/data/model/coin/coin_res.dart';
 import 'package:nexpaylab/app/data/service/api.dart';
 import 'package:nexpaylab/shared/utils/result.dart';
 
