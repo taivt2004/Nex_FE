@@ -4,13 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/database.dart';
-import 'package:nexpaylab/feature/home/presentation/page/home.page.dart';
-import 'package:nexpaylab/feature/login.register/page/login.page.dart';
-import 'package:nexpaylab/feature/login.register/page/register.page.dart';
-import 'package:nexpaylab/feature/on_boarding/already_have_wallet/page/already_have_wallet_01.dart';
-import 'package:nexpaylab/feature/on_boarding/create_new_wallet/page/create_new_wallet_01.dart';
-import 'package:nexpaylab/feature/on_boarding/introduction/page/onboarding.page.dart';
-import 'package:nexpaylab/feature/on_boarding/introduction/page/splash.page.dart';
+import 'package:nexpaylab/features/auth/presentation/page/login_page.dart';
+import 'package:nexpaylab/features/auth/presentation/page/register_page.dart';
+import 'package:nexpaylab/features/home/presentation/page/home_page.dart';
+import 'package:nexpaylab/features/lock_screen/presentation/page/lock_page.dart';
+import 'package:nexpaylab/features/on_boarding/already_have_wallet/page/already_have_wallet_01.dart';
+import 'package:nexpaylab/features/on_boarding/create_new_wallet/page/create_new_wallet_01.dart';
+import 'package:nexpaylab/features/on_boarding/introduction/page/onboarding_page.dart';
+import 'package:nexpaylab/features/settings/presentation/page/settings_page.dart';
+import 'package:nexpaylab/features/splash/presentation/page/splash_page.dart';
 
 class AppRouter extends Equatable {
   static const home = '/';
@@ -21,7 +23,8 @@ class AppRouter extends Equatable {
   static const databaseViwer = '/db_viewer';
   static const createNewWallet01 = '/create_new_wallet_01';
   static const alreadyHaveWallet01 = '/already_have_wallet_01';
-
+  static const lockScreen = '/lock_screen';
+  static const settings = '/settings';
   @override
   List<Object?> get props => [home];
 }
@@ -43,6 +46,10 @@ GoRouter router([String? initialLocation]) => GoRouter(
       builder: (context, state) => const HomePage(),
     ),
     GoRoute(
+      path: AppRouter.settings,
+      builder: (context, state) => const SettingsPage(),
+    ),
+    GoRoute(
       path: AppRouter.login,
       builder: (context, state) => const LoginPage(),
     ),
@@ -61,6 +68,10 @@ GoRouter router([String? initialLocation]) => GoRouter(
     GoRoute(
       path: AppRouter.alreadyHaveWallet01,
       builder: (context, state) => const AlreadyHaveWallet01Page(),
+    ),
+    GoRoute(
+      path: AppRouter.lockScreen,
+      builder: (context, state) => const LockPage(),
     ),
   ],
   redirect: (BuildContext context, GoRouterState state) async {

@@ -124,9 +124,8 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/bg_splash.jpg
-  AssetGenImage get bgSplash =>
-      const AssetGenImage('assets/images/bg_splash.jpg');
+  /// File path: assets/images/ic_app.png
+  AssetGenImage get icApp => const AssetGenImage('assets/images/ic_app.png');
 
   /// File path: assets/images/nexpay.svg
   SvgGenImage get nexpay => const SvgGenImage('assets/images/nexpay.svg');
@@ -140,7 +139,7 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/on_boarding2.png');
 
   /// List of all assets
-  List<dynamic> get values => [bgSplash, nexpay, onBoarding, onBoarding2];
+  List<dynamic> get values => [icApp, nexpay, onBoarding, onBoarding2];
 }
 
 class $AssetsIconsHomeGen {
@@ -180,6 +179,10 @@ class $AssetsIconsHomeActionBtnGen {
   SvgGenImage get icActionSend =>
       const SvgGenImage('assets/icons/home/action_btn/ic_action_send.svg');
 
+  /// File path: assets/icons/home/action_btn/ic_action_swap.svg
+  SvgGenImage get icActionSwap =>
+      const SvgGenImage('assets/icons/home/action_btn/ic_action_swap.svg');
+
   /// File path: assets/icons/home/action_btn/ic_tsx_buy.svg
   SvgGenImage get icTsxBuy =>
       const SvgGenImage('assets/icons/home/action_btn/ic_tsx_buy.svg');
@@ -189,6 +192,7 @@ class $AssetsIconsHomeActionBtnGen {
     icActionReceive,
     icActionSell,
     icActionSend,
+    icActionSwap,
     icTsxBuy,
   ];
 }
@@ -265,12 +269,6 @@ class Assets {
   static const $AssetsGoogleFontsGen googleFonts = $AssetsGoogleFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
-  static const $AssetsIconsHomeGen iconsHome = $AssetsIconsHomeGen();
-  static const $AssetsIconsHomeActionBtnGen iconsHomeActionBtn = $AssetsIconsHomeActionBtnGen();
-  static const $AssetsIconsHomeBottomMenuGen iconsHomeBottomMenu = $AssetsIconsHomeBottomMenuGen();
-  static const $AssetsIconsHomeCryptActivesGen iconsHomeCryptActives = $AssetsIconsHomeCryptActivesGen();
-  static const $AssetsIconsHomeTopbarGen iconsHomeTopbar = $AssetsIconsHomeTopbarGen();
-  static const $AssetsIconsHomeQrscanGen iconsHomeQrscan = $AssetsIconsHomeQrscanGen();
 }
 
 class AssetGenImage {
