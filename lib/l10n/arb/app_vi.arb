@@ -100,7 +100,7 @@
     "paymentShopOnline": "Mua sắm online",
     "paymentPayBills": "Thanh toán hóa đơn",
     "errorWalletNameRequired": "Tên ví là bắt buộc",
-    "errorWalletNameLength": "Tối đa 24 ký tự",
+    "errorWalletNameLength": "Tối đa 20 ký tự",
     "errorWalletNameInvalid": "Chỉ cho phép chữ cái, số và khoảng trắng",
     "errorPassphraseMismatch": "Mật khẩu không khớp",
     "checkNetworkConnection": "Vui lòng kiểm tra kết nối mạng",

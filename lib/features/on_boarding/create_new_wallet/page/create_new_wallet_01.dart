@@ -78,7 +78,6 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
         builder: (context, state) {
           return OnboardingScaffold(
             title: l10n.createNewWallet,
-            backgroundColor: OlaColors.appbackground,
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,7 +104,7 @@ class _CreateNewWallet01PageState extends State<CreateNewWallet01Page> {
                     context.read<CreateWalletBloc>().add(
                           PassphraseChanged(value),
                         );
-                  },
+                  },  
                   onConfirmPassphraseChanged: (value) {
                     context.read<CreateWalletBloc>().add(
                           ConfirmPassphraseChanged(value),

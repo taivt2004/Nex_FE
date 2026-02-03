@@ -40,8 +40,8 @@ import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marke
     as _i59;
 import 'package:nexpaylab/features/home/presentation/cubit/home_config_cubit.dart'
     as _i703;
-import 'package:nexpaylab/features/lock_screen/presentation/bloc/lock_screen_bloc.dart'
-    as _i111;
+import 'package:nexpaylab/features/lock_screen/presentation/bloc/lock_bloc.dart'
+    as _i320;
 import 'package:nexpaylab/features/splash/presentation/bloc/app_config/app_config_bloc.dart'
     as _i220;
 import 'package:nexpaylab/features/splash/presentation/bloc/auth_check/auth_check_bloc.dart'
@@ -109,8 +109,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i911.AuthCheckBloc>(
       () => _i911.AuthCheckBloc(gh<_i338.AppConfigLocalStore>()),
     );
-    gh.factory<_i111.LockBloc>(
-      () => _i111.LockBloc(gh<_i338.AppConfigLocalStore>()),
+    gh.factory<_i320.LockBloc>(
+      () => _i320.LockBloc(gh<_i338.AppConfigLocalStore>()),
     );
     gh.factory<_i260.UserLocalStore>(
       () => _i260.UserLocalStoreImp(database: gh<_i867.Database>()),

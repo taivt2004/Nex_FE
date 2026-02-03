@@ -1,10 +1,10 @@
-part of 'already_have_wallet_cubit.dart';
+part of 'already_have_wallet_bloc.dart';
 
 enum AlreadyHaveWalletError {
   walletNameRequired,
 }
 
-class AlreadyHaveWalletState {
+class AlreadyHaveWalletState extends Equatable {
   const AlreadyHaveWalletState({
     this.walletName = '',
     this.secretPhrase = '',
@@ -31,14 +31,23 @@ class AlreadyHaveWalletState {
     String? secretPhrase,
     bool? isSecure,
     String? passphrase,
-    AlreadyHaveWalletError? walletNameError,
+    AlreadyHaveWalletError? Function()? walletNameError,
   }) {
     return AlreadyHaveWalletState(
       walletName: walletName ?? this.walletName,
       secretPhrase: secretPhrase ?? this.secretPhrase,
       isSecure: isSecure ?? this.isSecure,
       passphrase: passphrase ?? this.passphrase,
-      walletNameError: walletNameError,
+      walletNameError: walletNameError != null ? walletNameError() : this.walletNameError,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        walletName,
+        secretPhrase,
+        isSecure,
+        passphrase,
+        walletNameError,
+      ];
 }

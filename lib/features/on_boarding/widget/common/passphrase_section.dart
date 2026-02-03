@@ -46,7 +46,22 @@ class _PassphraseSectionState extends State<PassphraseSection> {
     _passphraseController = TextEditingController();
     _confirmController = TextEditingController();
     _passphraseFocusNode = FocusNode();
-    _confirmFocusNode = FocusNode();
+    _confirmFocusNode = FocusNode(
+      onKeyEvent: (node, event) {
+        if (event is KeyDownEvent &&
+            event.logicalKey == LogicalKeyboardKey.backspace) {
+          if (_confirmController.text.isEmpty &&
+              _passphraseController.text.isNotEmpty) {
+            final t = _passphraseController.text;
+            _passphraseController.text = t.substring(0, t.length - 1);
+            widget.onPassphraseChanged(_passphraseController.text);
+            _passphraseFocusNode.requestFocus();
+            return KeyEventResult.handled;
+          }
+        }
+        return KeyEventResult.ignored;
+      },
+    );
 
     _passphraseController.addListener(() {
       final len = _passphraseController.text.length;
@@ -88,7 +103,7 @@ class _PassphraseSectionState extends State<PassphraseSection> {
             color: Colors.transparent,
             border: widget.isSecure
                 ? Border.all(color: OlaColors.primarycolor, width: 1.5)
-                : Border.all(color: Colors.white24, width: 1),
+                : Border.all(color: Theme.of(context).dividerColor, width: 1),
             borderRadius: BorderRadius.circular(16.r),
           ),
           padding: EdgeInsets.all(16.r),
@@ -120,7 +135,7 @@ class _PassphraseSectionState extends State<PassphraseSection> {
                         border: Border.all(
                           color: widget.isSecure
                               ? OlaColors.primarycolor
-                              : Colors.white54,
+                              : Theme.of(context).unselectedWidgetColor,
                           width: 2,
                         ),
                       ),
@@ -133,7 +148,7 @@ class _PassphraseSectionState extends State<PassphraseSection> {
                       child: Text(
                         titleText,
                         style: PoppinsTextStyles.primary14Regular.copyWith(
-                          color: Colors.white,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                           fontSize: 14.sp,
                         ),
                       ),
@@ -159,7 +174,7 @@ class _PassphraseSectionState extends State<PassphraseSection> {
                       style: PoppinsTextStyles.primary14Regular.copyWith(
                         color: hasError
                             ? const Color(0xFFFF3B30)
-                            : Colors.white54,
+                            : Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                         fontSize: 14.sp,
                       ),
                     ),
@@ -193,13 +208,13 @@ class _PassphraseSectionState extends State<PassphraseSection> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.info_outline, size: 18.sp, color: Colors.white38),
+              Icon(Icons.info_outline, size: 18.sp, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.5)),
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
                   infoText,
                   style: PoppinsTextStyles.primary12Regular.copyWith(
-                    color: Colors.white54,
+                    color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
                     fontSize: 12.sp,
                     height: 1.5,
                   ),
@@ -261,7 +276,7 @@ class _PinInputState extends State<_PinInput> {
       behavior: HitTestBehavior.opaque,
       onTap: () => FocusScope.of(context).requestFocus(_effectiveFocusNode),
       child: Container(
-        height: 44.h, // Tăng chiều cao vùng bấm
+        height: 44.h,
         alignment: Alignment.center,
         child: Stack(
           alignment: Alignment.center,
@@ -287,7 +302,7 @@ class _PinInputState extends State<_PinInput> {
                         : BoxDecoration(
                             color: filled
                                 ? OlaColors.primarycolor
-                                : Colors.white12,
+                                : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                   ),
@@ -325,3 +340,4 @@ class _PinInputState extends State<_PinInput> {
     );
   }
 }
+

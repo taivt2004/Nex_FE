@@ -23,58 +23,76 @@ class WalletNameInput extends StatelessWidget {
       children: [
         Text(
           l10n.walletName,
-          style: TextStyle(color: Colors.white70, fontSize: 14.sp),
+          style: TextStyle(
+            color:
+                Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
+            fontSize: 14.sp,
+          ),
         ),
         SizedBox(height: 12.h),
         TextField(
           controller: controller,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
           onChanged: onChanged,
           decoration: InputDecoration(
             filled: true,
-            fillColor: const Color(0xFF2A2A3A),
+            fillColor: Theme.of(context)
+                .colorScheme
+                .surfaceContainerHighest
+                .withValues(alpha: 0.2),
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
               vertical: 16.h,
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: hasError ? const Color(0xFFFF3B30) : Colors.transparent,
-                width: hasError ? 1.5 : 0,
+                color: hasError
+                    ? Theme.of(context).colorScheme.error
+                    : Theme.of(context).dividerColor,
+                width: hasError ? 1.5 : 1,
               ),
               borderRadius: BorderRadius.circular(16.r),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: hasError
-                    ? const Color(0xFFFF3B30)
+                    ? Theme.of(context).colorScheme.error
                     : OlaColors.primarycolor,
                 width: 1.5,
               ),
               borderRadius: BorderRadius.circular(16.r),
             ),
             errorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Color(0xFFFF3B30),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.error,
                 width: 1.5,
               ),
               borderRadius: BorderRadius.circular(16.r),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Color(0xFFFF3B30),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.error,
                 width: 1.5,
               ),
               borderRadius: BorderRadius.circular(16.r),
             ),
             errorText: errorText,
             errorStyle: TextStyle(
-              color: const Color(0xFFFF3B30),
+              color: Theme.of(context).colorScheme.error,
               fontSize: 12.sp,
             ),
             suffixIcon: hasError
                 ? IconButton(
-                    icon: Icon(Icons.close, color: Colors.white70, size: 20.sp),
+                    icon: Icon(
+                      Icons.close,
+                      color: Theme.of(context)
+                          .iconTheme
+                          .color
+                          ?.withValues(alpha: 0.7),
+                      size: 20.sp,
+                    ),
                     onPressed: () {
                       controller.clear();
                       onChanged?.call('');
@@ -83,7 +101,14 @@ class WalletNameInput extends StatelessWidget {
                     splashRadius: 20.r,
                   )
                 : IconButton(
-                    icon: Icon(Icons.edit, color: Colors.white54, size: 20.sp),
+                    icon: Icon(
+                      Icons.edit,
+                      color: Theme.of(context)
+                          .iconTheme
+                          .color
+                          ?.withValues(alpha: 0.6),
+                      size: 20.sp,
+                    ),
                     onPressed: () {},
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,

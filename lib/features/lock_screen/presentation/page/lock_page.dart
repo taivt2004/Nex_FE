@@ -1,35 +1,35 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide LockState;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
-import 'package:nexpaylab/features/lock_screen/presentation/bloc/lock_screen_bloc.dart';
+import 'package:nexpaylab/features/lock_screen/presentation/bloc/lock_bloc.dart';
 import 'package:nexpaylab/features/lock_screen/presentation/widget/lock_pin_input.dart';
 import 'package:nexpaylab/features/lock_screen/presentation/widget/reset_wallet_dialog.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';
 import 'package:nexpaylab/shared/theme/app_style.dart';
 
-class LockScreenPage extends StatelessWidget {
-  const LockScreenPage({super.key});
+class LockPage extends StatelessWidget {
+  const LockPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<LockBloc>()..add(LockStarted()),
-      child: const _LockScreenView(),
+      child: const _LockView(),
     );
   }
 }
 
-class _LockScreenView extends StatefulWidget {
-  const _LockScreenView();
+class _LockView extends StatefulWidget {
+  const _LockView();
 
   @override
-  State<_LockScreenView> createState() => _LockScreenViewState();
+  State<_LockView> createState() => _LockViewState();
 }
 
-class _LockScreenViewState extends State<_LockScreenView> {
+class _LockViewState extends State<_LockView> {
   final TextEditingController _passphraseController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -51,7 +51,7 @@ class _LockScreenViewState extends State<_LockScreenView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return BlocConsumer<LockBloc, LockScreenState>(
+    return BlocConsumer<LockBloc, LockState>(
       listener: (context, state) {
         if (state.status == LockStatus.authenticated) {
           context.go(AppRouter.home);

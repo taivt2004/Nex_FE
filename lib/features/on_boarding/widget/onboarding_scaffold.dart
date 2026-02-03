@@ -8,21 +8,22 @@ class OnboardingScaffold extends StatelessWidget {
     required this.body,
     super.key,
     this.bottomButton,
-    this.backgroundColor = const Color(0xFF121314),
+    this.backgroundColor,
   });
 
   final String title;
   final Widget body;
   final Widget? bottomButton;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = backgroundColor ?? Theme.of(context).scaffoldBackgroundColor;
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: bgColor,
       appBar: AppbarCpn(
         title: title,
-        backgroundColor: backgroundColor,
+        backgroundColor: bgColor,
       ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
@@ -38,7 +39,7 @@ class OnboardingScaffold extends StatelessWidget {
               Container(
                 padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 16.h),
                 decoration: BoxDecoration(
-                  color: backgroundColor,
+                  color: bgColor,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.1),

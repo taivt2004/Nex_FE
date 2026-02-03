@@ -679,7 +679,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorWalletNameLength.
   ///
   /// In en, this message translates to:
-  /// **'Max 24 characters'**
+  /// **'Max 20 characters'**
   String get errorWalletNameLength;
 
   /// No description provided for @errorWalletNameInvalid.

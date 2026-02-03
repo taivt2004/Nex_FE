@@ -100,7 +100,7 @@
     "paymentPayBills": "Pay bills",
     "checkNetworkConnection": "Please check your network connection",
     "errorWalletNameRequired": "Wallet name is required",
-    "errorWalletNameLength": "Max 24 characters",
+    "errorWalletNameLength": "Max 20 characters",
     "errorWalletNameInvalid": "Only letters, numbers and spaces are allowed",
     "errorPassphraseMismatch": "Passphrase do not match",
     "english": "English",

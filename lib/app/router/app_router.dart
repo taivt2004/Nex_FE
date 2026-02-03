@@ -7,7 +7,7 @@ import 'package:nexpaylab/app/database/database.dart';
 import 'package:nexpaylab/features/auth/presentation/page/login_page.dart';
 import 'package:nexpaylab/features/auth/presentation/page/register_page.dart';
 import 'package:nexpaylab/features/home/presentation/page/home_page.dart';
-import 'package:nexpaylab/features/lock_screen/presentation/page/lock_screen_page.dart';
+import 'package:nexpaylab/features/lock_screen/presentation/page/lock_page.dart';
 import 'package:nexpaylab/features/on_boarding/already_have_wallet/page/already_have_wallet_01.dart';
 import 'package:nexpaylab/features/on_boarding/create_new_wallet/page/create_new_wallet_01.dart';
 import 'package:nexpaylab/features/on_boarding/introduction/page/onboarding_page.dart';
@@ -71,7 +71,7 @@ GoRouter router([String? initialLocation]) => GoRouter(
     ),
     GoRoute(
       path: AppRouter.lockScreen,
-      builder: (context, state) => const LockScreenPage(),
+      builder: (context, state) => const LockPage(),
     ),
   ],
   redirect: (BuildContext context, GoRouterState state) async {

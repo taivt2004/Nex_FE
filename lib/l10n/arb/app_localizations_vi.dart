@@ -310,7 +310,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get errorWalletNameRequired => 'Tên ví là bắt buộc';
 
   @override
-  String get errorWalletNameLength => 'Tối đa 24 ký tự';
+  String get errorWalletNameLength => 'Tối đa 20 ký tự';
 
   @override
   String get errorWalletNameInvalid =>

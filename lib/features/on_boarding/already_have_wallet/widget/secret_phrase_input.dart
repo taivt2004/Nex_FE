@@ -22,7 +22,11 @@ class SecretPhraseInput extends StatelessWidget {
       children: [
         Text(
           l10n.secretPhraseLabel,
-          style: TextStyle(color: Colors.white70, fontSize: 14.sp),
+          style: TextStyle(
+            color:
+                Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
+            fontSize: 14.sp,
+          ),
         ),
         SizedBox(height: 10.h),
         Stack(
@@ -31,25 +35,30 @@ class SecretPhraseInput extends StatelessWidget {
               controller: controller,
               maxLines: 4,
               minLines: 3,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ),
               keyboardType: TextInputType.text,
               onChanged: onChanged,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: const Color(0xFF2A2A3A),
+                fillColor: Theme.of(context)
+                    .colorScheme
+                    .surfaceContainerHighest
+                    .withValues(alpha: 0.2),
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 16.w,
                   vertical: 16.h,
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
+                  borderSide: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 1,
                   ),
                   borderRadius: BorderRadius.circular(16.r),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
+                  borderSide: BorderSide(
                     color: OlaColors.primarycolor,
                     width: 1.5,
                   ),
@@ -81,7 +90,11 @@ class SecretPhraseInput extends StatelessWidget {
         Text(
           l10n.secretPhraseHint,
           style: PoppinsTextStyles.primary12Regular.copyWith(
-            color: Colors.white54,
+            color: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.color
+                ?.withValues(alpha: 0.7),
             fontSize: 12.sp,
           ),
         ),

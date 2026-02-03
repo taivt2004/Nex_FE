@@ -310,7 +310,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorWalletNameRequired => 'Wallet name is required';
 
   @override
-  String get errorWalletNameLength => 'Max 24 characters';
+  String get errorWalletNameLength => 'Max 20 characters';
 
   @override
   String get errorWalletNameInvalid =>

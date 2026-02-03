@@ -33,33 +33,36 @@ class SplashScreen extends StatelessWidget {
               if (state.status == AppConfigStatus.updateRequired) {
                 showDialog<void>(
                   context: context,
-                  barrierDismissible: !state.isForceUpdate,
-                  builder: (ctx) => AlertDialog(
-                    title: Text(l10n.updateApp),
-                    content: Text(l10n.updateAppContent),
-                    actions: [
-                      if (!state.isForceUpdate)
+                  barrierDismissible: false,
+                  builder: (ctx) => WillPopScope(
+                    onWillPop: () async => false,
+                    child: AlertDialog(
+                      title: Text(l10n.updateApp),
+                      content: Text(l10n.updateAppContent),
+                      actions: [
+                        if (!state.isForceUpdate)
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(ctx).pop();
+                              context
+                                  .read<AuthCheckBloc>()
+                                  .add(AuthCheckStarted());
+                            },
+                            child: Text(l10n.skip),
+                          ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(ctx).pop();
-                            context
-                                .read<AuthCheckBloc>()
-                                .add(AuthCheckStarted());
+                            if (state.storeUrl != null) {
+                              launchUrl(
+                                Uri.parse(state.storeUrl!),
+                                mode: LaunchMode.externalApplication,
+                              );
+                            }
                           },
-                          child: Text(l10n.skip),
+                          child: Text(l10n.updateNow),
                         ),
-                      TextButton(
-                        onPressed: () {
-                          if (state.storeUrl != null) {
-                            launchUrl(
-                              Uri.parse(state.storeUrl!),
-                              mode: LaunchMode.externalApplication,
-                            );
-                          }
-                        },
-                        child: Text(l10n.updateNow),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               } else if (state.status == AppConfigStatus.success) {

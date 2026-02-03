@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nexpaylab/app/database/app_config_local.dart';
@@ -66,8 +65,16 @@ class CreateWalletBloc extends Bloc<CreateWalletEvent, CreateWalletState> {
     final confirmPassphrase = event.confirmPassphrase;
     CreateWalletError? error;
 
-    if (state.isSecure && confirmPassphrase != state.passphrase) {
-      error = CreateWalletError.passphraseMismatch;
+    if (state.isSecure) {
+      final passLen = state.passphrase.length;
+      final confirmLen = confirmPassphrase.length;
+      if (confirmLen == 6 && passLen == 6) {
+        if (confirmPassphrase != state.passphrase) {
+          error = CreateWalletError.passphraseMismatch;
+        }
+      } else {
+        error = null;
+      }
     }
 
     emit(

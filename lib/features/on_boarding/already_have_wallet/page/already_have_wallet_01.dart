@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
-import 'package:nexpaylab/features/on_boarding/already_have_wallet/cubit/already_have_wallet_cubit.dart';
+import 'package:nexpaylab/features/on_boarding/already_have_wallet/bloc/already_have_wallet_bloc.dart';
 import 'package:nexpaylab/features/on_boarding/already_have_wallet/widget/secret_phrase_input.dart';
 import 'package:nexpaylab/features/on_boarding/widget/common/create_wallet_button.dart';
 import 'package:nexpaylab/features/on_boarding/widget/common/passphrase_section.dart';
@@ -59,12 +59,12 @@ class _AlreadyHaveWallet01PageState extends State<AlreadyHaveWallet01Page> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return BlocProvider(
-      create: (_) => AlreadyHaveWalletCubit(),
-      child: BlocBuilder<AlreadyHaveWalletCubit, AlreadyHaveWalletState>(
+      create: (_) => AlreadyHaveWalletBloc(),
+      child: BlocBuilder<AlreadyHaveWalletBloc, AlreadyHaveWalletState>(
         builder: (context, state) {
           return OnboardingScaffold(
             title: l10n.addExistingWallet,
-            backgroundColor: const Color(0xFF121314),
+            backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -73,27 +73,32 @@ class _AlreadyHaveWallet01PageState extends State<AlreadyHaveWallet01Page> {
                   errorText:
                       _getWalletNameErrorText(state.walletNameError, l10n),
                   onChanged: (value) {
-                    context.read<AlreadyHaveWalletCubit>().setWalletName(
-                      value,
-                      error: _validateWalletName(value),
-                    );
+                    context.read<AlreadyHaveWalletBloc>().add(
+                          WalletNameChanged(value, error: _validateWalletName(value)),
+                        );
                   },
                 ),
                 SizedBox(height: 20.h),
                 SecretPhraseInput(
                   controller: _secretPhraseController,
                   onChanged: (value) {
-                    context.read<AlreadyHaveWalletCubit>().setSecretPhrase(value);
+                    context.read<AlreadyHaveWalletBloc>().add(
+                          SecretPhraseChanged(value),
+                        );
                   },
                 ),
                 SizedBox(height: 20.h),
                 PassphraseSection(
                   isSecure: state.isSecure,
                   onChanged: (value) {
-                    context.read<AlreadyHaveWalletCubit>().toggleSecure(isSecure: value);
+                    context.read<AlreadyHaveWalletBloc>().add(
+                          SecureToggled(isSecure: value),
+                        );
                   },
                   onPassphraseChanged: (value) {
-                    context.read<AlreadyHaveWalletCubit>().setPassphrase(value);
+                    context.read<AlreadyHaveWalletBloc>().add(
+                          PassphraseChanged(value),
+                        );
                   },
                   onConfirmPassphraseChanged: (_) {},
                   errorText: null,
@@ -104,7 +109,7 @@ class _AlreadyHaveWallet01PageState extends State<AlreadyHaveWallet01Page> {
                 SizedBox(height: 20.h),
               ],
             ),
-            bottomButton: BlocBuilder<AlreadyHaveWalletCubit, AlreadyHaveWalletState>(
+            bottomButton: BlocBuilder<AlreadyHaveWalletBloc, AlreadyHaveWalletState>(
               buildWhen: (previous, current) =>
                   previous.isSecretValid != current.isSecretValid,
               builder: (context, state) {

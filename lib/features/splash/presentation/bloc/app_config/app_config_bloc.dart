@@ -16,7 +16,7 @@ class AppConfigBloc extends Bloc<AppConfigEvent, AppConfigState> {
   AppConfigBloc(this._appConfigRepository) : super(const AppConfigState()) {
     on<AppConfigStarted>(_onAppConfigStarted);
   }
-  
+
   final AppConfigRepository _appConfigRepository;
 
   Future<void> _onAppConfigStarted(
@@ -31,7 +31,7 @@ class AppConfigBloc extends Bloc<AppConfigEvent, AppConfigState> {
         keyStoreUrlIos,
         keyStoreUrlAndroid,
       ]);
-
+      
       await result.when(
         success: (Map<String, String> configs) async {
           final packageInfo = await PackageInfo.fromPlatform();
