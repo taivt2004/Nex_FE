@@ -20,8 +20,8 @@ enum ChartRange {
   y1('1y'),
   all('all');
 
-  final String value;
   const ChartRange(this.value);
+  final String value;
 }
 
 @injectable
@@ -139,6 +139,6 @@ class CoinDetailBloc extends Bloc<CoinDetailEvent, CoinDetailState> {
     Emitter<CoinDetailState> emit,
   ) async {
     emit(state.copyWith(chartRange: event.range));
-    add(FetchChartData());
+    add(const FetchChartData());
   }
 }

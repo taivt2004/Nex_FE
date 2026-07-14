@@ -9,7 +9,6 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i409;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:nexpaylab/app/data/localstore/app_config_local_store.dart'
@@ -28,12 +27,10 @@ import 'package:nexpaylab/app/network/auth_interceptor.dart' as _i710;
 import 'package:nexpaylab/app/network/network_checker.dart' as _i459;
 import 'package:nexpaylab/app/network/request_interceptor.dart' as _i548;
 import 'package:nexpaylab/app/session/user_session.dart' as _i75;
+import 'package:nexpaylab/features/auth/presentation/bloc/login_bloc.dart'
+    as _i187;
 import 'package:nexpaylab/features/auth/presentation/bloc/register_bloc.dart'
     as _i717;
-import 'package:nexpaylab/features/auth/presentation/page/login_page.dart'
-    as _i1020;
-import 'package:nexpaylab/features/auth/presentation/page/register_page.dart'
-    as _i744;
 import 'package:nexpaylab/features/coin_detail/presentation/bloc/coin_detail_bloc.dart'
     as _i199;
 import 'package:nexpaylab/features/home/presentation/bloc/home_bloc.dart'
@@ -79,10 +76,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1061.CoinLocal>(() => _i1061.CoinLocalImp());
     gh.factory<_i548.RequestInterceptor>(
       () => _i548.RequestInterceptor(gh<_i411.LocalStorageService>()),
-    );
-    gh.factory<_i1020.LoginPage>(() => _i1020.LoginPage(key: gh<_i409.Key>()));
-    gh.factory<_i744.RegisterPage>(
-      () => _i744.RegisterPage(key: gh<_i409.Key>()),
     );
     gh.factory<_i932.AppConfigLocalStore>(
       () => _i932.AppConfigLocalStoreImp(db: gh<_i867.Database>()),
@@ -138,6 +131,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i338.AppConfigLocalStore>(),
         gh<_i75.UserSession>(),
       ),
+    );
+    gh.factory<_i187.LoginBloc>(
+      () => _i187.LoginBloc(gh<_i514.UserRepository>(), gh<_i75.UserSession>()),
     );
     gh.factory<_i717.RegisterBloc>(
       () => _i717.RegisterBloc(

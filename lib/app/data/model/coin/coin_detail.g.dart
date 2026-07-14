@@ -28,9 +28,9 @@ CoinMetadata _$CoinMetadataFromJson(Map<String, dynamic> json) => CoinMetadata(
   name: json['name'] as String,
   symbol: json['symbol'] as String,
   imgUrl: json['img_url'] as String,
-  description: json['description'] as String,
+  description: _stringOrEmpty(json['description']),
   links: CoinLinks.fromJson(json['links'] as Map<String, dynamic>),
-  contract: json['contract'] as String,
+  contract: _stringOrEmpty(json['contract']),
 );
 
 Map<String, dynamic> _$CoinMetadataToJson(CoinMetadata instance) =>
@@ -45,9 +45,9 @@ Map<String, dynamic> _$CoinMetadataToJson(CoinMetadata instance) =>
     };
 
 CoinLinks _$CoinLinksFromJson(Map<String, dynamic> json) => CoinLinks(
-  website: json['website'] as String,
-  twitter: json['twitter'] as String,
-  reddit: json['reddit'] as String,
+  website: _stringOrEmpty(json['website']),
+  twitter: _stringOrEmpty(json['twitter']),
+  reddit: _stringOrEmpty(json['reddit']),
 );
 
 Map<String, dynamic> _$CoinLinksToJson(CoinLinks instance) => <String, dynamic>{
@@ -61,8 +61,8 @@ CoinStatistics _$CoinStatisticsFromJson(Map<String, dynamic> json) =>
       price: (json['price'] as num).toDouble(),
       rank: (json['rank'] as num).toInt(),
       marketCap: (json['market_cap'] as num).toDouble(),
-      fdv: (json['fdv'] as num).toDouble(),
-      dominance: (json['dominance'] as num).toDouble(),
+      fdv: _numToDouble(json['fdv']),
+      dominance: _numToDouble(json['dominance']),
       volume24h: (json['volume_24h'] as num).toDouble(),
       circulatingSupply: (json['circulating_supply'] as num).toDouble(),
       totalSupply: (json['total_supply'] as num).toDouble(),
@@ -87,8 +87,8 @@ Map<String, dynamic> _$CoinStatisticsToJson(CoinStatistics instance) =>
     };
 
 AthInfo _$AthInfoFromJson(Map<String, dynamic> json) => AthInfo(
-  price: (json['price'] as num).toDouble(),
-  date: json['date'] as String,
+  price: _numToDouble(json['price']),
+  date: _stringOrEmpty(json['date']),
 );
 
 Map<String, dynamic> _$AthInfoToJson(AthInfo instance) => <String, dynamic>{

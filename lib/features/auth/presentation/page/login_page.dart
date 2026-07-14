@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:injectable/injectable.dart';
 import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/auth/presentation/bloc/login_bloc.dart';
@@ -18,7 +17,6 @@ import 'package:nexpaylab/shared/utils/dimensions.dart';
 import 'package:nexpaylab/shared/utils/error_translator.dart';
 import 'package:nexpaylab/shared/utils/validator.dart';
 
-@injectable
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 

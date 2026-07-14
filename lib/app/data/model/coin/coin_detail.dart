@@ -2,6 +2,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'coin_detail.g.dart';
 
+double _numToDouble(Object? value) => (value as num?)?.toDouble() ?? 0;
+String _stringOrEmpty(Object? value) => value?.toString() ?? '';
+
 @JsonSerializable()
 class CoinDetail {
   CoinDetail({
@@ -41,8 +44,10 @@ class CoinMetadata {
   final String symbol;
   @JsonKey(name: 'img_url')
   final String imgUrl;
+  @JsonKey(fromJson: _stringOrEmpty)
   final String description;
   final CoinLinks links;
+  @JsonKey(fromJson: _stringOrEmpty)
   final String contract;
 }
 
@@ -57,8 +62,11 @@ class CoinLinks {
   factory CoinLinks.fromJson(Map<String, dynamic> json) => _$CoinLinksFromJson(json);
   Map<String, dynamic> toJson() => _$CoinLinksToJson(this);
 
+  @JsonKey(fromJson: _stringOrEmpty)
   final String website;
+  @JsonKey(fromJson: _stringOrEmpty)
   final String twitter;
+  @JsonKey(fromJson: _stringOrEmpty)
   final String reddit;
 }
 
@@ -85,7 +93,9 @@ class CoinStatistics {
   final int rank;
   @JsonKey(name: 'market_cap')
   final double marketCap;
+  @JsonKey(fromJson: _numToDouble)
   final double fdv;
+  @JsonKey(fromJson: _numToDouble)
   final double dominance;
   @JsonKey(name: 'volume_24h')
   final double volume24h;
@@ -109,7 +119,9 @@ class AthInfo {
   factory AthInfo.fromJson(Map<String, dynamic> json) => _$AthInfoFromJson(json);
   Map<String, dynamic> toJson() => _$AthInfoToJson(this);
 
+  @JsonKey(fromJson: _numToDouble)
   final double price;
+  @JsonKey(fromJson: _stringOrEmpty)
   final String date;
 }
 
