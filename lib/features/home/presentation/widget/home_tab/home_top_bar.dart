@@ -5,67 +5,68 @@ import 'package:nexpaylab/shared/ui/extensions/image.dart';
 
 class HomeTopBar extends StatelessWidget {
   const HomeTopBar({
-    this.walletTitle = 'Main Wallet',
-    this.onMenuTap,
-    this.onWalletTap,
-    this.onSearchTap,
+    this.appTitle = 'NexPay',
+    this.onProfileTap,
     this.onNotificationTap,
+    this.onActionTap,
     super.key,
   });
 
-  final String walletTitle;
-  final VoidCallback? onMenuTap;
-  final VoidCallback? onWalletTap;
-  final VoidCallback? onSearchTap;
+  final String appTitle;
+  final VoidCallback? onProfileTap;
   final VoidCallback? onNotificationTap;
+  final VoidCallback? onActionTap;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _TopBarIconButton(
-          
-          icon: AppAssets.homeTopbar.gridIcon.load(
-            color: Theme.of(context).primaryColor,
-            width: 22.sp,
-            height: 22.sp,
-          ),
-          onTap: onMenuTap,
-        ),
-        SizedBox(width: 8.w),
-        GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: onWalletTap,
-          child: Row(
-            children: [
-              Text(walletTitle, style: PoppinsTextStyles.display16Medium),
-              SizedBox(width: 4.w),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: Theme.of(context).textTheme.bodyLarge?.color,
-                size: 20.sp,
+        Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.r),
+              child: AppAssets.images.icApp.load(
+                width: 34.w,
+                height: 34.w,
               ),
-            ],
-          ),
+            ),
+            SizedBox(width: 10.w),
+            Text(
+              appTitle,
+              style: PoppinsTextStyles.primary18Bold.copyWith(
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
         Row(
           children: [
             _TopBarIconButton(
-              icon: AppAssets.homeTopbar.searchIcon.load(
-                color: Theme.of(context).primaryColor,
-                width: 22.sp,
-                height: 22.sp,
+              icon: Icon(
+                Icons.person_outline_rounded,
+                color: OlaColors.primarycolor,
+                size: 22.sp,
               ),
-              onTap: onSearchTap,
+              onTap: onProfileTap,
             ),
-            SizedBox(width: 8.w),
+            SizedBox(width: 10.w),
             _TopBarIconButton(
               icon: AppAssets.homeTopbar.notifiIcon.load(
-                color: Theme.of(context).primaryColor,
-                width: 22.sp,
-                height: 22.sp,
+                color: Colors.white,
+                width: 21.sp,
+                height: 21.sp,
               ),
+              onTap: onNotificationTap,
+            ),
+            SizedBox(width: 10.w),
+            _TopBarIconButton(
+              icon: Icon(
+                Icons.add_circle_outline_rounded,
+                color: Colors.white,
+                size: 22.sp,
+              ),
+              onTap: onActionTap,
             ),
           ],
         ),
@@ -85,10 +86,15 @@ class _TopBarIconButton extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: SizedBox(
-        width: 32.w,
-        height: 32.w,
-        child: Center(child: icon),
+      child: Container(
+        width: 34.w,
+        height: 34.w,
+        decoration: BoxDecoration(
+          color: const Color(0xFF12151B),
+          borderRadius: BorderRadius.circular(17.r),
+        ),
+        alignment: Alignment.center,
+        child: icon,
       ),
     );
   }

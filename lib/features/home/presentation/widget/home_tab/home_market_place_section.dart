@@ -1,7 +1,11 @@
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
 import 'package:nexpaylab/l10n/arb/app_localizations.dart';
 import 'package:nexpaylab/shared/theme/app_style.dart';
@@ -48,83 +52,128 @@ class HomeMarketPlaceSection extends StatelessWidget {
             }
             final coin = state.coins[index];
             final isPositive = coin.change24h >= 0;
-            return Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  border: Border.all(color: const Color(0xFF2C2F38)),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 44.w,
-                      height: 44.w,
-                      decoration: BoxDecoration(
-                        color: _getCoinColor(coin.base),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
+            return InkWell(
+              onTap: () {
+                context.push(
+                  AppRouter.coinDetail,
+                  extra: coin.id,
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFF1A1D24)),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 20.w,
                         child: Text(
-                          _getCoinSymbol(coin.base),
-                          style: PoppinsTextStyles.primary18Regular
+                          '${coin.rank}',
+                          style: PoppinsTextStyles.primary12Regular.copyWith(
+                            color: OlaColors.gray400,
+                            fontSize: 11.sp,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            coin.base,
-                            style: PoppinsTextStyles.primary14Semibold
+                      Expanded(
+                        flex: 5,
+                        child: Row(
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: coin.imgUrl,
+                              width: 30.w,
+                              height: 30.w,
+                              errorWidget: (context, url, error) => Container(
+                                width: 30.w,
+                                height: 30.w,
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFF7B61FF),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    coin.symbol[0].toUpperCase(),
+                                    style: PoppinsTextStyles.primary14Semibold,
+                                  ),
+                                ),
+                              ),
+                              imageBuilder: (context, imageProvider) => Container(
+                                width: 30.w,
+                                height: 30.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Text(
+                                coin.symbol,
+                                style: PoppinsTextStyles.primary14Semibold.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 13.5.sp,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              '${_formatPrice(coin.price)} US\$',
+                              maxLines: 1,
+                              softWrap: false,
+                              textAlign: TextAlign.right,
+                              style: PoppinsTextStyles.primary14Semibold.copyWith(
+                                color: Colors.white,
+                                fontSize: 12.5.sp,
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _getFullName(coin.base),
-                            style: PoppinsTextStyles.primary12Regular
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Text(
+                          '${isPositive ? '▲' : '▼'} ${_formatPercent(coin.change24h)}%',
+                          textAlign: TextAlign.right,
+                          style: PoppinsTextStyles.primary14Semibold.copyWith(
+                            color: isPositive
+                                ? OlaColors.greenColor
+                                : OlaColors.redColor,
+                            fontSize: 12.sp,
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            _formatPlain(coin.price),
-                            textAlign: TextAlign.center,
-                            style: PoppinsTextStyles.primary14Semibold
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          '${_formatCompactMarketCap(coin.marketCap)} US\$',
+                          textAlign: TextAlign.right,
+                          style: PoppinsTextStyles.primary14Regular.copyWith(
+                            color: Colors.white,
+                            fontSize: 12.sp,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _formatCurrency(coin.price),
-                            textAlign: TextAlign.center,
-                            style: PoppinsTextStyles.primary12Regular
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Container( 
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10.w,
-                        vertical: 6.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isPositive
-                            ? OlaColors.greenColor
-                            : OlaColors.redColor,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Text(
-                        '${isPositive ? '+' : ''}${coin.change24h.toStringAsFixed(2)}%',
-                        style: PoppinsTextStyles.primary12Regular
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );
@@ -135,58 +184,48 @@ class HomeMarketPlaceSection extends StatelessWidget {
   }
 }
 
-Color _getCoinColor(String base) {
-  switch (base.toUpperCase()) {
-    case 'BTC':
-      return const Color(0xFFF7931A);
-    case 'ETH':
-      return const Color(0xFF627EEA);
-    case 'TRX':
-      return const Color(0xFFFF0013);
-    case 'ADA':
-      return const Color(0xFF0033AD);
-    case 'SOL':
-      return const Color(0xFF9945FF);
-    default:
-      return const Color(0xFF7B61FF);
+String _formatPrice(double price) {
+  final formatter = NumberFormat.currency(
+    locale: 'vi_VN',
+    symbol: '',
+    decimalDigits: _priceDecimals(price),
+  );
+  return formatter.format(price).trim();
+}
+
+String _formatCompactMarketCap(double marketCap) {
+  if (marketCap >= 1000000000000) {
+    return '${_formatShortNumber(marketCap / 1000000000000)}T';
   }
-}
-
-String _getCoinSymbol(String base) {
-  final symbols = {'BTC': '₿', 'ETH': 'Ξ', 'ADA': '₳', 'SOL': '◎'};
-  return symbols[base.toUpperCase()] ?? base[0].toUpperCase();
-}
-
-String _formatPlain(double price) {
-  if (price < 1) {
-    return price.toStringAsFixed(6);
-  } else if (price < 100) {
-    return price.toStringAsFixed(5);
-  } else {
-    return price.toStringAsFixed(2);
+  if (marketCap >= 1000000000) {
+    return '${_formatShortNumber(marketCap / 1000000000)}B';
   }
-}
-
-String _formatCurrency(double price) {
-  final f = NumberFormat.currency(symbol: r'$', decimalDigits: price < 1 ? 6 : price < 100 ? 2 : 2);
-  return f.format(price);
-}
-
-String _getFullName(String base) {
-  switch (base.toUpperCase()) {
-    case 'BTC':
-      return 'Bitcoin';
-    case 'ETH':
-      return 'Ethereum';
-    case 'ADA':
-      return 'Cardano';
-    case 'SOL':
-      return 'Solana';
-    case 'BNB':
-      return 'BNB';
-    case 'XRP':
-      return 'XRP';
-    default:
-      return base;
+  if (marketCap >= 1000000) {
+    return '${_formatShortNumber(marketCap / 1000000)}M';
   }
+  return _formatShortNumber(marketCap);
+}
+
+String _formatShortNumber(double value) {
+  final formatter = NumberFormat.currency(
+    locale: 'vi_VN',
+    symbol: '',
+    decimalDigits: value >= 100 ? 0 : 2,
+  );
+  return formatter.format(value).trim();
+}
+
+String _formatPercent(double value) {
+  final formatter = NumberFormat.currency(
+    locale: 'vi_VN',
+    symbol: '',
+    decimalDigits: value.abs() >= 10 ? 1 : 2,
+  );
+  return formatter.format(value.abs()).trim();
+}
+
+int _priceDecimals(double price) {
+  if (price >= 100) return 2;
+  if (price >= 1) return 2;
+  return 6;
 }

@@ -9,6 +9,5 @@ class InitializeHome extends HomeEvent {}
 
 class LoadHomeConfig extends HomeEvent {
   LoadHomeConfig({required this.showLoading});
-
   final bool showLoading;
 }

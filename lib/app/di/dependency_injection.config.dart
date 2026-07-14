@@ -34,18 +34,14 @@ import 'package:nexpaylab/features/auth/presentation/page/login_page.dart'
     as _i1020;
 import 'package:nexpaylab/features/auth/presentation/page/register_page.dart'
     as _i744;
+import 'package:nexpaylab/features/coin_detail/presentation/bloc/coin_detail_bloc.dart'
+    as _i199;
 import 'package:nexpaylab/features/home/presentation/bloc/home_bloc.dart'
     as _i120;
 import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart'
     as _i59;
 import 'package:nexpaylab/features/home/presentation/cubit/home_config_cubit.dart'
     as _i703;
-import 'package:nexpaylab/features/lock_screen/presentation/bloc/lock_bloc.dart'
-    as _i320;
-import 'package:nexpaylab/features/splash/presentation/bloc/app_config/app_config_bloc.dart'
-    as _i220;
-import 'package:nexpaylab/features/splash/presentation/bloc/auth_check/auth_check_bloc.dart'
-    as _i911;
 import 'package:nexpaylab/shared/language/language_model.dart' as _i846;
 import 'package:nexpaylab/shared/theme/theme_mode.dart' as _i805;
 import 'package:nexpaylab/shared/ui/app_lifecycle.dart' as _i458;
@@ -100,17 +96,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i703.HomeConfigCubit>(
       () => _i703.HomeConfigCubit(gh<_i338.AppConfigLocalStore>()),
     );
+    gh.factory<_i199.CoinDetailBloc>(
+      () => _i199.CoinDetailBloc(gh<_i117.CoinRepository>()),
+    );
     gh.factory<_i59.MarketplaceBloc>(
-      () => _i59.MarketplaceBloc(
-        gh<_i117.CoinRepository>(),
-        gh<_i1061.CoinLocal>(),
-      ),
-    );
-    gh.factory<_i911.AuthCheckBloc>(
-      () => _i911.AuthCheckBloc(gh<_i338.AppConfigLocalStore>()),
-    );
-    gh.factory<_i320.LockBloc>(
-      () => _i320.LockBloc(gh<_i338.AppConfigLocalStore>()),
+      () => _i59.MarketplaceBloc(gh<_i117.CoinRepository>()),
     );
     gh.factory<_i260.UserLocalStore>(
       () => _i260.UserLocalStoreImp(database: gh<_i867.Database>()),
@@ -148,9 +138,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i338.AppConfigLocalStore>(),
         gh<_i75.UserSession>(),
       ),
-    );
-    gh.factory<_i220.AppConfigBloc>(
-      () => _i220.AppConfigBloc(gh<_i282.AppConfigRepository>()),
     );
     gh.factory<_i717.RegisterBloc>(
       () => _i717.RegisterBloc(

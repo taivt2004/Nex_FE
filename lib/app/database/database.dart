@@ -25,6 +25,18 @@ class Database extends _$Database {
 
   @override
   int get schemaVersion => 1;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (Migrator m) async {
+          await m.createAll();
+        },
+        onUpgrade: (Migrator m, int from, int to) async {
+          await customStatement('DROP TABLE IF EXISTS app_configs;');
+          await customStatement('DROP TABLE IF EXISTS users;');
+          await m.createAll();
+        },
+      );
 }
 
 LazyDatabase _openConnection() {

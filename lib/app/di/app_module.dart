@@ -22,16 +22,16 @@ abstract class AppModule {
   @singleton
   LocalStorageService get localStorageService =>
       SharedPreferencesService(getIt<SharedPreferences>());
-
+  
   @lazySingleton
   ThemeModel get themeModel => ThemeModel(getIt<LocalStorageService>());
-
+  
   @lazySingleton
   LanguageModel get languageModel => LanguageModel(getIt<LocalStorageService>());
 
   @lazySingleton
   ApiService get apiService => ApiService(
     DioClient.build([getIt<AuthInterceptor>(), getIt<RequestInterceptor>()]),
-    baseUrl: baseUrl,
+    baseUrl: coinServiceURL,
   );
 }

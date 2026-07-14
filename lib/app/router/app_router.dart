@@ -6,25 +6,15 @@ import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/database.dart';
 import 'package:nexpaylab/features/auth/presentation/page/login_page.dart';
 import 'package:nexpaylab/features/auth/presentation/page/register_page.dart';
+import 'package:nexpaylab/features/coin_detail/presentation/page/coin_detail_page.dart';
 import 'package:nexpaylab/features/home/presentation/page/home_page.dart';
-import 'package:nexpaylab/features/lock_screen/presentation/page/lock_page.dart';
-import 'package:nexpaylab/features/on_boarding/already_have_wallet/page/already_have_wallet_01.dart';
-import 'package:nexpaylab/features/on_boarding/create_new_wallet/page/create_new_wallet_01.dart';
-import 'package:nexpaylab/features/on_boarding/introduction/page/onboarding_page.dart';
-import 'package:nexpaylab/features/settings/presentation/page/settings_page.dart';
-import 'package:nexpaylab/features/splash/presentation/page/splash_page.dart';
 
 class AppRouter extends Equatable {
   static const home = '/';
   static const login = '/login';
   static const register = '/register';
-  static const onboarding = '/onboarding';
-  static const splash = '/splash';
   static const databaseViwer = '/db_viewer';
-  static const createNewWallet01 = '/create_new_wallet_01';
-  static const alreadyHaveWallet01 = '/already_have_wallet_01';
-  static const lockScreen = '/lock_screen';
-  static const settings = '/settings';
+  static const coinDetail = '/coin_detail';
   @override
   List<Object?> get props => [home];
 }
@@ -38,40 +28,23 @@ GoRouter router([String? initialLocation]) => GoRouter(
       builder: (context, state) => DriftDbViewer(Database()),
     ),
     GoRoute(
-      path: AppRouter.splash,
-      builder: (context, state) => const SplashScreen(),
-    ),
-    GoRoute(
       path: AppRouter.home,
       builder: (context, state) => const HomePage(),
-    ),
-    GoRoute(
-      path: AppRouter.settings,
-      builder: (context, state) => const SettingsPage(),
     ),
     GoRoute(
       path: AppRouter.login,
       builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
-      path: AppRouter.onboarding,
-      builder: (context, state) => const OnboardingPage(),
-    ),
-    GoRoute(
       path: AppRouter.register,
       builder: (context, state) => const RegisterPage(),
     ),
     GoRoute(
-      path: AppRouter.createNewWallet01,
-      builder: (context, state) => const CreateNewWallet01Page(),
-    ),
-    GoRoute(
-      path: AppRouter.alreadyHaveWallet01,
-      builder: (context, state) => const AlreadyHaveWallet01Page(),
-    ),
-    GoRoute(
-      path: AppRouter.lockScreen,
-      builder: (context, state) => const LockPage(),
+      path: AppRouter.coinDetail,
+      builder: (context, state) {
+        final coinId = state.extra! as String;
+        return CoinDetailPage(coinId: coinId);
+      },
     ),
   ],
   redirect: (BuildContext context, GoRouterState state) async {

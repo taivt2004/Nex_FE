@@ -1,3 +1,4 @@
+
 part of 'marketplace_bloc.dart';
 
 enum MarketplaceStatus { initial, loading, success, failure }
@@ -5,7 +6,7 @@ enum MarketplaceStatus { initial, loading, success, failure }
 class MarketplaceState extends Equatable {
   const MarketplaceState({
     this.status = MarketplaceStatus.initial,
-    this.coins = const <CoinRes>[],
+    this.coins = const <CoinListItem>[],
     this.page = 1,
     this.hasReachedMax = false,
     this.loadingMore = false,
@@ -13,7 +14,7 @@ class MarketplaceState extends Equatable {
   });
 
   final MarketplaceStatus status;
-  final List<CoinRes> coins;
+  final List<CoinListItem> coins;
   final int page;
   final bool hasReachedMax;
   final bool loadingMore;
@@ -21,7 +22,7 @@ class MarketplaceState extends Equatable {
 
   MarketplaceState copyWith({
     MarketplaceStatus? status,
-    List<CoinRes>? coins,
+    List<CoinListItem>? coins,
     int? page,
     bool? hasReachedMax,
     bool? loadingMore,

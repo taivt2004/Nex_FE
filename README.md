@@ -103,7 +103,6 @@ This project relies on [flutter_localizations][flutter_localizations_link] and f
     }
 }
 ```
-
 3. Use the new string
 
 ```dart

@@ -22,7 +22,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    _router = router(AppRouter.splash);
+    _router = router(AppRouter.home);
   }
 
   @override

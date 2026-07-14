@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_crypto_actives_header.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_market_place_section.dart';
-import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_payment_section.dart';
-import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_quick_actions_section.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_top_bar.dart';
-import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_total_value_section.dart';
-import 'package:nexpaylab/l10n/arb/app_localizations.dart';
-import 'package:nexpaylab/shared/ui/extensions/image.dart';
+import 'package:nexpaylab/shared/theme/app_style.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({super.key});
@@ -23,9 +17,6 @@ class HomeTabPage extends StatefulWidget {
 class _HomeTabPageState extends State<HomeTabPage>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
-  late final PageController _paymentPageController;
-  bool _isSynced = false;
-  int _currentPaymentPage = 0;
 
   @override
   bool get wantKeepAlive => true;
@@ -34,14 +25,11 @@ class _HomeTabPageState extends State<HomeTabPage>
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _paymentPageController = PageController();
   }
-
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _paymentPageController.dispose();
     super.dispose();
   }
 
@@ -62,71 +50,20 @@ class _HomeTabPageState extends State<HomeTabPage>
     final currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll - 100);
   }
-
-  List<HomePaymentCard> _getPaymentCards(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return [
-      HomePaymentCard(
-        image:
-            'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200&h=200&fit=crop',
-        label: l10n.paymentCoffeeShop,
-      ),
-      HomePaymentCard(
-        image:
-            'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=200&h=200&fit=crop',
-        label: l10n.paymentTemplate,
-      ),
-      HomePaymentCard(
-        image:
-            'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=200&h=200&fit=crop',
-        label: l10n.paymentShopOnline,
-      ),
-      HomePaymentCard(
-        image:
-            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
-        label: l10n.paymentPayBills,
-      ),
-      HomePaymentCard(
-        image:
-            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
-        label: l10n.paymentPayBills,
-      ),
-      HomePaymentCard(
-        image:
-            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
-        label: l10n.paymentPayBills,
-      ),
-      HomePaymentCard(
-        image:
-            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
-        label: l10n.paymentPayBills,
-      ),
-      HomePaymentCard(
-        image:
-            'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&h=200&fit=crop',
-        label: l10n.paymentPayBills,
-      ),
-    ];
-  }
   
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: const Color(0xFF090B10),
       body: SafeArea(
         child: Column(
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.dg)
                   .copyWith(top: 16.dg),
-              child: HomeTopBar(
-                onMenuTap: () {
-                  context.push(AppRouter.settings);
-                },
-              ),
+              child: const HomeTopBar(),
             ),
             Expanded(
               child: RefreshIndicator(
@@ -145,59 +82,11 @@ class _HomeTabPageState extends State<HomeTabPage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 24.h),
-                            HomeTotalValueSection(
-                              isSynced: _isSynced,
-                              totalLabel: l10n.totalValue,
-                              onSyncTap: () {
-                                setState(() {
-                                  _isSynced = true;
-                                });
-                              },
-                            ),
-                            SizedBox(height: 14.h),
-                            HomeQuickActionsSection(
-                              actions: [
-                                HomeQuickActionItemData(
-                                  icon: AppAssets.homeActionBtn.icActionSend.load(
-                                    width: 22.w,
-                                    height: 22.h,
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                  label: l10n.actionSend,
-                                ),
-                                HomeQuickActionItemData(
-                                  icon: AppAssets.homeActionBtn.icActionReceive.load(
-                                    width: 22.w,
-                                    height: 22.h,
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                  label: l10n.actionReceive,
-                                ),
-                                HomeQuickActionItemData(
-                                  icon: AppAssets.homeActionBtn.icActionSwap.load(
-                                    width: 22.w,
-                                    height: 22.h,
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                  label: l10n.actionSwap,
-                                ),
-                              ],
-                            ),
+                            const _HomeCategoryTabs(),
                             SizedBox(height: 24.h),
-                            HomePaymentSection(
-                              cards: _getPaymentCards(context),
-                              pageController: _paymentPageController,
-                              currentPage: _currentPaymentPage,
-                              onPageChanged: (index) {
-                                setState(() {
-                                  _currentPaymentPage = index;
-                                });
-                              },
-                              onScanTap: () {},
-                            ),
+                            const _HomeOverviewCards(),
                             SizedBox(height: 24.h),
                             const HomeCryptoActivesHeader(),
-                            SizedBox(height: 16.h),
                           ],
                         ),
                       ),
@@ -211,5 +100,196 @@ class _HomeTabPageState extends State<HomeTabPage>
         ),
       ),
     );
+  }
+}
+
+class _HomeCategoryTabs extends StatelessWidget {
+  const _HomeCategoryTabs();
+
+  @override
+  Widget build(BuildContext context) {
+    const tabs = [
+      'Tiền mã hóa',
+      'Danh mục',
+      'NFT',
+      'Sàn giao dịch',
+    ];
+
+    return SizedBox(
+      height: 42.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: tabs.length,
+        separatorBuilder: (_, __) => SizedBox(width: 28.w),
+        itemBuilder: (context, index) {
+          final isSelected = index == 0;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                tabs[index],
+                style: PoppinsTextStyles.primary18Regular.copyWith(
+                  color: isSelected ? Colors.white : OlaColors.gray400,
+                ),
+              ),
+              SizedBox(height: 8.h),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: isSelected ? 46.w : 0,
+                height: 3.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _HomeOverviewCards extends StatelessWidget {
+  const _HomeOverviewCards();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 142.h,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          const _OverviewCard(
+            title: 'Thị trường',
+            value: '▼ 4.7%',
+            valueColor: OlaColors.redColor,
+            lineColor: OlaColors.redColor,
+            points: [0.7, 0.55, 0.58, 0.45, 0.38, 0.22, 0.3, 0.1],
+          ),
+          SizedBox(width: 14.w),
+          const _OverviewCard(
+            title: 'Khối lượng trong 24h',
+            value: r'397.73B US$',
+            valueColor: Colors.white,
+            lineColor: Color(0xFF22C55E),
+            points: [0.25, 0.2, 0.24, 0.22, 0.32, 0.38, 0.34, 0.4],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _OverviewCard extends StatelessWidget {
+  const _OverviewCard({
+    required this.title,
+    required this.value,
+    required this.valueColor,
+    required this.lineColor,
+    required this.points,
+  });
+
+  final String title;
+  final String value;
+  final Color valueColor;
+  final Color lineColor;
+  final List<double> points;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300.w,
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: const Color(0xFF12151B),
+        borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(color: const Color(0xFF1E222B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: PoppinsTextStyles.primary16Regular.copyWith(
+              color: OlaColors.gray400,
+            ),
+          ),
+          SizedBox(height: 10.h),
+          Text(
+            value,
+            style: PoppinsTextStyles.primary18Bold.copyWith(
+              color: valueColor,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          Expanded(
+            child: CustomPaint(
+              size: Size(double.infinity, 60.h),
+              painter: _SparklinePainter(
+                points: points,
+                color: lineColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SparklinePainter extends CustomPainter {
+  const _SparklinePainter({
+    required this.points,
+    required this.color,
+  });
+
+  final List<double> points;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (points.length < 2) return;
+
+    final path = Path();
+    final strokePaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
+
+    final fillPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          color.withValues(alpha: 0.25),
+          color.withValues(alpha: 0),
+        ],
+      ).createShader(Offset.zero & size);
+
+    for (var i = 0; i < points.length; i++) {
+      final dx = size.width * i / (points.length - 1);
+      final dy = size.height * (1 - points[i]);
+      if (i == 0) {
+        path.moveTo(dx, dy);
+      } else {
+        path.lineTo(dx, dy);
+      }
+    }
+
+    final fillPath = Path.from(path)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+
+    canvas
+      ..drawPath(fillPath, fillPaint)
+      ..drawPath(path, strokePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _SparklinePainter oldDelegate) {
+    return oldDelegate.points != points || oldDelegate.color != color;
   }
 }

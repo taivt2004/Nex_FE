@@ -1,7 +1,12 @@
 const tokenKey = 'token';
 const userKey = 'user_id';
-const baseUrl = 'https://nexpaylab.com/';
-const baseUrlApi = 'https://nexpay.org/z-api/';
+const baseUrl = 'http://localhost:3000/api/';
+const baseUrlApi = 'http://localhost:3000/api/';
+
+//192.168.1.120 192.168.111.121
+const coinServiceURL = 'http://192.168.111.121:3000/api/';
+const alertServiceURL = 'http://192.168.111.121:3003/api/';
+
 
 
 const userConfigKeys = [''];
