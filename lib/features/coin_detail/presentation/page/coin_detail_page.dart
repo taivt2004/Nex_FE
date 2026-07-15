@@ -1,9 +1,13 @@
+import 'dart:math' as math;
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:nexpaylab/app/data/model/coin/chart_data.dart';
 import 'package:nexpaylab/app/data/model/coin/coin_detail.dart';
 import 'package:nexpaylab/app/di/dependency_injection.dart';
 import 'package:nexpaylab/features/coin_detail/presentation/bloc/coin_detail_bloc.dart';
@@ -58,16 +62,28 @@ class CoinDetailView extends StatelessWidget {
             return CustomScrollView(
               slivers: [
                 SliverPadding(
-                  padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+                  padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate(
                       [
                         _CoinDetailTopBar(detail: detail),
                         SizedBox(height: 20.h),
                         _CoinHeroCard(detail: detail),
-                        SizedBox(height: 16.h),
-                        const _ChartPlaceholderCard(),
-                        SizedBox(height: 16.h),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 12.h, bottom: 12.h),
+                    child: _ChartSection(state: state),
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 24.h),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
                         _SectionCard(
                           title: 'Tổng quan',
                           child: _OverviewGrid(detail: detail),
@@ -289,66 +305,528 @@ class _CoinHeroCard extends StatelessWidget {
   }
 }
 
-class _ChartPlaceholderCard extends StatelessWidget {
-  const _ChartPlaceholderCard();
+class _ChartSection extends StatelessWidget {
+  const _ChartSection({required this.state});
+
+  final CoinDetailState state;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(18.w),
-      decoration: BoxDecoration(
-        color: const Color(0xFF10131A),
-        borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: const Color(0xFF272C36)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Biểu đồ giá',
-            style: PoppinsTextStyles.primary18Semibold.copyWith(
-              color: Colors.white,
+    final chartData = state.chartData;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (state.chartStatus == ChartStatus.loading && chartData == null)
+          SizedBox(
+            height: 320.h,
+            child: const Center(child: CircularProgressIndicator()),
+          )
+        else if (state.chartStatus == ChartStatus.failure && chartData == null)
+          SizedBox(
+            height: 320.h,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    child: Text(
+                      state.chartErrorMessage,
+                      textAlign: TextAlign.center,
+                      style: PoppinsTextStyles.primary14Regular.copyWith(
+                        color: OlaColors.gray300,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<CoinDetailBloc>().add(const FetchChartData());
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 10.h),
-          Text(
-            'Mình để sẵn vị trí này để hoàn thiện chart ở bước sau. Trước mắt ưu tiên phần thông tin và bố cục chi tiết coin.',
-            style: PoppinsTextStyles.primary14Regular.copyWith(
-              color: OlaColors.gray400,
-              height: 1.5,
-            ),
-          ),
-          SizedBox(height: 16.h),
-          const Row(
-            children: [
-              _DisabledRangeChip(label: '1H'),
-              _DisabledRangeChip(label: '24H'),
-              _DisabledRangeChip(label: '7D'),
-              _DisabledRangeChip(label: '30D'),
-              _DisabledRangeChip(label: '1Y'),
-              _DisabledRangeChip(label: 'ALL'),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Container(
-            height: 180.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0D1015),
-              borderRadius: BorderRadius.circular(18.r),
-              border: Border.all(color: const Color(0xFF1E232D)),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              'Chart coming next',
-              style: PoppinsTextStyles.primary14Regular.copyWith(
-                color: OlaColors.gray500,
+          )
+        else if (chartData != null)
+          _InteractivePriceChart(
+            chartData: chartData,
+            range: state.chartRange,
+            isRefreshing: state.chartStatus == ChartStatus.loading,
+          )
+        else
+          SizedBox(
+            height: 320.h,
+            child: Center(
+              child: Text(
+                'Chưa có dữ liệu chart',
+                style: PoppinsTextStyles.primary14Regular.copyWith(
+                  color: OlaColors.gray400,
+                ),
               ),
             ),
           ),
-        ],
+        SizedBox(height: 14.h),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                for (final range in ChartRange.values) ...[
+                  _ChartRangeChip(
+                    label: range.value.toUpperCase(),
+                    isSelected: range == state.chartRange,
+                    onTap: () {
+                      context.read<CoinDetailBloc>().add(
+                            ChangeChartRange(range: range),
+                          );
+                    },
+                  ),
+                  SizedBox(width: 8.w),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _InteractivePriceChart extends StatefulWidget {
+  const _InteractivePriceChart({
+    required this.chartData,
+    required this.range,
+    required this.isRefreshing,
+  });
+
+  final ChartData chartData;
+  final ChartRange range;
+  final bool isRefreshing;
+  @override
+  State<_InteractivePriceChart> createState() => _InteractivePriceChartState();
+}
+
+class _InteractivePriceChartState extends State<_InteractivePriceChart> {
+  List<ChartPoint> get _sortedPoints {
+    final points = List<ChartPoint>.from(widget.chartData.points)
+      ..sort((a, b) => a.time.compareTo(b.time));
+    return points;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant _InteractivePriceChart oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final oldPoints = oldWidget.chartData.points;
+    final newPoints = widget.chartData.points;
+    if (newPoints.isEmpty) return;
+
+    final rangeChanged = oldWidget.range != widget.range;
+    final coinChanged = oldWidget.chartData.coinId != widget.chartData.coinId;
+    if (rangeChanged || coinChanged || oldPoints.isEmpty) {
+      return;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final points = _sortedPoints;
+    if (points.isEmpty) {
+      return SizedBox(
+        height: 320.h,
+        child: Center(
+          child: Text(
+            'Chưa có dữ liệu chart',
+            style: PoppinsTextStyles.primary14Regular.copyWith(
+              color: OlaColors.gray400,
+            ),
+          ),
+        ),
+      );
+    }
+
+    final startTime = points.first.time.toDouble();
+    final endTime = points.last.time.toDouble();
+    final minPrice = points.map((point) => point.value).reduce(math.min);
+    final maxPrice = points.map((point) => point.value).reduce(math.max);
+    final pricePadding =
+        math.max((maxPrice - minPrice) * 0.12, maxPrice.abs() * 0.002);
+    final baseline = widget.chartData.baseLine;
+    final rawMinY = math.min(minPrice - pricePadding, baseline);
+    final rawMaxY = math.max(maxPrice + pricePadding, baseline);
+
+    ({double min, double max, double interval}) niceAxis({
+      required double min,
+      required double max,
+      int tickCount = 4,
+    }) {
+      var tMin = min;
+      var tMax = max;
+      var ticks = tickCount;
+      if (!tMin.isFinite || !tMax.isFinite) {
+        return (min: 0, max: 1, interval: 1.0);
+      }
+      if (ticks < 2) ticks = 2;
+      if (tMin > tMax) {
+        final temp = tMin;
+        tMin = tMax;
+        tMax = temp;
+      }
+      if (tMin == tMax) {
+        final pad = tMin == 0 ? 1.0 : tMin.abs() * 0.1;
+        tMin -= pad;
+        tMax += pad;
+      }
+      final range = (tMax - tMin).abs();
+      if (range == 0 || !range.isFinite) {
+        return (min: tMin, max: tMax, interval: 1.0);
+      }
+
+      final rawInterval = range / (ticks - 1);
+      final magnitude =
+          math.pow(10, (math.log(rawInterval) / math.ln10).floor()).toDouble();
+      final residual = rawInterval / magnitude;
+      final niceResidual = residual <= 1
+          ? 1
+          : residual <= 2
+              ? 2
+              : residual <= 5
+                  ? 5
+                  : 10;
+      final interval = niceResidual * magnitude;
+      var niceMin = (tMin / interval).floorToDouble() * interval;
+      final niceMax = (tMax / interval).ceilToDouble() * interval;
+      if (minPrice >= 0 && baseline >= 0) {
+        niceMin = math.max(0, niceMin);
+      }
+      return (min: niceMin, max: niceMax, interval: interval);
+    }
+
+    final yAxis = niceAxis(
+      min: rawMinY,
+      max: rawMaxY,
+      tickCount: 4,
+    );
+    final minY = yAxis.min;
+    final maxY = yAxis.max <= yAxis.min
+        ? yAxis.min + math.max(maxPrice.abs() * 0.1, 1)
+        : yAxis.max;
+    const greenLineColors = [Color(0xFF31E7B8), Color(0xFF19D6A5)];
+    const redLineColors = [Color(0xFFFF708E), Color(0xFFFF4E78)];
+    const greenFillColors = [Color(0x5531E7B8), Color(0x0531E7B8)];
+    const redFillColors = [Color(0x55FF5A7C), Color(0x05FF5A7C)];
+    final yInterval = yAxis.interval > 0 ? yAxis.interval : 1.0;
+    final xAxisMarks = _buildTimestampMarks(
+      startTime.toInt(),
+      endTime.toInt(),
+      labelCount: 6,
+    );
+    ({List<FlSpot> green, List<FlSpot> red}) splitSpots() {
+      final green = <FlSpot>[];
+      final red = <FlSpot>[];
+
+      void addUnique(List<FlSpot> list, FlSpot spot) {
+        if (list.isEmpty) {
+          list.add(spot);
+          return;
+        }
+        final last = list.last;
+        if (last.x == spot.x && last.y == spot.y) return;
+        list.add(spot);
+      }
+
+      for (var i = 0; i < points.length - 1; i++) {
+        final x1 = points[i].time.toDouble();
+        final y1 = points[i].value;
+        final x2 = points[i + 1].time.toDouble();
+        final y2 = points[i + 1].value;
+
+        final aAbove = y1 >= baseline;
+        final bAbove = y2 >= baseline;
+
+        if (i == 0) {
+          addUnique(aAbove ? green : red, FlSpot(x1, y1));
+        }
+
+        if (aAbove == bAbove) {
+          addUnique(aAbove ? green : red, FlSpot(x2, y2));
+          continue;
+        }
+
+        final dy = y2 - y1;
+        final t = dy == 0 ? 0.0 : (baseline - y1) / dy;
+        final crossX = x1 + (x2 - x1) * t.clamp(0.0, 1.0);
+        final cross = FlSpot(crossX, baseline);
+
+        addUnique(green, cross);
+        addUnique(red, cross);
+        addUnique(bAbove ? green : red, FlSpot(x2, y2));
+      }
+
+      return (green: green, red: red);
+    }
+
+    final colored = splitSpots();
+
+    final fillBar = LineChartBarData(
+      spots: [
+        for (final point in points) FlSpot(point.time.toDouble(), point.value),
+      ],
+      isCurved: points.length > 2,
+      preventCurveOverShooting: true,
+      isStrokeCapRound: true,
+      barWidth: 0,
+      color: Colors.transparent,
+      dotData: const FlDotData(show: false),
+      belowBarData: BarAreaData(
+        show: true,
+        applyCutOffY: true,
+        cutOffY: baseline,
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: redFillColors,
+        ),
+      ),
+      aboveBarData: BarAreaData(
+        show: true,
+        applyCutOffY: true,
+        cutOffY: baseline,
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: greenFillColors,
+        ),
       ),
     );
+
+    final greenBar = LineChartBarData(
+      spots: colored.green,
+      isCurved: colored.green.length > 2,
+      preventCurveOverShooting: true,
+      isStrokeCapRound: true,
+      barWidth: 3.2,
+      gradient: const LinearGradient(colors: greenLineColors),
+      dotData: const FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+      aboveBarData: BarAreaData(show: false),
+    );
+
+    final redBar = LineChartBarData(
+      spots: colored.red,
+      isCurved: colored.red.length > 2,
+      preventCurveOverShooting: true,
+      isStrokeCapRound: true,
+      barWidth: 3.2,
+      gradient: const LinearGradient(colors: redLineColors),
+      dotData: const FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+      aboveBarData: BarAreaData(show: false),
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const yLabelCount = 4;
+        final yLabels = List<String>.generate(yLabelCount, (index) {
+          final value = maxY - ((maxY - minY) * index / (yLabelCount - 1));
+          return _formatAxisPrice(value);
+        });
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 320.h,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 0.w),
+                          child: LineChart(
+                            duration: Duration.zero,
+                            LineChartData(
+                              minX: startTime,
+                              maxX: endTime,
+                              minY: minY,
+                              maxY: maxY,
+                              backgroundColor: Colors.transparent,
+                              clipData: const FlClipData.all(),
+                              borderData: FlBorderData(show: false),
+                              extraLinesData: ExtraLinesData(
+                                horizontalLines: [
+                                  HorizontalLine(
+                                    y: baseline,
+                                    color: const Color(0xFF6F7682),
+                                    strokeWidth: 1,
+                                    dashArray: const [6, 6],
+                                  ),
+                                ],
+                              ),
+                              gridData: FlGridData(
+                                show: true,
+                                drawVerticalLine: false,
+                                horizontalInterval: yInterval,
+                                getDrawingHorizontalLine: (_) => const FlLine(
+                                  color: Color(0xFF1C212A),
+                                  strokeWidth: 1,
+                                  dashArray: [4, 4],
+                                ),
+                              ),
+                              titlesData: const FlTitlesData(
+                                topTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                leftTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                rightTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                bottomTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                              ),
+                              lineTouchData: const LineTouchData(enabled: false),
+                              lineBarsData: [fillBar, greenBar, redBar],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: IgnorePointer(
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 10.w),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  for (final label in yLabels)
+                                    Text(
+                                      label,
+                                      style: PoppinsTextStyles.primary12Regular
+                                          .copyWith(
+                                        color: OlaColors.gray400,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (final mark in xAxisMarks)
+                          Text(
+                            _formatChartTimeLabel(mark, widget.range),
+                            style: PoppinsTextStyles.primary12Regular.copyWith(
+                              color: OlaColors.gray400,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (widget.isRefreshing) ...[
+              SizedBox(height: 8.h),
+              const LinearProgressIndicator(minHeight: 2),
+            ],
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ChartRangeChip extends StatelessWidget {
+  const _ChartRangeChip({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+        decoration: BoxDecoration(
+          color: isSelected ? OlaColors.primarycolor : const Color(0xFF151922),
+          borderRadius: BorderRadius.circular(18.r),
+        ),
+        child: Text(
+          label,
+          style: PoppinsTextStyles.primary14Semibold.copyWith(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+List<int> _buildTimestampMarks(int start, int end, {required int labelCount}) {
+  if (labelCount <= 1) {
+    return [start];
+  }
+
+  final marks = <int>[];
+  final span = end - start;
+  for (var i = 0; i < labelCount; i++) {
+    final ratio = i / (labelCount - 1);
+    marks.add(start + (span * ratio).round());
+  }
+  return marks;
+}
+
+String _formatAxisPrice(double value) {
+  return NumberFormat.currency(
+    locale: 'vi_VN',
+    symbol: '',
+    decimalDigits: value >= 1000 ? 0 : 2,
+  ).format(value).trim();
+}
+
+String _formatChartTimeLabel(int timestamp, ChartRange range) {
+  final date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  switch (range) {
+    case ChartRange.h1:
+    case ChartRange.h24:
+      return DateFormat('HH:mm').format(date);
+    case ChartRange.d7:
+    case ChartRange.d30:
+      return DateFormat('dd/MM').format(date);
+    case ChartRange.y1:
+      return DateFormat('MM/yy').format(date);
+    case ChartRange.all:
+      return DateFormat('yyyy').format(date);
   }
 }
 
@@ -719,30 +1197,6 @@ class _MiniMetric extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _DisabledRangeChip extends StatelessWidget {
-  const _DisabledRangeChip({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 8.w),
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      decoration: BoxDecoration(
-        color: const Color(0xFF151922),
-        borderRadius: BorderRadius.circular(14.r),
-      ),
-      child: Text(
-        label,
-        style: PoppinsTextStyles.primary12Regular.copyWith(
-          color: OlaColors.gray400,
-        ),
       ),
     );
   }

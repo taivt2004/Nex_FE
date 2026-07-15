@@ -14,6 +14,10 @@ class CoinDetailState extends Equatable {
     this.chartRange = ChartRange.h1,
     this.detailErrorMessage = '',
     this.chartErrorMessage = '',
+    this.loadingOlderHistory = false,
+    this.loadingNewerHistory = false,
+    this.hasMoreOlderHistory = true,
+    this.hasMoreNewerHistory = true,
   });
 
   final CoinDetailStatus detailStatus;
@@ -24,6 +28,10 @@ class CoinDetailState extends Equatable {
   final ChartRange chartRange;
   final String detailErrorMessage;
   final String chartErrorMessage;
+  final bool loadingOlderHistory;
+  final bool loadingNewerHistory;
+  final bool hasMoreOlderHistory;
+  final bool hasMoreNewerHistory;
 
   CoinDetailState copyWith({
     CoinDetailStatus? detailStatus,
@@ -34,6 +42,10 @@ class CoinDetailState extends Equatable {
     ChartRange? chartRange,
     String? detailErrorMessage,
     String? chartErrorMessage,
+    bool? loadingOlderHistory,
+    bool? loadingNewerHistory,
+    bool? hasMoreOlderHistory,
+    bool? hasMoreNewerHistory,
   }) {
     return CoinDetailState(
       detailStatus: detailStatus ?? this.detailStatus,
@@ -44,6 +56,10 @@ class CoinDetailState extends Equatable {
       chartRange: chartRange ?? this.chartRange,
       detailErrorMessage: detailErrorMessage ?? this.detailErrorMessage,
       chartErrorMessage: chartErrorMessage ?? this.chartErrorMessage,
+      loadingOlderHistory: loadingOlderHistory ?? this.loadingOlderHistory,
+      loadingNewerHistory: loadingNewerHistory ?? this.loadingNewerHistory,
+      hasMoreOlderHistory: hasMoreOlderHistory ?? this.hasMoreOlderHistory,
+      hasMoreNewerHistory: hasMoreNewerHistory ?? this.hasMoreNewerHistory,
     );
   }
 
@@ -57,5 +73,9 @@ class CoinDetailState extends Equatable {
         chartRange,
         detailErrorMessage,
         chartErrorMessage,
+        loadingOlderHistory,
+        loadingNewerHistory,
+        hasMoreOlderHistory,
+        hasMoreNewerHistory,
       ];
 }

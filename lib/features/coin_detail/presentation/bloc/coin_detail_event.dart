@@ -29,3 +29,20 @@ class ChangeChartRange extends CoinDetailEvent {
   @override
   List<Object?> get props => [range];
 }
+
+enum ChartHistoryDirection { older, newer }
+
+class FetchChartHistory extends CoinDetailEvent {
+  const FetchChartHistory({
+    required this.direction,
+    this.timeStart,
+    this.timeEnd,
+  });
+
+  final ChartHistoryDirection direction;
+  final int? timeStart;
+  final int? timeEnd;
+
+  @override
+  List<Object?> get props => [direction, timeStart, timeEnd];
+}

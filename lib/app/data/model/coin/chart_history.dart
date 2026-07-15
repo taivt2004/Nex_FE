@@ -2,6 +2,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'chart_history.g.dart';
 
+List<double> _numListToDoubleList(List<dynamic> values) =>
+    values.map((value) => (value as num).toDouble()).toList();
+
 @JsonSerializable()
 class ChartHistory {
   ChartHistory({
@@ -36,5 +39,6 @@ class HistoryPoint {
   Map<String, dynamic> toJson() => _$HistoryPointToJson(this);
 
   final int s;
+  @JsonKey(fromJson: _numListToDoubleList)
   final List<double> v;
 }

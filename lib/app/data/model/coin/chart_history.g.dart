@@ -29,7 +29,7 @@ Map<String, dynamic> _$ChartHistoryToJson(ChartHistory instance) =>
 
 HistoryPoint _$HistoryPointFromJson(Map<String, dynamic> json) => HistoryPoint(
   s: (json['s'] as num).toInt(),
-  v: (json['v'] as List<dynamic>).map((e) => (e as num).toDouble()).toList(),
+  v: _numListToDoubleList(json['v'] as List),
 );
 
 Map<String, dynamic> _$HistoryPointToJson(HistoryPoint instance) =>
