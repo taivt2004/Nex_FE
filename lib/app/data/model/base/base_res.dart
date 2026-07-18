@@ -20,7 +20,9 @@ class BaseRes<T> {
       _$BaseResFromJson(json, fromJsonT);
 
   final bool? success;
+  @JsonKey(defaultValue: 0)
   final int code;
+  @JsonKey(defaultValue: '')
   final String message;
   final T? data;
   final Meta? meta;

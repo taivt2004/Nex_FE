@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nexpaylab/app/data/repository/alert_repos.dart';
+import 'package:nexpaylab/app/di/dependency_injection.dart';
+import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/home/presentation/bloc/marketplace_bloc/marketplace_bloc.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_crypto_actives_header.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_market_place_section.dart';
 import 'package:nexpaylab/features/home/presentation/widget/home_tab/home_top_bar.dart';
 import 'package:nexpaylab/shared/theme/app_style.dart';
+import 'package:nexpaylab/shared/ui/dialogs.dart';
+import 'package:nexpaylab/shared/utils/result.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({super.key});
@@ -31,6 +37,70 @@ class _HomeTabPageState extends State<HomeTabPage>
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _onProfileTap() async {
+    final alertRepository = getIt<AlertRepository>();
+    final identityRes = await alertRepository.getStoredIdentity();
+    final userIdRes = await alertRepository.getStoredUserId();
+    final identity = identityRes.maybeWhen(
+      success: (value) => value ?? '',
+      orElse: () => '',
+    );
+    final userId = userIdRes.maybeWhen(
+      success: (value) => value,
+      orElse: () => null,
+    );
+
+    if (!mounted) return;
+
+    if (userId != null && identity.isNotEmpty) {
+      await showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (_) => _AlertUserSheet(
+          identity: identity,
+          onLogout: () async {
+            Navigator.of(context).pop();
+            final repo = getIt<AlertRepository>();
+            final result = await repo.logoutUser();
+            if (!mounted) return;
+            result.when(
+              success: (_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Đã đăng xuất')),
+                );
+              },
+              failure: (e) {
+                showErrorDialog(context, desc: e.toString());
+              },
+            );
+          },
+        ),
+      );
+      return;
+    }
+
+    await showDialog<void>(
+      context: context,
+      builder: (_) => _AlertLoginDialog(
+        onSubmit: (String value) async {
+          final repo = getIt<AlertRepository>();
+          final result = await repo.loginUser(value);
+          if (!mounted) return;
+          result.when(
+            success: (_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Đăng nhập thành công')),
+              );
+            },
+            failure: (e) {
+              showErrorDialog(context, desc: e.toString());
+            },
+          );
+        },
+      ),
+    );
   }
 
   void _onScroll() {
@@ -63,7 +133,12 @@ class _HomeTabPageState extends State<HomeTabPage>
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.dg)
                   .copyWith(top: 16.dg),
-              child: const HomeTopBar(),
+              child: HomeTopBar(
+                onProfileTap: _onProfileTap,
+                onNotificationTap: () {
+                  context.push(AppRouter.alertEvents);
+                },
+              ),
             ),
             Expanded(
               child: RefreshIndicator(
@@ -291,5 +366,110 @@ class _SparklinePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _SparklinePainter oldDelegate) {
     return oldDelegate.points != points || oldDelegate.color != color;
+  }
+}
+
+class _AlertUserSheet extends StatelessWidget {
+  const _AlertUserSheet({
+    required this.identity,
+    required this.onLogout,
+  });
+
+  final String identity;
+  final VoidCallback onLogout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 24.h),
+      decoration: BoxDecoration(
+        color: const Color(0xFF12151B),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        border: Border.all(color: const Color(0xFF1E222B)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Tài khoản',
+              style: PoppinsTextStyles.primary18Bold.copyWith(color: Colors.white),
+            ),
+            SizedBox(height: 10.h),
+            Text(
+              identity,
+              style: PoppinsTextStyles.primary14Regular.copyWith(color: OlaColors.gray400),
+            ),
+            SizedBox(height: 16.h),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: onLogout,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: OlaColors.redColor,
+                  side: const BorderSide(color: OlaColors.redColor),
+                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14.r),
+                  ),
+                ),
+                child: const Text('Đăng xuất'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AlertLoginDialog extends StatefulWidget {
+  const _AlertLoginDialog({
+    required this.onSubmit,
+  });
+
+  final ValueChanged<String> onSubmit;
+
+  @override
+  State<_AlertLoginDialog> createState() => _AlertLoginDialogState();
+}
+
+class _AlertLoginDialogState extends State<_AlertLoginDialog> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Đăng nhập'),
+      content: TextField(
+        controller: _controller,
+        decoration: const InputDecoration(
+          hintText: 'Nhập email (vd: user1@test.com)',
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: Navigator.of(context).pop,
+          child: const Text('Huỷ'),
+        ),
+        TextButton(
+          onPressed: () {
+            final value = _controller.text.trim();
+            if (value.isEmpty) return;
+            Navigator.of(context).pop();
+            widget.onSubmit(value);
+          },
+          child: const Text('Xác nhận'),
+        ),
+      ],
+    );
   }
 }

@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nexpaylab/app/database/database.dart';
+import 'package:nexpaylab/features/alerts/presentation/page/alert_events_page.dart';
+import 'package:nexpaylab/features/alerts/presentation/page/coin_alert_page.dart';
 import 'package:nexpaylab/features/auth/presentation/page/login_page.dart';
 import 'package:nexpaylab/features/auth/presentation/page/register_page.dart';
 import 'package:nexpaylab/features/coin_detail/presentation/page/coin_detail_page.dart';
@@ -15,6 +17,8 @@ class AppRouter extends Equatable {
   static const register = '/register';
   static const databaseViwer = '/db_viewer';
   static const coinDetail = '/coin_detail';
+  static const coinAlerts = '/coin_alerts';
+  static const alertEvents = '/alert_events';
   @override
   List<Object?> get props => [home];
 }
@@ -45,6 +49,22 @@ GoRouter router([String? initialLocation]) => GoRouter(
         final coinId = state.extra! as String;
         return CoinDetailPage(coinId: coinId);
       },
+    ),
+    GoRoute(
+      path: AppRouter.coinAlerts,
+      builder: (context, state) {
+        final extra = state.extra! as Map<String, dynamic>;
+        return CoinAlertPage(
+          coinId: extra['coinId']?.toString() ?? '',
+          coinName: extra['coinName']?.toString() ?? '',
+          coinSymbol: extra['coinSymbol']?.toString() ?? '',
+          imageUrl: extra['imageUrl']?.toString() ?? '',
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRouter.alertEvents,
+      builder: (context, state) => const AlertEventsPage(),
     ),
   ],
   redirect: (BuildContext context, GoRouterState state) async {

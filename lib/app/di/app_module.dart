@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:nexpaylab/app/data/service/alert_api.dart';
 import 'package:nexpaylab/app/data/service/api.dart';
 import 'package:nexpaylab/app/data/service/local_storage_service.dart';
 import 'package:nexpaylab/app/database/database.dart';
@@ -33,5 +34,11 @@ abstract class AppModule {
   ApiService get apiService => ApiService(
     DioClient.build([getIt<AuthInterceptor>(), getIt<RequestInterceptor>()]),
     baseUrl: coinServiceURL,
+  );
+
+  @lazySingleton
+  AlertApiService get alertApiService => AlertApiService(
+    DioClient.build([getIt<AuthInterceptor>(), getIt<RequestInterceptor>()]),
+    baseUrl: alertServiceURL,
   );
 }

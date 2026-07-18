@@ -10,8 +10,8 @@ BaseRes<T> _$BaseResFromJson<T>(
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
 ) => BaseRes<T>(
-  code: (json['code'] as num).toInt(),
-  message: json['message'] as String,
+  code: (json['code'] as num?)?.toInt() ?? 0,
+  message: json['message'] as String? ?? '',
   success: json['success'] as bool?,
   data: _$nullableGenericFromJson(json['data'], fromJsonT),
   meta: json['meta'] == null

@@ -218,7 +218,10 @@ class CoinDetailBloc extends Bloc<CoinDetailEvent, CoinDetailState> {
             '${state.chartRange.value}:${history.timeStartAligned}:${history.timeEndAligned}',
           );
           final historyPoints = history.points
-              .map((point) => ChartPoint(time: point.s, value: point.v.first))
+              .map((point) => ChartPoint(
+                    time: point.s,
+                    value: point.v.isNotEmpty ? point.v.first : 0,
+                  ))
               .toList();
 
           if (historyPoints.isEmpty) {
@@ -226,8 +229,8 @@ class CoinDetailBloc extends Bloc<CoinDetailEvent, CoinDetailState> {
               state.copyWith(
                 loadingOlderHistory: false,
                 loadingNewerHistory: false,
-                hasMoreOlderHistory: !isOlder && state.hasMoreOlderHistory,
-                hasMoreNewerHistory: isOlder && state.hasMoreNewerHistory,
+                hasMoreOlderHistory: isOlder ? false : state.hasMoreOlderHistory,
+                hasMoreNewerHistory: isOlder ? state.hasMoreNewerHistory : false,
               ),
             );
             return;
@@ -262,6 +265,8 @@ class CoinDetailBloc extends Bloc<CoinDetailEvent, CoinDetailState> {
             state.copyWith(
               loadingOlderHistory: false,
               loadingNewerHistory: false,
+              hasMoreOlderHistory: isOlder ? false : state.hasMoreOlderHistory,
+              hasMoreNewerHistory: isOlder ? state.hasMoreNewerHistory : false,
             ),
           );
         },
@@ -272,6 +277,8 @@ class CoinDetailBloc extends Bloc<CoinDetailEvent, CoinDetailState> {
         state.copyWith(
           loadingOlderHistory: false,
           loadingNewerHistory: false,
+          hasMoreOlderHistory: isOlder ? false : state.hasMoreOlderHistory,
+          hasMoreNewerHistory: isOlder ? state.hasMoreNewerHistory : false,
         ),
       );
     }

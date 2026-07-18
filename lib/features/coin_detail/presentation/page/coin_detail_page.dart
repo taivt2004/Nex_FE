@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:nexpaylab/app/data/model/coin/chart_data.dart';
 import 'package:nexpaylab/app/data/model/coin/coin_detail.dart';
 import 'package:nexpaylab/app/di/dependency_injection.dart';
+import 'package:nexpaylab/app/router/app_router.dart';
 import 'package:nexpaylab/features/coin_detail/presentation/bloc/coin_detail_bloc.dart';
 import 'package:nexpaylab/shared/theme/app_style.dart';
 
@@ -158,7 +161,20 @@ class _CoinDetailTopBar extends StatelessWidget {
             ],
           ),
         ),
-        _CircleButton(icon: Icons.notifications_none_rounded, onTap: () {}),
+        _CircleButton(
+          icon: Icons.notifications_none_rounded,
+          onTap: () {
+            context.push(
+              AppRouter.coinAlerts,
+              extra: {
+                'coinId': detail.metadata.id,
+                'coinName': detail.metadata.name,
+                'coinSymbol': detail.metadata.symbol,
+                'imageUrl': detail.metadata.imgUrl,
+              },
+            );
+          },
+        ),
         SizedBox(width: 10.w),
         _CircleButton(icon: Icons.share_outlined, onTap: () {}),
       ],
@@ -319,12 +335,12 @@ class _ChartSection extends StatelessWidget {
       children: [
         if (state.chartStatus == ChartStatus.loading && chartData == null)
           SizedBox(
-            height: 320.h,
+            height: 260.h,
             child: const Center(child: CircularProgressIndicator()),
           )
         else if (state.chartStatus == ChartStatus.failure && chartData == null)
           SizedBox(
-            height: 320.h,
+            height: 260.h,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -355,10 +371,11 @@ class _ChartSection extends StatelessWidget {
             chartData: chartData,
             range: state.chartRange,
             isRefreshing: state.chartStatus == ChartStatus.loading,
+            isLoadingOlderHistory: state.loadingOlderHistory,
           )
         else
           SizedBox(
-            height: 320.h,
+            height: 260.h,
             child: Center(
               child: Text(
                 'Chưa có dữ liệu chart',
@@ -368,7 +385,7 @@ class _ChartSection extends StatelessWidget {
               ),
             ),
           ),
-        SizedBox(height: 14.h),
+        SizedBox(height: 10.h),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: SingleChildScrollView(
@@ -401,25 +418,78 @@ class _InteractivePriceChart extends StatefulWidget {
     required this.chartData,
     required this.range,
     required this.isRefreshing,
+    required this.isLoadingOlderHistory,
   });
 
   final ChartData chartData;
   final ChartRange range;
   final bool isRefreshing;
+  final bool isLoadingOlderHistory;
   @override
   State<_InteractivePriceChart> createState() => _InteractivePriceChartState();
 }
 
 class _InteractivePriceChartState extends State<_InteractivePriceChart> {
+  int? _visibleStartTime;
+  int? _visibleEndTime;
+  int? _initialStartTime;
+  int? _initialEndTime;
+  double _dragRemainderSeconds = 0;
+
   List<ChartPoint> get _sortedPoints {
     final points = List<ChartPoint>.from(widget.chartData.points)
       ..sort((a, b) => a.time.compareTo(b.time));
     return points;
   }
 
+  void _resetViewport() {
+    final points = _sortedPoints;
+    if (points.length < 2) return;
+    _initialStartTime = points.first.time;
+    _initialEndTime = points.last.time;
+    _visibleStartTime = _initialStartTime;
+    _visibleEndTime = _initialEndTime;
+  }
+
+  void _clearViewport() {
+    _initialStartTime = null;
+    _initialEndTime = null;
+    _visibleStartTime = null;
+    _visibleEndTime = null;
+  }
+
+  bool get _isAllRange => widget.range == ChartRange.all;
+
+  // #region debug-point A:chart-pan-helper
+  void _reportChartPanDebug(
+    String hypothesisId,
+    String message, {
+    Map<String, Object?>? data,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint('[chart-pan][$hypothesisId] $message ${data ?? <String, Object?>{}}');
+  }
+  // #endregion
+
+  ChartPoint _baselinePointForViewport(List<ChartPoint> points, int visibleStart) {
+    var candidate = points.first;
+    for (final point in points) {
+      if (point.time <= visibleStart) {
+        candidate = point;
+        continue;
+      }
+
+      final currentGap = (candidate.time - visibleStart).abs();
+      final nextGap = (point.time - visibleStart).abs();
+      return nextGap < currentGap ? point : candidate;
+    }
+    return candidate;
+  }
+
   @override
   void initState() {
     super.initState();
+    _resetViewport();
   }
 
   @override
@@ -433,16 +503,127 @@ class _InteractivePriceChartState extends State<_InteractivePriceChart> {
     final rangeChanged = oldWidget.range != widget.range;
     final coinChanged = oldWidget.chartData.coinId != widget.chartData.coinId;
     if (rangeChanged || coinChanged || oldPoints.isEmpty) {
+      // #region debug-point B:reset-on-range-change
+      _reportChartPanDebug(
+        'B',
+        'reset viewport due to range/coin change',
+        data: {
+          'rangeChanged': rangeChanged,
+          'coinChanged': coinChanged,
+          'oldRange': oldWidget.range.value,
+          'newRange': widget.range.value,
+          'oldPointCount': oldPoints.length,
+          'newPointCount': newPoints.length,
+        },
+      );
+      // #endregion
+      setState(_clearViewport);
       return;
+    }
+
+    final sortedPoints = _sortedPoints;
+    final oldSortedPoints = List<ChartPoint>.from(oldPoints)
+      ..sort((a, b) => a.time.compareTo(b.time));
+    final oldDataLeft = oldSortedPoints.first.time;
+    final oldDataRight = oldSortedPoints.last.time;
+    final newDataLeft = sortedPoints.first.time;
+    final newDataRight = sortedPoints.last.time;
+    final datasetChanged = oldPoints.length != newPoints.length ||
+        oldDataLeft != newDataLeft ||
+        oldDataRight != newDataRight;
+
+    if (_initialStartTime == null ||
+        _initialEndTime == null ||
+        _visibleStartTime == null ||
+        _visibleEndTime == null ||
+        !datasetChanged) {
+      if (_initialStartTime == null ||
+          _initialEndTime == null ||
+          _visibleStartTime == null ||
+          _visibleEndTime == null) {
+        setState(_resetViewport);
+      }
+      return;
+    }
+
+    if (datasetChanged && !_isAllRange) {
+      final currentStart = _visibleStartTime!;
+      final currentEnd = _visibleEndTime!;
+      final windowSpan = currentEnd - currentStart;
+      final prependedOlder = newDataLeft < oldDataLeft && newDataRight >= oldDataRight;
+
+      if (prependedOlder && windowSpan > 0) {
+        // #region debug-point B:prepend-keep
+        _reportChartPanDebug(
+          'B',
+          'keep viewport after prepend older history',
+          data: {
+            'oldDataLeft': oldDataLeft,
+            'newDataLeft': newDataLeft,
+            'oldDataRight': oldDataRight,
+            'newDataRight': newDataRight,
+            'currentStart': currentStart,
+            'currentEnd': currentEnd,
+            'windowSpan': windowSpan,
+          },
+        );
+        // #endregion
+
+        final clampedStart = currentStart.clamp(newDataLeft, newDataRight - 1);
+        final clampedEnd = currentEnd.clamp(clampedStart + 1, newDataRight);
+        setState(() {
+          _visibleStartTime = clampedStart;
+          _visibleEndTime = clampedEnd;
+        });
+        return;
+      }
+
+      setState(_resetViewport);
+      return;
+    }
+
+    if (_isAllRange) {
+      final fullStart = sortedPoints.first.time;
+      final fullEnd = sortedPoints.last.time;
+      if (_visibleStartTime != fullStart || _visibleEndTime != fullEnd) {
+        setState(() {
+          _visibleStartTime = fullStart;
+          _visibleEndTime = fullEnd;
+        });
+      }
+      return;
+    }
+
+    final dataLeft = sortedPoints.first.time;
+    final dataRight = sortedPoints.last.time;
+    final currentStart = _visibleStartTime ?? dataLeft;
+    final currentEnd = _visibleEndTime ?? dataRight;
+    final windowSpan = (_initialEndTime ?? dataRight) - (_initialStartTime ?? dataLeft);
+    final minEnd = math.min(dataLeft + windowSpan, dataRight);
+    final clampedEnd = currentEnd.clamp(minEnd, dataRight);
+    final clampedStart = (clampedEnd - windowSpan).clamp(dataLeft, clampedEnd - 1);
+
+    if (clampedStart != currentStart || clampedEnd != currentEnd) {
+      setState(() {
+        _visibleStartTime = clampedStart;
+        _visibleEndTime = clampedEnd;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final points = _sortedPoints;
+    final allPoints = _sortedPoints;
+    final viewportStart = _visibleStartTime;
+    final viewportEnd = _visibleEndTime;
+    final visiblePoints = allPoints.where((point) {
+      if (viewportStart == null || viewportEnd == null) return true;
+      return point.time >= viewportStart && point.time <= viewportEnd;
+    }).toList(growable: false);
+    final points = visiblePoints.isEmpty ? allPoints : visiblePoints;
     if (points.isEmpty) {
       return SizedBox(
-        height: 320.h,
+        height: 260.h,
         child: Center(
           child: Text(
             'Chưa có dữ liệu chart',
@@ -454,13 +635,28 @@ class _InteractivePriceChartState extends State<_InteractivePriceChart> {
       );
     }
 
-    final startTime = points.first.time.toDouble();
-    final endTime = points.last.time.toDouble();
+    final startTime = (visiblePoints.isEmpty
+            ? allPoints.first.time
+            : (viewportStart ?? points.first.time))
+        .toDouble();
+    final endTime = (visiblePoints.isEmpty
+            ? allPoints.last.time
+            : (viewportEnd ?? points.last.time))
+        .toDouble();
     final minPrice = points.map((point) => point.value).reduce(math.min);
     final maxPrice = points.map((point) => point.value).reduce(math.max);
     final pricePadding =
         math.max((maxPrice - minPrice) * 0.12, maxPrice.abs() * 0.002);
-    final baseline = widget.chartData.baseLine;
+    final usingInitialWindow =
+        _isAllRange ||
+        _initialStartTime == null ||
+        _initialEndTime == null ||
+        (_visibleStartTime == _initialStartTime &&
+            _visibleEndTime == _initialEndTime);
+    final baseline = usingInitialWindow
+        ? widget.chartData.baseLine
+        : _baselinePointForViewport(allPoints, viewportStart ?? allPoints.first.time)
+            .value;
     final rawMinY = math.min(minPrice - pricePadding, baseline);
     final rawMaxY = math.max(maxPrice + pricePadding, baseline);
 
@@ -530,58 +726,104 @@ class _InteractivePriceChartState extends State<_InteractivePriceChart> {
       endTime.toInt(),
       labelCount: 6,
     );
-    ({List<FlSpot> green, List<FlSpot> red}) splitSpots() {
-      final green = <FlSpot>[];
-      final red = <FlSpot>[];
+    
+    // 1. Hàm tách các điểm thành từng đoạn riêng biệt (thay cho splitSpots cũ)
+    List<LineChartBarData> buildColoredBars() {
+      final bars = <LineChartBarData>[];
+      if (points.isEmpty) return bars;
 
-      void addUnique(List<FlSpot> list, FlSpot spot) {
-        if (list.isEmpty) {
-          list.add(spot);
-          return;
-        }
-        final last = list.last;
-        if (last.x == spot.x && last.y == spot.y) return;
-        list.add(spot);
+      final ySpan = (maxY - minY).abs();
+      final eps = ySpan > 0 ? ySpan * 0.0002 : 0.000001;
+
+      bool resolveAbove(double y, bool fallback) {
+        if (y > baseline + eps) return true;
+        if (y < baseline - eps) return false;
+        return fallback;
       }
+
+      double nudge(double y, bool above) {
+        if ((y - baseline).abs() <= eps) {
+          return baseline + (above ? eps : -eps);
+        }
+        return y;
+      }
+
+      var currentAbove = points.first.value >= baseline;
+      var currentSpots = <FlSpot>[
+        FlSpot(points.first.time.toDouble(), nudge(points.first.value, currentAbove))
+      ];
 
       for (var i = 0; i < points.length - 1; i++) {
         final x1 = points[i].time.toDouble();
-        final y1 = points[i].value;
+        final rawY1 = points[i].value;
         final x2 = points[i + 1].time.toDouble();
-        final y2 = points[i + 1].value;
+        final rawY2 = points[i + 1].value;
 
-        final aAbove = y1 >= baseline;
-        final bAbove = y2 >= baseline;
+        final aAbove = resolveAbove(rawY1, currentAbove);
+        final bAbove = resolveAbove(rawY2, aAbove);
 
-        if (i == 0) {
-          addUnique(aAbove ? green : red, FlSpot(x1, y1));
-        }
+        final y2 = nudge(rawY2, bAbove);
 
         if (aAbove == bAbove) {
-          addUnique(aAbove ? green : red, FlSpot(x2, y2));
-          continue;
+          currentSpots.add(FlSpot(x2, y2));
+          currentAbove = bAbove;
+        } else {
+          // Tìm điểm giao nhau với baseline
+          final dy = rawY2 - rawY1;
+          final t = dy == 0 ? 0.0 : (baseline - rawY1) / dy;
+          final crossX = x1 + (x2 - x1) * t.clamp(0.0, 1.0);
+
+          // Chốt đoạn hiện tại ngay tại điểm cắt
+          currentSpots.add(FlSpot(crossX, nudge(baseline, aAbove)));
+          bars.add(
+            LineChartBarData(
+              spots: currentSpots,
+              isCurved: false,
+              preventCurveOverShooting: true,
+              isStrokeCapRound: false,
+              barWidth: 3.2,
+              gradient: LinearGradient(colors: aAbove ? greenLineColors : redLineColors),
+              dotData: const FlDotData(show: false),
+              belowBarData: BarAreaData(show: false),
+              aboveBarData: BarAreaData(show: false),
+            ),
+          );
+
+          // Khởi tạo một đoạn mới bắt đầu từ điểm cắt
+          currentSpots = [
+            FlSpot(crossX, nudge(baseline, bAbove)),
+            FlSpot(x2, y2),
+          ];
+          currentAbove = bAbove;
         }
-
-        final dy = y2 - y1;
-        final t = dy == 0 ? 0.0 : (baseline - y1) / dy;
-        final crossX = x1 + (x2 - x1) * t.clamp(0.0, 1.0);
-        final cross = FlSpot(crossX, baseline);
-
-        addUnique(green, cross);
-        addUnique(red, cross);
-        addUnique(bAbove ? green : red, FlSpot(x2, y2));
       }
 
-      return (green: green, red: red);
+      // Add đoạn cuối cùng còn sót lại trong loop
+      if (currentSpots.isNotEmpty) {
+        bars.add(
+          LineChartBarData(
+            spots: currentSpots,
+            isCurved: false,
+            preventCurveOverShooting: true,
+            isStrokeCapRound: false,
+            barWidth: 3.2,
+            gradient: LinearGradient(colors: currentAbove ? greenLineColors : redLineColors),
+            dotData: const FlDotData(show: false),
+            belowBarData: BarAreaData(show: false),
+            aboveBarData: BarAreaData(show: false),
+          ),
+        );
+      }
+
+      return bars;
     }
 
-    final colored = splitSpots();
-
+    // 2. Cấu hình vùng đổ màu background (giữ nguyên vì barWidth = 0 không bị lỗi đường nối)
     final fillBar = LineChartBarData(
       spots: [
         for (final point in points) FlSpot(point.time.toDouble(), point.value),
       ],
-      isCurved: points.length > 2,
+      isCurved: false,
       preventCurveOverShooting: true,
       isStrokeCapRound: true,
       barWidth: 0,
@@ -594,7 +836,7 @@ class _InteractivePriceChartState extends State<_InteractivePriceChart> {
         gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: redFillColors,
+          colors: greenFillColors,
         ),
       ),
       aboveBarData: BarAreaData(
@@ -604,33 +846,9 @@ class _InteractivePriceChartState extends State<_InteractivePriceChart> {
         gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: greenFillColors,
+          colors: redFillColors,
         ),
       ),
-    );
-
-    final greenBar = LineChartBarData(
-      spots: colored.green,
-      isCurved: colored.green.length > 2,
-      preventCurveOverShooting: true,
-      isStrokeCapRound: true,
-      barWidth: 3.2,
-      gradient: const LinearGradient(colors: greenLineColors),
-      dotData: const FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-      aboveBarData: BarAreaData(show: false),
-    );
-
-    final redBar = LineChartBarData(
-      spots: colored.red,
-      isCurved: colored.red.length > 2,
-      preventCurveOverShooting: true,
-      isStrokeCapRound: true,
-      barWidth: 3.2,
-      gradient: const LinearGradient(colors: redLineColors),
-      dotData: const FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-      aboveBarData: BarAreaData(show: false),
     );
 
     return LayoutBuilder(
@@ -641,95 +859,246 @@ class _InteractivePriceChartState extends State<_InteractivePriceChart> {
           return _formatAxisPrice(value);
         });
 
+        void handleHorizontalDrag(DragUpdateDetails details) {
+          if (_isAllRange) return;
+          final width = constraints.maxWidth;
+          if (width <= 0 || allPoints.length < 2) return;
+
+          final currentStart = _visibleStartTime ?? allPoints.first.time;
+          final currentEnd = _visibleEndTime ?? allPoints.last.time;
+          final windowSpan = currentEnd - currentStart;
+          if (windowSpan <= 0) return;
+
+          final deltaSecondsRaw = (-details.delta.dx) * windowSpan / width;
+          _dragRemainderSeconds += deltaSecondsRaw;
+          final deltaSeconds = _dragRemainderSeconds.truncate();
+          if (deltaSeconds == 0) return;
+          _dragRemainderSeconds -= deltaSeconds;
+
+          final dataLeft = allPoints.first.time;
+          final dataRight = allPoints.last.time;
+
+          final proposedStart = currentStart + deltaSeconds;
+          final proposedEnd = currentEnd + deltaSeconds;
+          var nextStart = proposedStart;
+          var nextEnd = proposedEnd;
+
+          // #region debug-point A:drag-received
+          _reportChartPanDebug(
+            'A',
+            'horizontal drag received',
+            data: {
+              'range': widget.range.value,
+              'dx': details.delta.dx,
+              'deltaSecondsRaw': deltaSecondsRaw,
+              'deltaSeconds': deltaSeconds,
+              'currentStart': currentStart,
+              'currentEnd': currentEnd,
+              'windowSpan': windowSpan,
+              'dataLeft': dataLeft,
+              'dataRight': dataRight,
+            },
+          );
+          // #endregion
+
+          if (nextStart < dataLeft) {
+            final correction = dataLeft - nextStart;
+            nextStart += correction;
+            nextEnd += correction;
+          }
+
+          if (nextEnd > dataRight) {
+            final correction = nextEnd - dataRight;
+            nextStart -= correction;
+            nextEnd -= correction;
+          }
+
+          nextStart = nextStart.clamp(dataLeft, dataRight - 1);
+          nextEnd = nextEnd.clamp(nextStart + 1, dataRight);
+
+          if (deltaSeconds < 0) {
+            final preloadThreshold = dataLeft + (windowSpan * 0.2).round();
+            if (proposedStart <= preloadThreshold) {
+              final fetchStart = math.max(0, nextStart - windowSpan);
+              // #region debug-point C:history-request
+              _reportChartPanDebug(
+                'C',
+                'dispatch fetch older history',
+                data: {
+                  'range': widget.range.value,
+                  'proposedStart': proposedStart,
+                  'nextStart': nextStart,
+                  'nextEnd': nextEnd,
+                  'fetchStart': fetchStart,
+                  'fetchEnd': nextStart,
+                  'preloadThreshold': preloadThreshold,
+                },
+              );
+              // #endregion
+              context.read<CoinDetailBloc>().add(
+                    FetchChartHistory(
+                      direction: ChartHistoryDirection.older,
+                      timeStart: fetchStart,
+                      timeEnd: nextStart,
+                    ),
+                  );
+            }
+          }
+
+          if (nextStart == currentStart && nextEnd == currentEnd) {
+            // #region debug-point A:drag-clamped
+            _reportChartPanDebug(
+              'A',
+              'drag clamped without viewport movement',
+              data: {
+                'nextStart': nextStart,
+                'nextEnd': nextEnd,
+                'currentStart': currentStart,
+                'currentEnd': currentEnd,
+              },
+            );
+            // #endregion
+            return;
+          }
+
+          // #region debug-point A:viewport-updated
+          _reportChartPanDebug(
+            'A',
+            'viewport updated from drag',
+            data: {
+              'nextStart': nextStart,
+              'nextEnd': nextEnd,
+              'currentStart': currentStart,
+              'currentEnd': currentEnd,
+            },
+          );
+          // #endregion
+          setState(() {
+            _visibleStartTime = nextStart;
+            _visibleEndTime = nextEnd;
+          });
+        }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 320.h,
+              height: 260.h,
               child: Column(
                 children: [
                   Expanded(
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 0.w),
-                          child: LineChart(
-                            duration: Duration.zero,
-                            LineChartData(
-                              minX: startTime,
-                              maxX: endTime,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onHorizontalDragStart: _isAllRange
+                          ? null
+                          : (_) {
+                              _dragRemainderSeconds = 0;
+                            },
+                      onHorizontalDragEnd: _isAllRange
+                          ? null
+                          : (_) {
+                              _dragRemainderSeconds = 0;
+                            },
+                      onHorizontalDragCancel: _isAllRange
+                          ? null
+                          : () {
+                              _dragRemainderSeconds = 0;
+                            },
+                      onHorizontalDragUpdate:
+                          _isAllRange ? null : handleHorizontalDrag,
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 0.w),
+                            child: IgnorePointer(
+                              child: LineChart(
+                                duration: Duration.zero,
+                                LineChartData(
+                                  minX: startTime,
+                                  maxX: endTime,
+                                  minY: minY,
+                                  maxY: maxY,
+                                  backgroundColor: Colors.transparent,
+                                  clipData: const FlClipData.all(),
+                                  borderData: FlBorderData(show: false),
+                                  gridData: FlGridData(
+                                    show: true,
+                                    drawVerticalLine: false,
+                                    horizontalInterval: yInterval,
+                                    getDrawingHorizontalLine: (_) => const FlLine(
+                                      color: Color(0xFF1C212A),
+                                      strokeWidth: 1,
+                                      dashArray: [4, 4],
+                                    ),
+                                  ),
+                                  titlesData: const FlTitlesData(
+                                    topTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    leftTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    rightTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    bottomTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                  ),
+                                  lineTouchData: const LineTouchData(enabled: false),
+                                  lineBarsData: [fillBar, ...buildColoredBars()],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: _BaselineDashedLine(
                               minY: minY,
                               maxY: maxY,
-                              backgroundColor: Colors.transparent,
-                              clipData: const FlClipData.all(),
-                              borderData: FlBorderData(show: false),
-                              extraLinesData: ExtraLinesData(
-                                horizontalLines: [
-                                  HorizontalLine(
-                                    y: baseline,
-                                    color: const Color(0xFF6F7682),
-                                    strokeWidth: 1,
-                                    dashArray: const [6, 6],
-                                  ),
-                                ],
-                              ),
-                              gridData: FlGridData(
-                                show: true,
-                                drawVerticalLine: false,
-                                horizontalInterval: yInterval,
-                                getDrawingHorizontalLine: (_) => const FlLine(
-                                  color: Color(0xFF1C212A),
-                                  strokeWidth: 1,
-                                  dashArray: [4, 4],
-                                ),
-                              ),
-                              titlesData: const FlTitlesData(
-                                topTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
-                                ),
-                                leftTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
-                                ),
-                                rightTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
-                                ),
-                                bottomTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
-                                ),
-                              ),
-                              lineTouchData: const LineTouchData(enabled: false),
-                              lineBarsData: [fillBar, greenBar, redBar],
+                              baseline: baseline,
                             ),
                           ),
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          bottom: 0,
-                          child: IgnorePointer(
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 10.w),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  for (final label in yLabels)
-                                    Text(
-                                      label,
-                                      style: PoppinsTextStyles.primary12Regular
-                                          .copyWith(
-                                        color: OlaColors.gray400,
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: IgnorePointer(
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 10.w),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    for (final label in yLabels)
+                                      Text(
+                                        label,
+                                        style: PoppinsTextStyles.primary12Regular
+                                            .copyWith(
+                                          color: OlaColors.gray400,
+                                        ),
                                       ),
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                          if (widget.isLoadingOlderHistory)
+                            Positioned(
+                              left: 10.w,
+                              top: 10.h,
+                              child: SizedBox(
+                                width: 14.r,
+                                height: 14.r,
+                                child: const CircularProgressIndicator(
+                                  strokeWidth: 1,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 8.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 4.w),
                     child: Row(
@@ -756,6 +1125,84 @@ class _InteractivePriceChartState extends State<_InteractivePriceChart> {
         );
       },
     );
+  }
+}
+
+/// Vẽ đường baseline (dashed) như một layer riêng, độc lập với fl_chart,
+/// để nó luôn hiển thị trên cùng và không bao giờ bị đường/vùng màu của
+/// dữ liệu (green/red bar) đè lên khi giá dao động sát baseline.
+class _BaselineDashedLine extends StatelessWidget {
+  const _BaselineDashedLine({
+    required this.minY,
+    required this.maxY,
+    required this.baseline,
+  });
+
+  final double minY;
+  final double maxY;
+  final double baseline;
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: CustomPaint(
+        size: Size.infinite,
+        painter: _BaselineDashedLinePainter(
+          minY: minY,
+          maxY: maxY,
+          baseline: baseline,
+        ),
+      ),
+    );
+  }
+}
+
+class _BaselineDashedLinePainter extends CustomPainter {
+  _BaselineDashedLinePainter({
+    required this.minY,
+    required this.maxY,
+    required this.baseline,
+  });
+
+  final double minY;
+  final double maxY;
+  final double baseline;
+
+  // Cấu hình lại độ dài nét đứt và khoảng cách cho hài hòa
+  static const double _dashWidth = 6;
+  static const double _dashSpace = 4;
+  
+  // Sử dụng màu trắng có độ trong suốt khoảng 35% (0x59) để tạo hiệu ứng mờ tinh tế trên nền tối
+  static const Color _lineColor = Color(0x59FFFFFF); 
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final range = maxY - minY;
+    if (!range.isFinite || range <= 0) return;
+    if (!size.width.isFinite || size.width <= 0) return;
+
+    final clampedBaseline = baseline.clamp(minY, maxY);
+    final dy = size.height * (1 - (clampedBaseline - minY) / range);
+
+    // Bỏ hoàn toàn lớp haloPaint cũ. Chỉ giữ lại thanh linePaint siêu mảnh
+    final linePaint = Paint()
+      ..color = _lineColor
+      ..strokeWidth = 1.2 // Giảm độ dày xuống để đường kẻ sắc nét, tinh tế
+      ..strokeCap = StrokeCap.butt; // Dùng nét vuông để dash phân tách rõ ràng như hình 2
+
+    var startX = 0.0;
+    while (startX < size.width) {
+      final endX = math.min(startX + _dashWidth, size.width);
+      canvas.drawLine(Offset(startX, dy), Offset(endX, dy), linePaint);
+      startX += _dashWidth + _dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _BaselineDashedLinePainter oldDelegate) {
+    return oldDelegate.minY != minY ||
+        oldDelegate.maxY != maxY ||
+        oldDelegate.baseline != baseline;
   }
 }
 

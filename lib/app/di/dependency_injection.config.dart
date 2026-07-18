@@ -13,9 +13,11 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:nexpaylab/app/data/localstore/app_config_local_store.dart'
     as _i932;
+import 'package:nexpaylab/app/data/repository/alert_repos.dart' as _i589;
 import 'package:nexpaylab/app/data/repository/app_config_repos.dart' as _i282;
 import 'package:nexpaylab/app/data/repository/coin_repos.dart' as _i117;
 import 'package:nexpaylab/app/data/repository/user_repos.dart' as _i514;
+import 'package:nexpaylab/app/data/service/alert_api.dart' as _i901;
 import 'package:nexpaylab/app/data/service/api.dart' as _i833;
 import 'package:nexpaylab/app/data/service/local_storage_service.dart' as _i411;
 import 'package:nexpaylab/app/database/app_config_local.dart' as _i338;
@@ -27,6 +29,10 @@ import 'package:nexpaylab/app/network/auth_interceptor.dart' as _i710;
 import 'package:nexpaylab/app/network/network_checker.dart' as _i459;
 import 'package:nexpaylab/app/network/request_interceptor.dart' as _i548;
 import 'package:nexpaylab/app/session/user_session.dart' as _i75;
+import 'package:nexpaylab/features/alerts/presentation/bloc/alert_events_bloc.dart'
+    as _i15;
+import 'package:nexpaylab/features/alerts/presentation/bloc/coin_alert_bloc.dart'
+    as _i788;
 import 'package:nexpaylab/features/auth/presentation/bloc/login_bloc.dart'
     as _i187;
 import 'package:nexpaylab/features/auth/presentation/bloc/register_bloc.dart'
@@ -66,6 +72,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i805.ThemeModel>(() => appModule.themeModel);
     gh.lazySingleton<_i846.LanguageModel>(() => appModule.languageModel);
     gh.lazySingleton<_i833.ApiService>(() => appModule.apiService);
+    gh.lazySingleton<_i901.AlertApiService>(() => appModule.alertApiService);
     gh.lazySingleton<_i459.NetworkStateStream>(
       () => _i459.NetworkStateStream(),
     );
@@ -89,6 +96,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i703.HomeConfigCubit>(
       () => _i703.HomeConfigCubit(gh<_i338.AppConfigLocalStore>()),
     );
+    gh.factory<_i589.AlertRepository>(
+      () => _i589.AlertRepositoryImp(
+        alertApiService: gh<_i901.AlertApiService>(),
+        localStorageService: gh<_i411.LocalStorageService>(),
+      ),
+    );
     gh.factory<_i199.CoinDetailBloc>(
       () => _i199.CoinDetailBloc(gh<_i117.CoinRepository>()),
     );
@@ -103,6 +116,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i932.AppConfigLocalStore>(),
         gh<_i833.ApiService>(),
       ),
+    );
+    gh.factory<_i15.AlertEventsBloc>(
+      () => _i15.AlertEventsBloc(gh<_i589.AlertRepository>()),
+    );
+    gh.factory<_i788.CoinAlertBloc>(
+      () => _i788.CoinAlertBloc(gh<_i589.AlertRepository>()),
     );
     gh.factory<_i514.UserRepository>(
       () => _i514.UserRepositoryImp(

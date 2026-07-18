@@ -7,14 +7,16 @@ part of 'chart_history.dart';
 // **************************************************************************
 
 ChartHistory _$ChartHistoryFromJson(Map<String, dynamic> json) => ChartHistory(
-  coinId: json['coin_id'] as String,
-  range: json['range'] as String,
-  interval: json['interval'] as String,
-  timeStartAligned: (json['timeStartAligned'] as num).toInt(),
-  timeEndAligned: (json['timeEndAligned'] as num).toInt(),
-  points: (json['points'] as List<dynamic>)
-      .map((e) => HistoryPoint.fromJson(e as Map<String, dynamic>))
-      .toList(),
+  coinId: json['coin_id'] as String? ?? '',
+  range: json['range'] as String? ?? '',
+  interval: json['interval'] as String? ?? '',
+  timeStartAligned: (json['timeStartAligned'] as num?)?.toInt() ?? 0,
+  timeEndAligned: (json['timeEndAligned'] as num?)?.toInt() ?? 0,
+  points:
+      (json['points'] as List<dynamic>?)
+          ?.map((e) => HistoryPoint.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
 );
 
 Map<String, dynamic> _$ChartHistoryToJson(ChartHistory instance) =>
@@ -28,8 +30,8 @@ Map<String, dynamic> _$ChartHistoryToJson(ChartHistory instance) =>
     };
 
 HistoryPoint _$HistoryPointFromJson(Map<String, dynamic> json) => HistoryPoint(
-  s: (json['s'] as num).toInt(),
-  v: _numListToDoubleList(json['v'] as List),
+  s: (json['s'] as num?)?.toInt() ?? 0,
+  v: json['v'] == null ? [] : _numListToDoubleList(json['v']),
 );
 
 Map<String, dynamic> _$HistoryPointToJson(HistoryPoint instance) =>
