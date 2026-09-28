@@ -40,6 +40,7 @@ class UserSession {
   ) {
     start();
   }
+  
   final UserSessionStream userStream;
   final AppConfigLocalStore appConfigRepository;
   final UserLocalStore userRepository;

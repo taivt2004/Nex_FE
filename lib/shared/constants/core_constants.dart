@@ -2,10 +2,10 @@ const tokenKey = 'token';
 const userKey = 'user_id';
 const baseUrl = 'http://localhost:3000/api/';
 const baseUrlApi = 'http://localhost:3000/api/';
-
+//192.168.1.80
 //192.168.1.120 192.168.111.121
-const coinServiceURL = 'http://192.168.1.120:3000/api/';
-const alertServiceURL = 'http://192.168.1.120:3003/api/';
+const coinServiceURL = 'http://192.168.1.80:3000/api/';
+const alertServiceURL = 'http://192.168.1.80:3003/api/';
 
 
 
